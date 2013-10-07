@@ -28,27 +28,54 @@
  */
 package org.openhab.binding.opentherm.internal.protocol;
 
+import org.openhab.binding.opentherm.internal.protocol.serial.SerialMessage;
+import org.openhab.binding.opentherm.internal.protocol.serial.SerialMessageReceiver;
+
 /**
- * OpenThermGateway interface. Defines the methods for controlling an opentherm
- * gateway. Two implementations are provided: A TCP/IP gateway class and a
- * serial gateway class.
+ * OpenThermGatewayConnector interface. Defines the methods for connecting to an
+ * opentherm gateway. Two implementations are provided: A TCP/IP gateway
+ * connector class and a serial gateway connector class.
  * 
  * @author Jan-Willem Spuij <jwspuij@gmail.com>
  * @since 1.4.0
  */
-public interface OpenThermGateway {
+public interface OpenThermGatewayConnector {
 
 	/**
 	 * Connects to the OpenTherm Gateway.
 	 * 
 	 * @param port
 	 *            The port to connect the gateway to.
-	 * @throws OpenThermConnectionException 
+	 * @throws OpenThermConnectionException
 	 */
-	public void Connect(String port) throws OpenThermConnectionException;
+	public void connect(String port) throws OpenThermConnectionException;
 
 	/**
 	 * Disconnects from the OpenTherm Gateway.
 	 */
-	public void Disconnect();
+	public void disconnect();
+
+	/**
+	 * Enqueue a {@link SerialMessage} for sending to the gateway.
+	 * 
+	 * @param serialMessage
+	 *            the {@link SerialMessage} to send.
+	 */
+	public void enqueue(SerialMessage serialMessage);
+
+	/**
+	 * Adds a {@link OpenThermSerialMessageReceiver} to the list of receivers.
+	 * 
+	 * @param serialMessageReceiver
+	 *            the serialMessage receiver to add.
+	 */
+	public void addSerialMessageReceiver(SerialMessageReceiver serialMessageReceiver);
+
+	/**
+	 * Removes the {@link SerialMessageReceiver} from the list of receivers.
+	 * 
+	 * @param serialMessageReceiver
+	 *            the serial message receiver to remove.
+	 */
+	public void removeSerialMessageReceiver(SerialMessageReceiver serialMessageReceiver);
 }

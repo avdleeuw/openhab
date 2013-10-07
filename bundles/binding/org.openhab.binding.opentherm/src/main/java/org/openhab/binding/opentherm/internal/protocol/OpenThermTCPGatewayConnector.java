@@ -35,37 +35,39 @@ import java.net.URISyntaxException;
 import java.nio.ByteBuffer;
 import java.nio.channels.SocketChannel;
 
+import org.openhab.binding.opentherm.internal.protocol.serial.SerialMessage;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 /**
- * OpenThermTCPGateway class. Implements communication with the OpenTherm
+ * OpenThermTCPGatewayConnector class. Implements communication with the OpenTherm
  * Gateway over TCP/IP.
  * 
  * @author Jan-Willem Spuij <jwspuij@gmail.com>
  * @since 1.4.0
  */
-public class OpenThermTCPGateway implements OpenThermGateway {
+public class OpenThermTCPGatewayConnector extends OpenThermAbstractGatewayConnector implements OpenThermGatewayConnector {
 
 	private static final int READ_BUFFER_SIZE=1024;
+	private static final int WRITE_BUFFER_SIZE=1024;
 	
-	private static final Logger logger = LoggerFactory.getLogger(OpenThermTCPGateway.class);
+	private static final Logger logger = LoggerFactory.getLogger(OpenThermTCPGatewayConnector.class);
 	private SocketChannel socketChannel;
 	private ReadThread readThread;
-	private OpenThermFrameHandler frameHandler = new OpenThermFrameHandler();
+	private WriteThread writeThread;
 
 	/**
-	 * Constructor. Creates a new instance of the {@link OpenThermTCPGateway}
+	 * Constructor. Creates a new instance of the {@link OpenThermTCPGatewayConnector}
 	 * class.
 	 */
-	public OpenThermTCPGateway() {
+	public OpenThermTCPGatewayConnector() {
 	}
 
 	/**
 	 * {@inheritDoc}
 	 */
 	@Override
-	public void Connect(String port) throws OpenThermConnectionException {
+	public void connect(String port) throws OpenThermConnectionException {
 		logger.trace("Starting the TCP Gateway.");
 		URI uri;
 		try {
@@ -82,13 +84,24 @@ public class OpenThermTCPGateway implements OpenThermGateway {
 		
 		readThread = new ReadThread();
 		readThread.start();
+		writeThread = new WriteThread();
+		writeThread.start();
 	}
 
 	/**
 	 * {@inheritDoc}
 	 */
 	@Override
-	public void Disconnect() {
+	public void disconnect() {
+		if (writeThread != null) {
+			writeThread.interrupt();
+			try {
+				writeThread.join();
+			} catch (InterruptedException e) {
+			}
+			writeThread = null;
+		}
+		
 		if (readThread != null) {
 			readThread.interrupt();
 			try {
@@ -137,16 +150,54 @@ public class OpenThermTCPGateway implements OpenThermGateway {
 						return;
 					}
 					
-					if (buffer.position() >= 11) {
-						frameHandler.handleData(buffer);
-					}
-					
+					processSerialMessages(buffer);
 				} catch (IOException e) {
 					logger.error("Got an I/O error while reading data, ending thread. error = {}", e.getMessage());
 					return;
 				}
 			}
 			logger.trace("Read thread stopped.");
+		}
+	}
+	
+	/**
+	 * WriteThread class. Implements writing to the gateway.
+	 * 
+	 * @author Jan-Willem Spuij <jwspuij@gmail.com>
+	 * @since 1.4.0
+	 */
+	private class WriteThread extends Thread {
+		/**
+		 * {@inheritDoc}
+		 */
+		@Override
+		public void run() {
+			logger.trace("Write thread started.");
+			
+			ByteBuffer buffer = ByteBuffer.allocate(WRITE_BUFFER_SIZE);
+			
+			while (!interrupted()) {
+				try {
+					SerialMessage serialMessage = take();
+					
+					if (serialMessage == null) {
+						logger.error("Thread was interrupted, ending thread.");
+						return;
+					}
+
+					buffer.clear();
+					buffer.put(serialMessage.toArray());
+					buffer.flip();
+
+					while (buffer.hasRemaining()) {
+						socketChannel.write(buffer);
+					}
+				} catch (IOException e) {
+					logger.error("Got an I/O error while writing data, ending thread. error = {}", e.getMessage());
+					return;
+				}
+			}
+			logger.trace("Write thread stopped.");
 		}
 	}
 }

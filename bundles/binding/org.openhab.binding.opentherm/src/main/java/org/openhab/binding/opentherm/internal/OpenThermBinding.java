@@ -32,10 +32,8 @@ import java.util.Dictionary;
 
 import org.apache.commons.lang.StringUtils;
 import org.openhab.binding.opentherm.OpenThermBindingProvider;
+import org.openhab.binding.opentherm.internal.gateway.OpenThermGateway;
 import org.openhab.binding.opentherm.internal.protocol.OpenThermConnectionException;
-import org.openhab.binding.opentherm.internal.protocol.OpenThermGateway;
-import org.openhab.binding.opentherm.internal.protocol.OpenThermTCPGateway;
-
 import org.openhab.core.binding.AbstractBinding;
 import org.openhab.core.types.Command;
 import org.openhab.core.types.State;
@@ -74,7 +72,7 @@ public class OpenThermBinding extends AbstractBinding<OpenThermBindingProvider> 
 	@Override
 	public void deactivate() {
 		if (gateway != null) {
-			gateway.Disconnect();
+			gateway.disconnect();
 			gateway = null;
 		}
 	}
@@ -115,16 +113,12 @@ public class OpenThermBinding extends AbstractBinding<OpenThermBindingProvider> 
 		if (StringUtils.isBlank(port))
 			throw new ConfigurationException("port", "OpenTherm Gateway port not specified.");
 			
-		if (port.toLowerCase().contains("tcp://")) {
-			gateway = new OpenThermTCPGateway();
-			try {
-				gateway.Connect(port);
-				return;
-			} catch (OpenThermConnectionException e) {
-				throw new ConfigurationException("port", e.getMessage(), e);
-			}
-		} else if (StringUtils.isNotBlank(port)) {
-			
+		gateway = new OpenThermGateway();
+		try {
+			gateway.connect(port);
+			return;
+		} catch (OpenThermConnectionException e) {
+			throw new ConfigurationException("port", e.getMessage(), e);
 		}
 	}
 }

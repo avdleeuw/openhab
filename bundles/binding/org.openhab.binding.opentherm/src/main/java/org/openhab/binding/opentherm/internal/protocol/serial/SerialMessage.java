@@ -26,32 +26,48 @@
  * (EPL), the licensors of this Program grant you additional permission
  * to convey the resulting work.
  */
-package org.openhab.binding.opentherm.internal.protocol;
+package org.openhab.binding.opentherm.internal.protocol.serial;
 
-import org.openhab.binding.opentherm.internal.OpenThermException;
+import java.io.UnsupportedEncodingException;
 
 /**
- * OpenThermFrameReceiver interface. Defines the interface for receiving
- * OpenTherm frames and handling errors.
+ * SerialMesage class. Defines a serial message that can be communicated with
+ * the OpenTherm Gateway. The serial message is terminated by a carriage return
+ * and a line feed.
  * 
  * @author Jan-Willem Spuij <jwspuij@gmail.com>
  * @since 1.4.0
  */
-public interface OpenThermFrameReceiver {
+public class SerialMessage {
+
+	private final String message;
 
 	/**
-	 * Receives a single frame from the source.
-	 * 
-	 * @param frame
-	 *            the frame to receive.
+	 * Returns the Serial Message received.
+	 * @return the message
 	 */
-	public void ReceiveFrame(OpenThermFrame frame);
+	public String getMessage() {
+		return message;
+	}
 
 	/**
-	 * Handles a frame error from the source.
+	 * Constructor. Creates a new instance of a {@link SerialMessage} class.
 	 * 
-	 * @param exception
-	 *            the exception to handle.
+	 * @param message
 	 */
-	public void FrameError(OpenThermException exception);
+	public SerialMessage(String message) {
+		this.message = message;
+	}
+	
+	/**
+	 * Returns this serial message as an array of ASCII bytes.
+	 * @return the serial message as an array of ASCII bytes..
+	 */
+	public byte[] toArray() {
+		try {
+			return String.format("%s\r\n", this.message).getBytes("US-ASCII");
+		} catch (UnsupportedEncodingException e) {
+		}
+		return new byte[0];
+	}
 }
