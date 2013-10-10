@@ -38,7 +38,7 @@ import java.util.Map;
  * @since 1.4.0
  *
  */
-public class OpenThermCommandFrame extends OpenThermFrame {
+public class OpenThermCommandFrame extends OpenThermWriteFrame {
 
 	
 	private final CommandCode commandCode;
@@ -51,7 +51,7 @@ public class OpenThermCommandFrame extends OpenThermFrame {
 	 * @param payload. The frame payload.
 	 */
 	public OpenThermCommandFrame(FrameType frameType, MessageType messageType, byte[] payload) throws OpenThermFrameException {
-		super(frameType, messageType, DataId.COMMAND);
+		super(frameType, messageType, DataId.COMMAND, payload);
 
 		switch (messageType) {
 		case WRITE_DATA:

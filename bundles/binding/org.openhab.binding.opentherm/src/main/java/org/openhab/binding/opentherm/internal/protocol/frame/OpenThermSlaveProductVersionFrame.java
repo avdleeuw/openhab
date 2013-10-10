@@ -35,18 +35,25 @@ package org.openhab.binding.opentherm.internal.protocol.frame;
  * @author Jan-Willem Spuij <jwspuij@gmail.com>
  * @since 1.4.0
  */
-public class OpenThermSlaveProductVersionFrame extends OpenThermFrame {
+public class OpenThermSlaveProductVersionFrame extends OpenThermReadFrame {
 
 	private final int productType;
 	private final int productVersion;	
+	
 	/**
-	 * Constructor. Creates a new instance of the {@link OpenThermSlaveProductVersionFrame} class
-	 * @param frameType the Frame type from the OpenTherm frame.
-	 * @param messageType the message type for the OpenTherm frame.
-	 * @param payload. The frame payload.
+	 * Constructor. Creates a new instance of the
+	 * {@link OpenThermSlaveProductVersionFrame} class
+	 * 
+	 * @param frameType
+	 *            the Frame type from the OpenTherm frame.
+	 * @param messageType
+	 *            the message type for the OpenTherm frame.
+	 * @param payload
+	 *            . The frame payload.
+	 * @throws OpenThermFrameException
 	 */
-	public OpenThermSlaveProductVersionFrame(FrameType frameType, MessageType messageType, byte[] payload) {
-		super(frameType, messageType, DataId.SLAVE_VERSION);
+	public OpenThermSlaveProductVersionFrame(FrameType frameType, MessageType messageType, byte[] payload) throws OpenThermFrameException {
+		super(frameType, messageType, DataId.SLAVE_VERSION, payload);
 
 		productType = extractUnsignedMSB(payload);
 		productVersion = extractUnsignedLSB(payload);

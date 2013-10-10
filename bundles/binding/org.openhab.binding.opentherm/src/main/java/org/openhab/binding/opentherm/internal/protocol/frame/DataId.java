@@ -55,7 +55,7 @@ public enum DataId {
 	FHB_INDEX_VALUE(13, "Index number / Value of referred-to fault-history buffer entry.", null),
 	MAX_REL_MOD_LEVEL_SETTING(14, "Maximum relative modulation level setting (%)", null),
 	MAX_CAPACITY_MIN_MOD_LEVEL(15, "Maximum boiler capacity (kW) / Minimum boiler modulation level(%)", null),
-	TR_SET(16, "Room Setpoint (°C)", null),
+	TR_SET(16, "Room Setpoint (°C)", OpenThermRoomSetpointFrame.class),
 	REL_MOD_LEVEL(17, "Relative Modulation Level (%)", null),
 	CH_PRESSURE(18, "Water pressure in CH circuit (bar)", null),
 	DHW_FLOW_RATE(19, "Water flow rate in DHW circuit. (litres/minute)", null),

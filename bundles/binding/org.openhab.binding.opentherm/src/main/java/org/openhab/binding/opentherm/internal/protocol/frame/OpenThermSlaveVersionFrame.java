@@ -37,18 +37,24 @@ import java.math.BigDecimal;
  * @author Jan-Willem Spuij <jwspuij@gmail.com>
  * @since 1.4.0
  */
-public class OpenThermSlaveVersionFrame extends OpenThermFrame {
+public class OpenThermSlaveVersionFrame extends OpenThermReadFrame {
 
 	private final BigDecimal protocolVersion;
 	
 	/**
-	 * Constructor. Creates a new instance of the {@link OpenThermSlaveVersionFrame} class
-	 * @param frameType the Frame type from the OpenTherm frame.
-	 * @param messageType the message type for the OpenTherm frame.
-	 * @param payload. The frame payload.
+	 * Constructor. Creates a new instance of the
+	 * {@link OpenThermSlaveVersionFrame} class
+	 * 
+	 * @param frameType
+	 *            the Frame type from the OpenTherm frame.
+	 * @param messageType
+	 *            the message type for the OpenTherm frame.
+	 * @param payload
+	 *            . The frame payload.
+	 * @throws OpenThermFrameException
 	 */
-	public OpenThermSlaveVersionFrame(FrameType frameType, MessageType messageType, byte[] payload) {
-		super(frameType, messageType, DataId.OPENTHERM_VERSION_SLAVE);
+	public OpenThermSlaveVersionFrame(FrameType frameType, MessageType messageType, byte[] payload) throws OpenThermFrameException {
+		super(frameType, messageType, DataId.OPENTHERM_VERSION_SLAVE, payload);
 
 		protocolVersion = extractFixedPoint(payload);
 	}

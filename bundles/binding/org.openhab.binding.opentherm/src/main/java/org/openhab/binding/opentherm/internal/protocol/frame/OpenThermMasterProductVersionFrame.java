@@ -29,24 +29,32 @@
 package org.openhab.binding.opentherm.internal.protocol.frame;
 
 /**
- * OpenTherm Control Master product version Frame. Indicates the Product
- * type and version of the master.
+ * OpenTherm Control Master product version Frame. Indicates the Product type
+ * and version of the master.
  * 
  * @author Jan-Willem Spuij <jwspuij@gmail.com>
  * @since 1.4.0
  */
-public class OpenThermMasterProductVersionFrame extends OpenThermFrame {
+public class OpenThermMasterProductVersionFrame extends OpenThermWriteFrame {
 
 	private final int productType;
-	private final int productVersion;	
+	private final int productVersion;
+
 	/**
-	 * Constructor. Creates a new instance of the {@link OpenThermMasterProductVersionFrame} class
-	 * @param frameType the Frame type from the OpenTherm frame.
-	 * @param messageType the message type for the OpenTherm frame.
-	 * @param payload. The frame payload.
+	 * Constructor. Creates a new instance of the
+	 * {@link OpenThermMasterProductVersionFrame} class
+	 * 
+	 * @param frameType
+	 *            the Frame type from the OpenTherm frame.
+	 * @param messageType
+	 *            the message type for the OpenTherm frame.
+	 * @param payload
+	 *            . The frame payload.
+	 * @throws OpenThermFrameException
 	 */
-	public OpenThermMasterProductVersionFrame(FrameType frameType, MessageType messageType, byte[] payload) {
-		super(frameType, messageType, DataId.MASTER_VERSION);
+	public OpenThermMasterProductVersionFrame(FrameType frameType, MessageType messageType, byte[] payload)
+			throws OpenThermFrameException {
+		super(frameType, messageType, DataId.MASTER_VERSION, payload);
 
 		productType = extractUnsignedMSB(payload);
 		productVersion = extractUnsignedLSB(payload);
@@ -54,6 +62,7 @@ public class OpenThermMasterProductVersionFrame extends OpenThermFrame {
 
 	/**
 	 * Returns the product type;
+	 * 
 	 * @return the productType
 	 */
 	public int getProductType() {
@@ -62,6 +71,7 @@ public class OpenThermMasterProductVersionFrame extends OpenThermFrame {
 
 	/**
 	 * Returns the product version;
+	 * 
 	 * @return the productVersion
 	 */
 	public int getProductVersion() {

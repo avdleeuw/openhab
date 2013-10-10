@@ -37,7 +37,7 @@ import java.math.BigDecimal;
  * @author Jan-Willem Spuij <jwspuij@gmail.com>
  * @since 1.4.0
  */
-public class OpenThermControl2ndSetpointFrame extends OpenThermFrame {
+public class OpenThermControl2ndSetpointFrame extends OpenThermWriteFrame {
 
 	private final BigDecimal controlSetpoint;
 
@@ -51,9 +51,10 @@ public class OpenThermControl2ndSetpointFrame extends OpenThermFrame {
 	 *            the message type for the OpenTherm frame.
 	 * @param payload
 	 *            . The frame payload.
+	 * @throws OpenThermFrameException
 	 */
-	public OpenThermControl2ndSetpointFrame(FrameType frameType, MessageType messageType, byte[] payload) {
-		super(frameType, messageType, DataId.T_SET_CH2);
+	public OpenThermControl2ndSetpointFrame(FrameType frameType, MessageType messageType, byte[] payload) throws OpenThermFrameException {
+		super(frameType, messageType, DataId.T_SET_CH2, payload);
 
 		controlSetpoint = extractFixedPoint(payload);
 	}

@@ -35,7 +35,7 @@ package org.openhab.binding.opentherm.internal.protocol.frame;
  * @author Jan-Willem Spuij <jwspuij@gmail.com>
  * @since 1.4.0
  */
-public class OpenThermApplicationSpecificFaultFlagsFrame extends OpenThermFrame {
+public class OpenThermApplicationSpecificFaultFlagsFrame extends OpenThermReadFrame {
 
 	private final boolean serviceRequest;
 	private final boolean lockoutReset;
@@ -45,7 +45,7 @@ public class OpenThermApplicationSpecificFaultFlagsFrame extends OpenThermFrame 
 	private final boolean waterOverTemperature;
 
 	private final int oemFaultCode;
-	
+
 	/**
 	 * Constructor. Creates a new instance of the
 	 * {@link OpenThermApplicationSpecificFaultFlagsFrame} class.
@@ -56,9 +56,11 @@ public class OpenThermApplicationSpecificFaultFlagsFrame extends OpenThermFrame 
 	 *            the message type for the OpenTherm frame.
 	 * @param payload
 	 *            . The frame payload.
+	 * @throws OpenThermFrameException
 	 */
-	public OpenThermApplicationSpecificFaultFlagsFrame(FrameType frameType, MessageType messageType, byte[] payload) {
-		super(frameType, messageType, DataId.ASF_OEM_FAULT);
+	public OpenThermApplicationSpecificFaultFlagsFrame(FrameType frameType, MessageType messageType, byte[] payload)
+			throws OpenThermFrameException {
+		super(frameType, messageType, DataId.ASF_OEM_FAULT, payload);
 
 		this.serviceRequest = (payload[2] & 0x01) != 0;
 		this.lockoutReset = (payload[2] & 0x02) != 0;
@@ -71,6 +73,7 @@ public class OpenThermApplicationSpecificFaultFlagsFrame extends OpenThermFrame 
 
 	/**
 	 * Returns a boolean indicating whether service is required.
+	 * 
 	 * @return the serviceRequest
 	 */
 	public boolean isServiceRequest() {
@@ -79,6 +82,7 @@ public class OpenThermApplicationSpecificFaultFlagsFrame extends OpenThermFrame 
 
 	/**
 	 * Returns a boolean indicating whether Remote lock-out reset is enabled
+	 * 
 	 * @return the lockoutReset
 	 */
 	public boolean isLockoutReset() {
@@ -87,6 +91,7 @@ public class OpenThermApplicationSpecificFaultFlagsFrame extends OpenThermFrame 
 
 	/**
 	 * Returns a boolean indicating low water pressure
+	 * 
 	 * @return the lowWaterPressure
 	 */
 	public boolean isLowWaterPressure() {
@@ -95,6 +100,7 @@ public class OpenThermApplicationSpecificFaultFlagsFrame extends OpenThermFrame 
 
 	/**
 	 * Returns a boolean indicating a gas or flame fault
+	 * 
 	 * @return the gasFlameFault
 	 */
 	public boolean isGasFlameFault() {
@@ -103,6 +109,7 @@ public class OpenThermApplicationSpecificFaultFlagsFrame extends OpenThermFrame 
 
 	/**
 	 * Returns a boolean indicating an air pressure fault
+	 * 
 	 * @return the airPressureFault
 	 */
 	public boolean isAirPressureFault() {
@@ -111,6 +118,7 @@ public class OpenThermApplicationSpecificFaultFlagsFrame extends OpenThermFrame 
 
 	/**
 	 * Returns a boolean indicating the water temperature is over it's limit
+	 * 
 	 * @return the waterOverTemperature
 	 */
 	public boolean isWaterOverTemperature() {
@@ -119,6 +127,7 @@ public class OpenThermApplicationSpecificFaultFlagsFrame extends OpenThermFrame 
 
 	/**
 	 * Returns the OEM Fault Code.
+	 * 
 	 * @return the oemFaultCode
 	 */
 	public int getOemFaultCode() {
@@ -130,7 +139,7 @@ public class OpenThermApplicationSpecificFaultFlagsFrame extends OpenThermFrame 
 	 */
 	@Override
 	public String toString() {
-		
+
 		StringBuilder result = new StringBuilder(super.toString());
 		result.append(System.getProperty("line.separator"));
 		result.append(String.format("Service required: %b%n", this.serviceRequest));

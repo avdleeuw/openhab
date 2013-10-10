@@ -49,7 +49,7 @@ public class OpenThermMasterVersionFrameTest {
 	 */
 	@Test
 	public void testGetProtocolVersion() {
-		SerialMessage serialMessage = new SerialMessage("T007C0233");
+		SerialMessage serialMessage = new SerialMessage("T907C0233");
 		OpenThermMasterVersionFrame frame = (OpenThermMasterVersionFrame) OpenThermFrame.fromSerialMessage(serialMessage);
 		assertEquals(0, frame.getProtocolVersion().compareTo(new BigDecimal("2.20")));
 	}

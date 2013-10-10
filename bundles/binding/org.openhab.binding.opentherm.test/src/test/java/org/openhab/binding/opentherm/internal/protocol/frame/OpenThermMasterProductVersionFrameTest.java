@@ -44,7 +44,7 @@ public class OpenThermMasterProductVersionFrameTest {
 
 	@Test
 	public void test() {
-		SerialMessage serialMessage = new SerialMessage("T007EF0FA");
+		SerialMessage serialMessage = new SerialMessage("T907EF0FA");
 		OpenThermMasterProductVersionFrame frame = (OpenThermMasterProductVersionFrame) OpenThermFrame.fromSerialMessage(serialMessage);
 		assertEquals(0xF0, frame.getProductType());
 		assertEquals(0xFA, frame.getProductVersion());

@@ -35,7 +35,7 @@ package org.openhab.binding.opentherm.internal.protocol.frame;
  * @author Jan-Willem Spuij <jwspuij@gmail.com>
  * @since 1.4.0
  */
-public class OpenThermMasterConfigurationFrame extends OpenThermFrame {
+public class OpenThermMasterConfigurationFrame extends OpenThermWriteFrame {
 
 	private final int memberIdCode;
 	
@@ -49,9 +49,10 @@ public class OpenThermMasterConfigurationFrame extends OpenThermFrame {
 	 *            the message type for the OpenTherm frame.
 	 * @param payload
 	 *            . The frame payload.
+	 * @throws OpenThermFrameException
 	 */
-	public OpenThermMasterConfigurationFrame(FrameType frameType, MessageType messageType, byte[] payload) {
-		super(frameType, messageType, DataId.M_CONFIG);
+	public OpenThermMasterConfigurationFrame(FrameType frameType, MessageType messageType, byte[] payload) throws OpenThermFrameException {
+		super(frameType, messageType, DataId.M_CONFIG, payload);
 
 		this.memberIdCode = this.extractUnsignedLSB(payload);
 	}

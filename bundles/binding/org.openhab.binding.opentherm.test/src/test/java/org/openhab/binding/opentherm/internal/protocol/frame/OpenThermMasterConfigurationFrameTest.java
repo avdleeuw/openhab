@@ -46,8 +46,8 @@ public class OpenThermMasterConfigurationFrameTest {
 	 * Test method for {@link org.openhab.binding.opentherm.internal.protocol.frame.OpenThermMasterConfigurationFrame#getMemberIdCode()}.
 	 */
 	@Test
-	public void testGetOemFaultCode() {
-		SerialMessage serialMessage = new SerialMessage("T000200F1");
+	public void testGetMemberIdCode() {
+		SerialMessage serialMessage = new SerialMessage("T900200F1");
 		OpenThermMasterConfigurationFrame frame = (OpenThermMasterConfigurationFrame) OpenThermFrame.fromSerialMessage(serialMessage);
 		assertEquals(0xF1, frame.getMemberIdCode());
 	}

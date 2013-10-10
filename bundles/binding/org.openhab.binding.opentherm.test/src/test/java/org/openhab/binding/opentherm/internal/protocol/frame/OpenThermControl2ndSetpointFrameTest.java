@@ -49,7 +49,7 @@ public class OpenThermControl2ndSetpointFrameTest {
 	 */
 	@Test
 	public void testGetControlSetpoint() {
-		SerialMessage serialMessage = new SerialMessage("BC0081402");
+		SerialMessage serialMessage = new SerialMessage("T90081402");
 		OpenThermControl2ndSetpointFrame frame = (OpenThermControl2ndSetpointFrame) OpenThermFrame.fromSerialMessage(serialMessage);
 		assertEquals(0, frame.getControlSetpoint().compareTo(new BigDecimal("20.01")));
 	}

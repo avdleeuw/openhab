@@ -35,7 +35,7 @@ package org.openhab.binding.opentherm.internal.protocol.frame;
  * @author Jan-Willem Spuij <jwspuij@gmail.com>
  * @since 1.4.0
  */
-public class OpenThermSlaveConfigurationFrame extends OpenThermFrame {
+public class OpenThermSlaveConfigurationFrame extends OpenThermReadFrame {
 
 	private final boolean dhwPresent;
 	private final boolean modulating;
@@ -56,9 +56,10 @@ public class OpenThermSlaveConfigurationFrame extends OpenThermFrame {
 	 *            the message type for the OpenTherm frame.
 	 * @param payload
 	 *            . The frame payload.
+	 * @throws OpenThermFrameException
 	 */
-	public OpenThermSlaveConfigurationFrame(FrameType frameType, MessageType messageType, byte[] payload) {
-		super(frameType, messageType, DataId.S_CONFIG);
+	public OpenThermSlaveConfigurationFrame(FrameType frameType, MessageType messageType, byte[] payload) throws OpenThermFrameException {
+		super(frameType, messageType, DataId.S_CONFIG, payload);
 		
 		this.dhwPresent = (payload[2] & 0x01) != 0;
 		this.modulating = (payload[2] & 0x02) == 0;

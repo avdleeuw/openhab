@@ -35,14 +35,14 @@ package org.openhab.binding.opentherm.internal.protocol.frame;
  * @author Jan-Willem Spuij <jwspuij@gmail.com>
  * @since 1.4.0
  */
-public class OpenThermStatusFrame extends OpenThermFrame {
+public class OpenThermStatusFrame extends OpenThermReadFrame {
 
 	private final boolean masterCHEnable;
 	private final boolean masterDHWEnable;
 	private final boolean masterCoolingEnable;
 	private final boolean masterOTCEnable;
 	private final boolean masterCH2Enable;
-	
+
 	private final boolean slaveFault;
 	private final boolean slaveCHMode;
 	private final boolean slaveDHWMode;
@@ -50,22 +50,29 @@ public class OpenThermStatusFrame extends OpenThermFrame {
 	private final boolean slaveCoolingStatus;
 	private final boolean slaveCH2Mode;
 	private final boolean slaveDiagnosticIndication;
-	
+
 	/**
-	 * Constructor. Creates a new instance of the {@link OpenThermStatusFrame} class.
-	 * @param frameType the Frame type from the OpenTherm frame.
-	 * @param messageType the message type for the OpenTherm frame.
-	 * @param payload. The frame payload.
+	 * Constructor. Creates a new instance of the {@link OpenThermStatusFrame}
+	 * class.
+	 * 
+	 * @param frameType
+	 *            the Frame type from the OpenTherm frame.
+	 * @param messageType
+	 *            the message type for the OpenTherm frame.
+	 * @param payload
+	 *            . The frame payload.
+	 * @throws OpenThermFrameException
 	 */
-	public OpenThermStatusFrame(FrameType frameType, MessageType messageType, byte[] payload) {
-		super(frameType, messageType, DataId.STATUS);
+	public OpenThermStatusFrame(FrameType frameType, MessageType messageType, byte[] payload)
+			throws OpenThermFrameException {
+		super(frameType, messageType, DataId.STATUS, payload);
 
 		this.masterCHEnable = (payload[2] & 0x01) != 0;
 		this.masterDHWEnable = (payload[2] & 0x02) != 0;
 		this.masterCoolingEnable = (payload[2] & 0x04) != 0;
 		this.masterOTCEnable = (payload[2] & 0x08) != 0;
 		this.masterCH2Enable = (payload[2] & 0x10) != 0;
-		
+
 		this.slaveFault = (payload[3] & 0x01) != 0;
 		this.slaveCHMode = (payload[3] & 0x02) != 0;
 		this.slaveDHWMode = (payload[3] & 0x04) != 0;
@@ -77,111 +84,112 @@ public class OpenThermStatusFrame extends OpenThermFrame {
 
 	/**
 	 * Central Heating enabled on master
+	 * 
 	 * @return the masterCHEnable
 	 */
 	public boolean isMasterCHEnable() {
 		return masterCHEnable;
 	}
 
-
 	/**
 	 * Domestic Hot Water enabled on master
+	 * 
 	 * @return the masterDHWEnable
 	 */
 	public boolean isMasterDHWEnable() {
 		return masterDHWEnable;
 	}
 
-
 	/**
 	 * Cooling enabled on master
+	 * 
 	 * @return the masterCoolingEnable
 	 */
 	public boolean isMasterCoolingEnable() {
 		return masterCoolingEnable;
 	}
 
-
 	/**
 	 * Override Temperature Control enabled on master
+	 * 
 	 * @return the masterOTCEnable
 	 */
 	public boolean isMasterOTCEnable() {
 		return masterOTCEnable;
 	}
 
-
 	/**
 	 * Central Heating 2nd circuit enabled on master
+	 * 
 	 * @return the masterCH2Enable
 	 */
 	public boolean isMasterCH2Enable() {
 		return masterCH2Enable;
 	}
 
-
 	/**
 	 * Fault occurred on slave
+	 * 
 	 * @return the slaveFault
 	 */
 	public boolean isSlaveFault() {
 		return slaveFault;
 	}
 
-
 	/**
 	 * Central Heating active on slave.
+	 * 
 	 * @return the slaveCHMode
 	 */
 	public boolean isSlaveCHMode() {
 		return slaveCHMode;
 	}
 
-
 	/**
 	 * DHW active on slave
+	 * 
 	 * @return the slaveDHWMode
 	 */
 	public boolean isSlaveDHWMode() {
 		return slaveDHWMode;
 	}
 
-
 	/**
 	 * Flame active on slave
+	 * 
 	 * @return the slaveFlameStatus
 	 */
 	public boolean isSlaveFlameStatus() {
 		return slaveFlameStatus;
 	}
 
-
 	/**
 	 * Cooling active on slave.
+	 * 
 	 * @return the slaveCoolingStatus
 	 */
 	public boolean isSlaveCoolingStatus() {
 		return slaveCoolingStatus;
 	}
 
-
 	/**
 	 * Central Heating 2nd circuit active on slave.
+	 * 
 	 * @return the slaveCH2Mode
 	 */
 	public boolean isSlaveCH2Mode() {
 		return slaveCH2Mode;
 	}
 
-
 	/**
 	 * Diagnostic event occurred on slave.
+	 * 
 	 * @return the slaveDiagnosticIndication
 	 */
 	public boolean isSlaveDiagnosticIndication() {
 		return slaveDiagnosticIndication;
 	}
-	
+
 	/**
 	 * {@inheritDoc}
 	 */
@@ -194,7 +202,7 @@ public class OpenThermStatusFrame extends OpenThermFrame {
 		result.append(String.format("Master Cooling enabled: %b%n", this.masterCoolingEnable));
 		result.append(String.format("Master Override Temperature Control enabled: %b%n", this.masterOTCEnable));
 		result.append(String.format("Master Central Heating 2nd circuit enabled: %b%n", this.masterCH2Enable));
-		
+
 		result.append(String.format("Slave Fault indication: %b%n", this.slaveFault));
 		result.append(String.format("Slave Central Heating active: %b%n", this.slaveCHMode));
 		result.append(String.format("Slave Domestic Hot Water active: %b%n", this.slaveDHWMode));
@@ -202,7 +210,7 @@ public class OpenThermStatusFrame extends OpenThermFrame {
 		result.append(String.format("Slave Cooling active: %b%n", this.slaveCoolingStatus));
 		result.append(String.format("Slave Central Heating 2nd circuit active: %b%n", this.slaveCH2Mode));
 		result.append(String.format("Slave Diagnostic event occurred: %b", this.slaveDiagnosticIndication));
-		
+
 		return result.toString();
 	}
 }

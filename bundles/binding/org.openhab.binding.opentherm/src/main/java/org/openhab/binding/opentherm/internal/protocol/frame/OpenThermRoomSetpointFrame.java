@@ -37,18 +37,24 @@ import java.math.BigDecimal;
  * @author Jan-Willem Spuij <jwspuij@gmail.com>
  * @since 1.4.0
  */
-public class OpenThermRoomSetpointFrame extends OpenThermFrame {
+public class OpenThermRoomSetpointFrame extends OpenThermWriteFrame {
 
 	private final BigDecimal roomSetpoint;
 	
 	/**
-	 * Constructor. Creates a new instance of the {@link OpenThermRoomSetpointFrame} class
-	 * @param frameType the Frame type from the OpenTherm frame.
-	 * @param messageType the message type for the OpenTherm frame.
-	 * @param payload. The frame payload.
+	 * Constructor. Creates a new instance of the
+	 * {@link OpenThermRoomSetpointFrame} class
+	 * 
+	 * @param frameType
+	 *            the Frame type from the OpenTherm frame.
+	 * @param messageType
+	 *            the message type for the OpenTherm frame.
+	 * @param payload
+	 *            . The frame payload.
+	 * @throws OpenThermFrameException
 	 */
-	public OpenThermRoomSetpointFrame(FrameType frameType, MessageType messageType, byte[] payload) {
-		super(frameType, messageType, DataId.TR_SET);
+	public OpenThermRoomSetpointFrame(FrameType frameType, MessageType messageType, byte[] payload) throws OpenThermFrameException {
+		super(frameType, messageType, DataId.TR_SET, payload);
 
 		roomSetpoint = extractFixedPoint(payload);
 	}

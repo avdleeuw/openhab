@@ -28,32 +28,39 @@
  */
 package org.openhab.binding.opentherm.internal.protocol.frame;
 
-
 /**
- * OpenTherm OEM Diagnostic Code Frame. Extended diagnostic
- * code frame for OEM's to implement.
+ * OpenTherm OEM Diagnostic Code Frame. Extended diagnostic code frame for OEM's
+ * to implement.
  * 
  * @author Jan-Willem Spuij <jwspuij@gmail.com>
  * @since 1.4.0
  */
-public class OpenThermOEMDiagnosticCodeFrame extends OpenThermFrame {
+public class OpenThermOEMDiagnosticCodeFrame extends OpenThermReadFrame {
 
 	private final int oemDiagnosticCode;
-	
+
 	/**
-	 * Constructor. Creates a new instance of the {@link OpenThermOEMDiagnosticCodeFrame} class
-	 * @param frameType the Frame type from the OpenTherm frame.
-	 * @param messageType the message type for the OpenTherm frame.
-	 * @param payload. The frame payload.
+	 * Constructor. Creates a new instance of the
+	 * {@link OpenThermOEMDiagnosticCodeFrame} class
+	 * 
+	 * @param frameType
+	 *            the Frame type from the OpenTherm frame.
+	 * @param messageType
+	 *            the message type for the OpenTherm frame.
+	 * @param payload
+	 *            . The frame payload.
+	 * @throws OpenThermFrameException
 	 */
-	public OpenThermOEMDiagnosticCodeFrame(FrameType frameType, MessageType messageType, byte[] payload) {
-		super(frameType, messageType, DataId.OEM_DIAGNOSTIC);
+	public OpenThermOEMDiagnosticCodeFrame(FrameType frameType, MessageType messageType, byte[] payload)
+			throws OpenThermFrameException {
+		super(frameType, messageType, DataId.OEM_DIAGNOSTIC, payload);
 
 		oemDiagnosticCode = extractUnsignedWord(payload);
 	}
 
 	/**
 	 * Returns the OEM Diagnostic Code
+	 * 
 	 * @return the OEMDiagnosticCode
 	 */
 	public int getOEMDiagnosticCode() {
@@ -68,7 +75,7 @@ public class OpenThermOEMDiagnosticCodeFrame extends OpenThermFrame {
 		StringBuilder result = new StringBuilder(super.toString());
 		result.append(System.getProperty("line.separator"));
 		result.append(String.format("OEM Diagnostic Code: %d (0x%04x)", this.oemDiagnosticCode, this.oemDiagnosticCode));
-		
+
 		return result.toString();
 	}
 }
