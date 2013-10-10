@@ -31,40 +31,34 @@ package org.openhab.binding.opentherm.internal.protocol.frame;
 import java.math.BigDecimal;
 
 /**
- * OpenTherm Control Setpoint of Second circuit Frame. Represents directly a
- * temperature setpoint for the supply from the boiler.
+ * OpenTherm Control Slave version Frame. Indicates the Opentherm protocol
+ * version of the slave.
  * 
  * @author Jan-Willem Spuij <jwspuij@gmail.com>
  * @since 1.4.0
  */
-public class OpenThermControl2ndSetpointFrame extends OpenThermFrame {
+public class OpenThermSlaveVersionFrame extends OpenThermFrame {
 
-	private final BigDecimal controlSetpoint;
-
+	private final BigDecimal protocolVersion;
+	
 	/**
-	 * Constructor. Creates a new instance of the
-	 * {@link OpenThermControl2ndSetpointFrame} class
-	 * 
-	 * @param frameType
-	 *            the Frame type from the OpenTherm frame.
-	 * @param messageType
-	 *            the message type for the OpenTherm frame.
-	 * @param payload
-	 *            . The frame payload.
+	 * Constructor. Creates a new instance of the {@link OpenThermSlaveVersionFrame} class
+	 * @param frameType the Frame type from the OpenTherm frame.
+	 * @param messageType the message type for the OpenTherm frame.
+	 * @param payload. The frame payload.
 	 */
-	public OpenThermControl2ndSetpointFrame(FrameType frameType, MessageType messageType, byte[] payload) {
-		super(frameType, messageType, DataId.T_SET_CH2);
+	public OpenThermSlaveVersionFrame(FrameType frameType, MessageType messageType, byte[] payload) {
+		super(frameType, messageType, DataId.SLAVE_VERSION);
 
-		controlSetpoint = extractFixedPoint(payload);
+		protocolVersion = extractFixedPoint(payload);
 	}
 
 	/**
-	 * Returns the control setpoint;
-	 * 
-	 * @return the controlSetpoint
+	 * Returns the protocol version;
+	 * @return the protocolVersion
 	 */
-	public BigDecimal getControlSetpoint() {
-		return controlSetpoint;
+	public BigDecimal getProtocolVersion() {
+		return protocolVersion;
 	}
 
 	/**
@@ -74,8 +68,7 @@ public class OpenThermControl2ndSetpointFrame extends OpenThermFrame {
 	public String toString() {
 		StringBuilder result = new StringBuilder(super.toString());
 		result.append(System.getProperty("line.separator"));
-		result.append(String.format("Control Setpoint: %s °C", this.controlSetpoint.toPlainString()));
-
+		result.append(String.format("OpenTherm Protocol Version: %s", this.protocolVersion.toPlainString()));
 		return result.toString();
 	}
 }

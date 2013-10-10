@@ -28,54 +28,30 @@
  */
 package org.openhab.binding.opentherm.internal.protocol.frame;
 
+import static org.junit.Assert.*;
+
 import java.math.BigDecimal;
 
+import org.junit.Test;
+import org.openhab.binding.opentherm.internal.protocol.serial.SerialMessage;
+
 /**
- * OpenTherm Control Setpoint of Second circuit Frame. Represents directly a
- * temperature setpoint for the supply from the boiler.
+ * Tests the {@link OpenThermSlaveVersionFrame} class.
  * 
  * @author Jan-Willem Spuij <jwspuij@gmail.com>
  * @since 1.4.0
+ *
  */
-public class OpenThermControl2ndSetpointFrame extends OpenThermFrame {
-
-	private final BigDecimal controlSetpoint;
+public class OpenThermSlaveVersionFrameTest {
 
 	/**
-	 * Constructor. Creates a new instance of the
-	 * {@link OpenThermControl2ndSetpointFrame} class
-	 * 
-	 * @param frameType
-	 *            the Frame type from the OpenTherm frame.
-	 * @param messageType
-	 *            the message type for the OpenTherm frame.
-	 * @param payload
-	 *            . The frame payload.
+	 * Test method for {@link org.openhab.binding.opentherm.internal.protocol.frame.OpenThermSlaveVersionFrame#getProtocolVersion()}.
 	 */
-	public OpenThermControl2ndSetpointFrame(FrameType frameType, MessageType messageType, byte[] payload) {
-		super(frameType, messageType, DataId.T_SET_CH2);
-
-		controlSetpoint = extractFixedPoint(payload);
+	@Test
+	public void testGetProtocolVersion() {
+		SerialMessage serialMessage = new SerialMessage("B407D0400");
+		OpenThermSlaveVersionFrame frame = (OpenThermSlaveVersionFrame) OpenThermFrame.fromSerialMessage(serialMessage);
+		assertEquals(0, frame.getProtocolVersion().compareTo(new BigDecimal("4.00")));
 	}
 
-	/**
-	 * Returns the control setpoint;
-	 * 
-	 * @return the controlSetpoint
-	 */
-	public BigDecimal getControlSetpoint() {
-		return controlSetpoint;
-	}
-
-	/**
-	 * {@inheritDoc}
-	 */
-	@Override
-	public String toString() {
-		StringBuilder result = new StringBuilder(super.toString());
-		result.append(System.getProperty("line.separator"));
-		result.append(String.format("Control Setpoint: %s °C", this.controlSetpoint.toPlainString()));
-
-		return result.toString();
-	}
 }

@@ -50,7 +50,7 @@ public class OpenThermControlSetpointFrame extends OpenThermFrame {
 	public OpenThermControlSetpointFrame(FrameType frameType, MessageType messageType, byte[] payload) {
 		super(frameType, messageType, DataId.T_SET);
 
-		controlSetpoint = extractFloat(payload);
+		controlSetpoint = extractFixedPoint(payload);
 	}
 
 	/**

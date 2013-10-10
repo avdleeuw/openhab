@@ -183,7 +183,7 @@ public abstract class OpenThermFrame {
 	 * @param payload the payload to use.
 	 * @return a {@link BigDecimal} with the decimal value.
 	 */
-	protected BigDecimal extractFloat(byte[] payload) {
+	protected BigDecimal extractFixedPoint(byte[] payload) {
 		return new BigDecimal(extractSignedWord(payload)).divide(new BigDecimal(256), 2, RoundingMode.HALF_UP);
 	}
 	

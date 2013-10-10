@@ -89,8 +89,8 @@ public enum DataId {
 	CH_PUMP_OPERATION_HOURS(121, "Number of hours that CH pump has been running", null),
 	DHW_PUMP_OPERATION_HOURS(122, "Number of hours that DHW pump has been running or DHW valve has been opened", null),
 	DHW_BURNER_OPERATION_HOURS(123, "Number of hours that burner is in operation during DHW mode", null),
-	OPENTHERM_VERSION_MASTER(124, "The implemented version of the OpenTherm Protocol Specification in the master.", null),
-	OPENTHERM_VERSION_SLAVE(125, "The implemented version of the OpenTherm Protocol Specification in the slave.", null),
+	OPENTHERM_VERSION_MASTER(124, "The implemented version of the OpenTherm Protocol Specification in the master.", OpenThermMasterVersionFrame.class),
+	OPENTHERM_VERSION_SLAVE(125, "The implemented version of the OpenTherm Protocol Specification in the slave.", OpenThermSlaveVersionFrame.class),
 	MASTER_VERSION(126, "Master product version number and type", null),
 	SLAVE_VERSION(127, "Slave product version number and type", null);
 	
