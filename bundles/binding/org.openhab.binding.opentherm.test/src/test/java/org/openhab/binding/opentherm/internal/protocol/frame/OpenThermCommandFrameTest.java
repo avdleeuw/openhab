@@ -30,8 +30,6 @@ package org.openhab.binding.opentherm.internal.protocol.frame;
 
 import static org.junit.Assert.*;
 
-import java.math.BigDecimal;
-
 import org.junit.Test;
 import org.openhab.binding.opentherm.internal.protocol.frame.OpenThermCommandFrame.CommandCode;
 import org.openhab.binding.opentherm.internal.protocol.frame.OpenThermCommandFrame.CommandResponseCode;
