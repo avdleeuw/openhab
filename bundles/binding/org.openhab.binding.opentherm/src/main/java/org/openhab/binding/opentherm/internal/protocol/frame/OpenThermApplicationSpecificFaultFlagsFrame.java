@@ -139,7 +139,7 @@ public class OpenThermApplicationSpecificFaultFlagsFrame extends OpenThermFrame 
 		result.append(String.format("Gas or flame fault: %b%n", this.gasFlameFault));
 		result.append(String.format("Air pressure fault: %b%n", this.airPressureFault));
 		result.append(String.format("Water over temperature: %b%n", this.waterOverTemperature));
-		result.append(String.format("OEM Fault Code: 0x%02x", this.oemFaultCode));
+		result.append(String.format("OEM Fault Code: %d (0x%02x)", this.oemFaultCode, this.oemFaultCode));
 
 		return result.toString();
 	}

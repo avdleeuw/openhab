@@ -28,47 +28,28 @@
  */
 package org.openhab.binding.opentherm.internal.protocol.frame;
 
+import static org.junit.Assert.assertEquals;
+
+import org.junit.Test;
+import org.openhab.binding.opentherm.internal.protocol.serial.SerialMessage;
 
 /**
- * OpenTherm OEM Diagnostic Code Frame. Extended diagnostic
- * code frame for OEM's to implement.
+ * Tests the {@link OpenThermMasterConfigurationFrame} class.
  * 
  * @author Jan-Willem Spuij <jwspuij@gmail.com>
  * @since 1.4.0
+ *
  */
-public class OpenThermOEMDiagnosticCodeFrame extends OpenThermFrame {
-
-	private final int oemDiagnosticCode;
-	
-	/**
-	 * Constructor. Creates a new instance of the {@link OpenThermOEMDiagnosticCodeFrame} class
-	 * @param frameType the Frame type from the OpenTherm frame.
-	 * @param messageType the message type for the OpenTherm frame.
-	 * @param payload. The frame payload.
-	 */
-	public OpenThermOEMDiagnosticCodeFrame(FrameType frameType, MessageType messageType, byte[] payload) {
-		super(frameType, messageType, DataId.OEM_DIAGNOSTIC);
-
-		oemDiagnosticCode = extractUnsignedWord(payload);
-	}
+public class OpenThermMasterConfigurationFrameTest {
 
 	/**
-	 * Returns the OEM Diagnostic Code
-	 * @return the OEMDiagnosticCode
+	 * Test method for {@link org.openhab.binding.opentherm.internal.protocol.frame.OpenThermMasterConfigurationFrame#getMemberIdCode()}.
 	 */
-	public int getOEMDiagnosticCode() {
-		return oemDiagnosticCode;
+	@Test
+	public void testGetOemFaultCode() {
+		SerialMessage serialMessage = new SerialMessage("T000200F1");
+		OpenThermMasterConfigurationFrame frame = (OpenThermMasterConfigurationFrame) OpenThermFrame.fromSerialMessage(serialMessage);
+		assertEquals(0xF1, frame.getMemberIdCode());
 	}
 
-	/**
-	 * {@inheritDoc}
-	 */
-	@Override
-	public String toString() {
-		StringBuilder result = new StringBuilder(super.toString());
-		result.append(System.getProperty("line.separator"));
-		result.append(String.format("OEM Diagnostic Code: %d (0x%04x)", this.oemDiagnosticCode, this.oemDiagnosticCode));
-		
-		return result.toString();
-	}
 }

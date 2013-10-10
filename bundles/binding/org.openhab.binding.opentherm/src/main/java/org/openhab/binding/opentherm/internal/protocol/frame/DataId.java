@@ -41,8 +41,8 @@ import java.util.Map;
 public enum DataId {
 	STATUS(0, "Master and Slave Status flags.", OpenThermStatusFrame.class),
 	T_SET(1, "Control setpoint ie CH water temperature setpoint (°C)", OpenThermControlSetpointFrame.class),
-	M_CONFIG(2, "Master Configuration Flags / Master MemberID Code", null),
-	S_CONFIG(3, "Slave Configuration Flags / Slave MemberID Code", null),
+	M_CONFIG(2, "Master Configuration Flags / Master MemberID Code", OpenThermMasterConfigurationFrame.class),
+	S_CONFIG(3, "Slave Configuration Flags / Slave MemberID Code", OpenThermSlaveConfigurationFrame.class),
 	COMMAND(4, "Remote Command", null),
 	ASF_OEM_FAULT(5, "Application-specific fault flags and OEM fault code", OpenThermApplicationSpecificFaultFlagsFrame.class),
 	RBP_FLAGS(6, "Remote boiler parameter transfer-enable & read/write flags", null),

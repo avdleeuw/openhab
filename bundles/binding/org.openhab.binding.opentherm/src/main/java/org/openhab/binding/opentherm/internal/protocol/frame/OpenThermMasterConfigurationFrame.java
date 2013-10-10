@@ -28,36 +28,40 @@
  */
 package org.openhab.binding.opentherm.internal.protocol.frame;
 
-
 /**
- * OpenTherm OEM Diagnostic Code Frame. Extended diagnostic
- * code frame for OEM's to implement.
+ * OpenTherm Master Configuration Frame. Indicates master configuration
+ * options.
  * 
  * @author Jan-Willem Spuij <jwspuij@gmail.com>
  * @since 1.4.0
  */
-public class OpenThermOEMDiagnosticCodeFrame extends OpenThermFrame {
+public class OpenThermMasterConfigurationFrame extends OpenThermFrame {
 
-	private final int oemDiagnosticCode;
+	private final int memberIdCode;
 	
 	/**
-	 * Constructor. Creates a new instance of the {@link OpenThermOEMDiagnosticCodeFrame} class
-	 * @param frameType the Frame type from the OpenTherm frame.
-	 * @param messageType the message type for the OpenTherm frame.
-	 * @param payload. The frame payload.
+	 * Constructor. Creates a new instance of the
+	 * {@link OpenThermMasterConfigurationFrame} class.
+	 * 
+	 * @param frameType
+	 *            the Frame type from the OpenTherm frame.
+	 * @param messageType
+	 *            the message type for the OpenTherm frame.
+	 * @param payload
+	 *            . The frame payload.
 	 */
-	public OpenThermOEMDiagnosticCodeFrame(FrameType frameType, MessageType messageType, byte[] payload) {
-		super(frameType, messageType, DataId.OEM_DIAGNOSTIC);
+	public OpenThermMasterConfigurationFrame(FrameType frameType, MessageType messageType, byte[] payload) {
+		super(frameType, messageType, DataId.M_CONFIG);
 
-		oemDiagnosticCode = extractUnsignedWord(payload);
+		this.memberIdCode = this.extractUnsignedLSB(payload);
 	}
 
 	/**
-	 * Returns the OEM Diagnostic Code
-	 * @return the OEMDiagnosticCode
+	 * Returns the Member ID Code.
+	 * @return the memberIdCode
 	 */
-	public int getOEMDiagnosticCode() {
-		return oemDiagnosticCode;
+	public int getMemberIdCode() {
+		return memberIdCode;
 	}
 
 	/**
@@ -65,10 +69,11 @@ public class OpenThermOEMDiagnosticCodeFrame extends OpenThermFrame {
 	 */
 	@Override
 	public String toString() {
+		
 		StringBuilder result = new StringBuilder(super.toString());
 		result.append(System.getProperty("line.separator"));
-		result.append(String.format("OEM Diagnostic Code: %d (0x%04x)", this.oemDiagnosticCode, this.oemDiagnosticCode));
-		
+		result.append(String.format("Member ID Code: %d (0x%02x)", this.memberIdCode, this.memberIdCode));
+
 		return result.toString();
 	}
 }
