@@ -33,9 +33,12 @@ import org.openhab.binding.opentherm.internal.protocol.OpenThermConnectionExcept
 import org.openhab.binding.opentherm.internal.protocol.OpenThermGatewayConnector;
 import org.openhab.binding.opentherm.internal.protocol.OpenThermSerialGatewayConnector;
 import org.openhab.binding.opentherm.internal.protocol.OpenThermTCPGatewayConnector;
+import org.openhab.binding.opentherm.internal.protocol.frame.OpenThermFrame;
 import org.openhab.binding.opentherm.internal.protocol.serial.SerialMessage;
 import org.openhab.binding.opentherm.internal.protocol.serial.SerialMessageException;
 import org.openhab.binding.opentherm.internal.protocol.serial.SerialMessageReceiver;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 /**
  * OpenThermGateway class. Provides methods for interacting with the OpenTherm
@@ -46,6 +49,7 @@ import org.openhab.binding.opentherm.internal.protocol.serial.SerialMessageRecei
  */
 public class OpenThermGateway implements SerialMessageReceiver {
 
+	private static final Logger logger = LoggerFactory.getLogger(OpenThermGateway.class);
 	private OpenThermGatewayConnector gatewayConnector;
 
 	/**
@@ -58,6 +62,7 @@ public class OpenThermGateway implements SerialMessageReceiver {
 	 *             a connection exception in case the connection fails.
 	 */
 	public void connect(String port) throws OpenThermConnectionException {
+		logger.info("Gateway connecting to port {}", port);
 		if (port.toLowerCase().contains("tcp://")) {
 			gatewayConnector = new OpenThermTCPGatewayConnector();
 		} else if (StringUtils.isNotBlank(port)) {
@@ -76,17 +81,25 @@ public class OpenThermGateway implements SerialMessageReceiver {
 			gatewayConnector.removeSerialMessageReceiver(this);
 			gatewayConnector = null;
 		}
+		logger.info("Gateway disconnected");
 	}
 
 	@Override
 	public void receiveSerialMessage(SerialMessage serialMessage) {
-		// TODO Auto-generated method stub
+		logger.trace("Incoming Serial Message from connector.");
+		
+		OpenThermFrame frame = OpenThermFrame.fromSerialMessage(serialMessage);
+		
+		if (frame != null) {
+			logger.debug(String.format("Frame received: %n%s", frame.toString()));
+		}
 
 	}
 
 	@Override
 	public void receiveSerialError(SerialMessageException exception) {
-		// TODO Auto-generated method stub
+		logger.trace("Incoming Serial Error from connector.");
+
 
 	}
 

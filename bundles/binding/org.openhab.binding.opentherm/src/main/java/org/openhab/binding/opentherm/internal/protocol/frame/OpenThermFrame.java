@@ -29,6 +29,8 @@
 package org.openhab.binding.opentherm.internal.protocol.frame;
 
 import java.lang.reflect.Constructor;
+import java.math.BigDecimal;
+import java.math.RoundingMode;
 
 import org.apache.commons.codec.DecoderException;
 import org.apache.commons.codec.binary.Hex;
@@ -145,15 +147,52 @@ public abstract class OpenThermFrame {
 
 		DataId dataId = DataId.get(payload[1] & 0xFF);
 
-		if (dataId == null || dataId.getClass() == null) {
+		if (dataId == null || dataId.getFrameClass() == null) {
 			return null;
 		}
 		
 		try {
-			Constructor<? extends OpenThermFrame> constructor = dataId.getFrameClass().getConstructor(FrameType.class, MessageType.class, DataId.class, byte[].class);
-			return constructor.newInstance(new Object[] {frameType, messageType, dataId, payload });
+			Constructor<? extends OpenThermFrame> constructor = dataId.getFrameClass().getConstructor(FrameType.class, MessageType.class, byte[].class);
+			return constructor.newInstance(new Object[] {frameType, messageType, payload });
 		} catch (Exception e) {
 			return null;
 		}
+	}
+	
+	/**
+	 * Extracts an unsigned 16 bit value from the payload.
+	 * @param the payload to use.
+	 * @return an integer containing the 16 bit unsigned value;
+	 */
+	protected int extractUnsignedWord(byte[] payload) {
+		return ((payload[2] & 0xFF) << 8) + (payload[3] & 0xFF);
+	}
+	
+	/**
+	 * Extracts an unsigned 16 bit value from the payload.
+	 * @param the payload to use.
+	 * @return an integer containing the 16 bit unsigned value;
+	 */
+	protected int extractSignedWord(byte[] payload) {
+		int result = ((payload[2] & 0x7F) << 8) + (payload[3] & 0xFF);
+		return (payload[2] & 0x80) != 0 ? -result : result;
+	}
+
+	/**
+	 * Extracts an signed 16 bit fixed point value from the payload.
+	 * @param payload the payload to use.
+	 * @return a {@link BigDecimal} with the decimal value.
+	 */
+	protected BigDecimal extractFloat(byte[] payload) {
+		return new BigDecimal(extractSignedWord(payload)).divide(new BigDecimal(256), 2, RoundingMode.HALF_UP);
+	}
+	
+	/**
+	 * Extracts an unsigned 8 bit value from the lowest significant byte of the payload.
+	 * @param the payload to use.
+	 * @return an integer containing the 8 bit unsigned value;
+	 */
+	protected int extractUnsignedLSB(byte[] payload) {
+		return (payload[3] & 0xFF);
 	}
 }
