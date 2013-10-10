@@ -28,37 +28,44 @@
  */
 package org.openhab.binding.opentherm.internal.protocol.frame;
 
-import java.math.BigDecimal;
-
 /**
- * OpenTherm Control Master version Frame. Indicates the Opentherm protocol
- * version of the master.
+ * OpenTherm Control Master product version Frame. Indicates the Product
+ * type and version of the master.
  * 
  * @author Jan-Willem Spuij <jwspuij@gmail.com>
  * @since 1.4.0
  */
-public class OpenThermMasterVersionFrame extends OpenThermFrame {
+public class OpenThermMasterProductVersionFrame extends OpenThermFrame {
 
-	private final BigDecimal protocolVersion;
-	
+	private final int productType;
+	private final int productVersion;	
 	/**
-	 * Constructor. Creates a new instance of the {@link OpenThermMasterVersionFrame} class
+	 * Constructor. Creates a new instance of the {@link OpenThermMasterProductVersionFrame} class
 	 * @param frameType the Frame type from the OpenTherm frame.
 	 * @param messageType the message type for the OpenTherm frame.
 	 * @param payload. The frame payload.
 	 */
-	public OpenThermMasterVersionFrame(FrameType frameType, MessageType messageType, byte[] payload) {
-		super(frameType, messageType, DataId.OPENTHERM_VERSION_MASTER);
+	public OpenThermMasterProductVersionFrame(FrameType frameType, MessageType messageType, byte[] payload) {
+		super(frameType, messageType, DataId.MASTER_VERSION);
 
-		protocolVersion = extractFixedPoint(payload);
+		productType = extractUnsignedMSB(payload);
+		productVersion = extractUnsignedLSB(payload);
 	}
 
 	/**
-	 * Returns the protocol version;
-	 * @return the protocolVersion
+	 * Returns the product type;
+	 * @return the productType
 	 */
-	public BigDecimal getProtocolVersion() {
-		return protocolVersion;
+	public int getProductType() {
+		return productType;
+	}
+
+	/**
+	 * Returns the product version;
+	 * @return the productVersion
+	 */
+	public int getProductVersion() {
+		return productVersion;
 	}
 
 	/**
@@ -68,7 +75,8 @@ public class OpenThermMasterVersionFrame extends OpenThermFrame {
 	public String toString() {
 		StringBuilder result = new StringBuilder(super.toString());
 		result.append(System.getProperty("line.separator"));
-		result.append(String.format("OpenTherm Protocol Version: %s", this.protocolVersion.toPlainString()));
+		result.append(String.format("Product Type: %d (0x%02x)%n", this.productType));
+		result.append(String.format("Product Version: %d (0x%02x)", this.productVersion));
 		return result.toString();
 	}
 }

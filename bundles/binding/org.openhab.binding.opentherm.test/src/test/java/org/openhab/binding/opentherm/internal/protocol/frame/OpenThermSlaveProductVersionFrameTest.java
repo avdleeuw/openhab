@@ -28,47 +28,26 @@
  */
 package org.openhab.binding.opentherm.internal.protocol.frame;
 
-import java.math.BigDecimal;
+import static org.junit.Assert.*;
+
+import org.junit.Test;
+import org.openhab.binding.opentherm.internal.protocol.serial.SerialMessage;
 
 /**
- * OpenTherm Control Master version Frame. Indicates the Opentherm protocol
- * version of the master.
- * 
+ * Tests the {@link OpenThermSlaveProductVersionFrame} class.
+ *
  * @author Jan-Willem Spuij <jwspuij@gmail.com>
  * @since 1.4.0
+ *
  */
-public class OpenThermMasterVersionFrame extends OpenThermFrame {
+public class OpenThermSlaveProductVersionFrameTest {
 
-	private final BigDecimal protocolVersion;
-	
-	/**
-	 * Constructor. Creates a new instance of the {@link OpenThermMasterVersionFrame} class
-	 * @param frameType the Frame type from the OpenTherm frame.
-	 * @param messageType the message type for the OpenTherm frame.
-	 * @param payload. The frame payload.
-	 */
-	public OpenThermMasterVersionFrame(FrameType frameType, MessageType messageType, byte[] payload) {
-		super(frameType, messageType, DataId.OPENTHERM_VERSION_MASTER);
-
-		protocolVersion = extractFixedPoint(payload);
+	@Test
+	public void test() {
+		SerialMessage serialMessage = new SerialMessage("B407FF0FA");
+		OpenThermSlaveProductVersionFrame frame = (OpenThermSlaveProductVersionFrame) OpenThermFrame.fromSerialMessage(serialMessage);
+		assertEquals(0xF0, frame.getProductType());
+		assertEquals(0xFA, frame.getProductVersion());
 	}
 
-	/**
-	 * Returns the protocol version;
-	 * @return the protocolVersion
-	 */
-	public BigDecimal getProtocolVersion() {
-		return protocolVersion;
-	}
-
-	/**
-	 * {@inheritDoc}
-	 */
-	@Override
-	public String toString() {
-		StringBuilder result = new StringBuilder(super.toString());
-		result.append(System.getProperty("line.separator"));
-		result.append(String.format("OpenTherm Protocol Version: %s", this.protocolVersion.toPlainString()));
-		return result.toString();
-	}
 }

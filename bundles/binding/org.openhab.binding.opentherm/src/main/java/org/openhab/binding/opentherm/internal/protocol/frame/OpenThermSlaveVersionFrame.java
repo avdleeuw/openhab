@@ -48,7 +48,7 @@ public class OpenThermSlaveVersionFrame extends OpenThermFrame {
 	 * @param payload. The frame payload.
 	 */
 	public OpenThermSlaveVersionFrame(FrameType frameType, MessageType messageType, byte[] payload) {
-		super(frameType, messageType, DataId.SLAVE_VERSION);
+		super(frameType, messageType, DataId.OPENTHERM_VERSION_SLAVE);
 
 		protocolVersion = extractFixedPoint(payload);
 	}

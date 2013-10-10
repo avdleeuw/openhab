@@ -188,7 +188,16 @@ public abstract class OpenThermFrame {
 	}
 	
 	/**
-	 * Extracts an unsigned 8 bit value from the lowest significant byte of the payload.
+	 * Extracts an unsigned 8 bit value from the most significant byte of the payload.
+	 * @param the payload to use.
+	 * @return an integer containing the 8 bit unsigned value;
+	 */
+	protected int extractUnsignedMSB(byte[] payload) {
+		return (payload[2] & 0xFF);
+	}
+	
+	/**
+	 * Extracts an unsigned 8 bit value from the least significant byte of the payload.
 	 * @param the payload to use.
 	 * @return an integer containing the 8 bit unsigned value;
 	 */
