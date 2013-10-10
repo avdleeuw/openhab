@@ -26,83 +26,83 @@
  * (EPL), the licensors of this Program grant you additional permission
  * to convey the resulting work.
  */
-package org.openhab.binding.opentherm.internal.protocol.serial;
+package org.openhab.binding.opentherm.internal.protocol.frame;
 
 import org.openhab.binding.opentherm.internal.OpenThermException;
 
 /**
- * Exception that occurs when an invalid serial message is received from the
+ * Exception that occurs when invalid frame content is received from the
  * Gateway.
  * 
  * @author Jan-Willem Spuij <jwspuij@gmail.com>
  * @since 1.4.0
  */
-public class SerialMessageException extends OpenThermException {
+public class OpenThermFrameException extends OpenThermException {
 
 	/**
 	 * Serial Version Unique Identifier.
 	 */
-	private static final long serialVersionUID = -5254633632973540449L;
+	private static final long serialVersionUID = 6900455045649260321L;
 
-	private final String serialMessageContent;
+	private final byte[] frameContent;
 
 	/**
-	 * Returns the invalid serial Message content.
+	 * Returns the invalid frame content.
 	 * 
-	 * @return the invalid serial Message content;
+	 * @return the invalid frame content;
 	 */
-	public String getSerialMessageContent() {
-		return serialMessageContent;
+	public byte[] getFrameContent() {
+		return frameContent;
 	}
 
 	/**
 	 * Creates a new instance of the {@link OpenThermFrameException} class.
 	 * 
-	 * @param serialMessageContent
-	 *            the invalid serial message content
+	 * @param frameContent
+	 *            the invalid frame content
 	 */
-	public SerialMessageException(String serialMessageContent) {
-		this.serialMessageContent = serialMessageContent;
+	public OpenThermFrameException(byte[] frameContent) {
+		this.frameContent = frameContent;
 	}
 
 	/**
 	 * Creates a new instance of the {@link OpenThermFrameException} class.
 	 * 
-	 * @param serialMessageContent
-	 *            the invalid serial message content
+	 * @param frameContent
+	 *            the invalid frame content
 	 * @param message
 	 *            the message indicating the Exception that occurred.
 	 */
-	public SerialMessageException(String serialMessageContent, String message) {
+	public OpenThermFrameException(byte[] frameContent, String message) {
 		super(message);
-		this.serialMessageContent = serialMessageContent;
+		this.frameContent = frameContent;
 	}
 
 	/**
 	 * Creates a new instance of the {@link OpenThermFrameException} class.
 	 * 
-	 * @param serialMessageContent
-	 *            the invalid serial message content
+	 * @param frameContent
+	 *            the invalid frame content
 	 * @param cause
 	 *            the cause that led to this Exception.
 	 */
-	public SerialMessageException(String serialMessageContent, Throwable cause) {
+	public OpenThermFrameException(byte[] frameContent, Throwable cause) {
 		super(cause);
-		this.serialMessageContent = serialMessageContent;
+		this.frameContent = frameContent;
 	}
 
 	/**
 	 * Creates a new instance of the {@link OpenThermFrameException} class.
 	 * 
-	 * @param serialMessageContent
-	 *            the invalid serial message content
+	 * @param frameContent
+	 *            the invalid frame content
 	 * @param message
 	 *            the message indicating the Exception that occurred.
 	 * @param cause
 	 *            the cause that led to this Exception.
 	 */
-	public SerialMessageException(String serialMessageContent, String message, Throwable cause) {
+	public OpenThermFrameException(byte[] frameContent, String message, Throwable cause) {
 		super(message, cause);
-		this.serialMessageContent = serialMessageContent;
+		this.frameContent = frameContent;
 	}
 }
