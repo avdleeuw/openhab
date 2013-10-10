@@ -63,7 +63,7 @@ public enum DataId {
 	DATE(21, "Calendar date", null),
 	YEAR(22, "Calendar year", null),
 	TR_SET_CH2(23, "Room Setpoint for 2nd CH circuit (°C)", null),
-	TR(24, "Room temperature (°C)", null),
+	TR(24, "Room temperature (°C)", OpenThermRoomTemperatureFrame.class),
 	T_BOILER(25, "Boiler flow water temperature (°C)", null),
 	T_DHW(26, "DHW temperature (°C)", null),
 	T_OUTSIDE(27, "Outside temperature (°C)", null),
