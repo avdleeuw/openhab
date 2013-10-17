@@ -59,7 +59,7 @@ public enum DataId {
 	REL_MOD_LEVEL(17, "Relative Modulation Level (%)", OpenThermRelativeModulationLevelFrame.class),
 	CH_PRESSURE(18, "Water pressure in CH circuit (bar)", OpenThermCHWaterPressureFrame.class),
 	DHW_FLOW_RATE(19, "Water flow rate in DHW circuit. (litres/minute)", OpenThermDHWFlowRateFrame.class),
-	DAY_TIME(20, "Day of Week and Time of Day", null),
+	DAY_TIME(20, "Day of Week and Time of Day", OpenThermDayTimeFrame.class),
 	DATE(21, "Calendar date", null),
 	YEAR(22, "Calendar year", null),
 	TR_SET_CH2(23, "Room Setpoint for 2nd CH circuit (°C)", null),
