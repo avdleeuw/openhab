@@ -47,7 +47,7 @@ public abstract class OpenThermFrame {
 	 * 
 	 * @return the frameType
 	 */
-	protected FrameType getFrameType() {
+	public FrameType getFrameType() {
 		return frameType;
 	}
 
@@ -56,7 +56,7 @@ public abstract class OpenThermFrame {
 	 * 
 	 * @return the messageType
 	 */
-	protected MessageType getMessageType() {
+	public MessageType getMessageType() {
 		return messageType;
 	}
 
@@ -65,7 +65,7 @@ public abstract class OpenThermFrame {
 	 * 
 	 * @return the dataId
 	 */
-	protected DataId getDataId() {
+	public DataId getDataId() {
 		return dataId;
 	}
 	

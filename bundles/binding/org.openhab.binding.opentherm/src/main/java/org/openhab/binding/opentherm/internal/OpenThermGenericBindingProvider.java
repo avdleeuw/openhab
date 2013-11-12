@@ -8,7 +8,9 @@
  */
 package org.openhab.binding.opentherm.internal;
 
+import org.openhab.binding.opentherm.OpenThermBindingConfig;
 import org.openhab.binding.opentherm.OpenThermBindingProvider;
+import org.openhab.binding.opentherm.OpenThermDataPoint;
 import org.openhab.core.binding.BindingConfig;
 import org.openhab.core.items.Item;
 import org.openhab.model.item.binding.AbstractGenericBindingProvider;
@@ -48,17 +50,22 @@ public class OpenThermGenericBindingProvider extends AbstractGenericBindingProvi
 	@Override
 	public void processBindingConfiguration(String context, Item item, String bindingConfig) throws BindingConfigParseException {
 		super.processBindingConfiguration(context, item, bindingConfig);
-		OpenThermBindingConfig config = new OpenThermBindingConfig();
 		
-		//parse bindingconfig here ...
+		OpenThermDataPoint dataPoint = OpenThermDataPoint.valueOf(bindingConfig.toUpperCase());
 		
+		if (dataPoint == null) {
+			throw new BindingConfigParseException(String.format("data point %s not valid for the item %s", bindingConfig, item.getName()));
+		}
+		
+		OpenThermBindingConfig config = new OpenThermBindingConfig(dataPoint);
 		addBindingConfig(item, config);		
 	}
 	
-	
-	class OpenThermBindingConfig implements BindingConfig {
-		// put member fields here which holds the parsed values
+	/**
+	 * {@inheritDoc}
+	 */
+	@Override
+	public OpenThermBindingConfig getBindingConfig(String name) {
+		return (OpenThermBindingConfig) this.bindingConfigs.get(name);
 	}
-	
-	
 }

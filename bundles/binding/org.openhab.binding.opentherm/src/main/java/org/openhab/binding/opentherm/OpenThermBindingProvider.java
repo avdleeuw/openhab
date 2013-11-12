@@ -19,4 +19,13 @@ import org.openhab.core.binding.BindingProvider;
  */
 public interface OpenThermBindingProvider extends BindingProvider {
 
+	/**
+	 * Gets the binding configuration using the specified name for the item.
+	 * 
+	 * @param name
+	 *            the item name
+	 * @return the specified binding config.
+	 */
+	public OpenThermBindingConfig getBindingConfig(String name);
+
 }
