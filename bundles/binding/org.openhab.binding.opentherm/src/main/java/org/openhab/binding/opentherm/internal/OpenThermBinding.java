@@ -21,6 +21,7 @@ import org.openhab.binding.opentherm.internal.protocol.OpenThermConnectionExcept
 import org.openhab.binding.opentherm.internal.protocol.frame.MessageType;
 import org.openhab.binding.opentherm.internal.protocol.frame.OpenThermFrame;
 import org.openhab.binding.opentherm.internal.protocol.frame.OpenThermFrameReceiver;
+import org.openhab.binding.opentherm.internal.protocol.frame.OpenThermRoomSetpointFrame;
 import org.openhab.binding.opentherm.internal.protocol.frame.OpenThermRoomTemperatureFrame;
 import org.openhab.binding.opentherm.internal.protocol.frame.OpenThermStatusFrame;
 import org.openhab.core.binding.AbstractBinding;
@@ -149,6 +150,12 @@ public class OpenThermBinding extends AbstractBinding<OpenThermBindingProvider> 
 			logger.debug(String.format("Received Room temperature (%f °C)", roomTempFrame.getRoomTemperature()));
 			
 			postDataPointUpdate(OpenThermDataPoint.ROOM_TEMPERATURE, new DecimalType(roomTempFrame.getRoomTemperature()));
+		}
+		else if (frame instanceof OpenThermRoomSetpointFrame && frame.getMessageType() == MessageType.WRITE_DATA) {
+			OpenThermRoomSetpointFrame roomSetpointFrame = (OpenThermRoomSetpointFrame) frame;
+			logger.debug(String.format("Received Room setpoint (%f °C)", roomSetpointFrame.getRoomSetpoint()));
+			
+			postDataPointUpdate(OpenThermDataPoint.ROOM_SETPOINT, new DecimalType(roomSetpointFrame.getRoomSetpoint()));
 		}
 		else if (frame instanceof OpenThermStatusFrame) {
 			OpenThermStatusFrame statusFrame = (OpenThermStatusFrame) frame;
