@@ -62,8 +62,10 @@ public class OpenThermSlaveProductVersionFrame extends OpenThermReadFrame {
 	public String toString() {
 		StringBuilder result = new StringBuilder(super.toString());
 		result.append(System.getProperty("line.separator"));
-		result.append(String.format("Product Type: %d (0x%02x)%n", this.productType));
-		result.append(String.format("Product Version: %d (0x%02x)", this.productVersion));
+//		result.append(String.format("Product Type: %d (0x%02x)%n", this.productType));
+//		result.append(String.format("Product Version: %d (0x%02x)", this.productVersion));
+		result.append(String.format("Product Type: %d %n", this.productType));
+		result.append(String.format("Product Version: %d ", this.productVersion));
 		return result.toString();
 	}
 }
