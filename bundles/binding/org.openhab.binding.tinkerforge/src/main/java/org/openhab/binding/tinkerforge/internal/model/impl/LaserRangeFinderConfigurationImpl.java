@@ -1,10 +1,14 @@
 /**
- * Copyright (c) 2010-2016, openHAB.org and others.
+ * Copyright (c) 2010-2019 Contributors to the openHAB project
  *
- * All rights reserved. This program and the accompanying materials
- * are made available under the terms of the Eclipse Public License v1.0
- * which accompanies this distribution, and is available at
- * http://www.eclipse.org/legal/epl-v10.html
+ * See the NOTICE file(s) distributed with this work for additional
+ * information.
+ *
+ * This program and the accompanying materials are made available under the
+ * terms of the Eclipse Public License 2.0 which is available at
+ * http://www.eclipse.org/legal/epl-2.0
+ *
+ * SPDX-License-Identifier: EPL-2.0
  */
 /**
  */
@@ -23,6 +27,7 @@ import org.openhab.binding.tinkerforge.internal.model.ModelPackage;
  * <!-- end-user-doc -->
  * <p>
  * The following features are implemented:
+ * </p>
  * <ul>
  * <li>
  * {@link org.openhab.binding.tinkerforge.internal.model.impl.LaserRangeFinderConfigurationImpl#getDistanceAverageLength
@@ -36,7 +41,6 @@ import org.openhab.binding.tinkerforge.internal.model.ModelPackage;
  * {@link org.openhab.binding.tinkerforge.internal.model.impl.LaserRangeFinderConfigurationImpl#getEnableLaserOnStartup
  * <em>Enable Laser On Startup</em>}</li>
  * </ul>
- * </p>
  *
  * @generated
  */
@@ -172,11 +176,10 @@ public class LaserRangeFinderConfigurationImpl extends MinimalEObjectImpl.Contai
     public void setDistanceAverageLength(short newDistanceAverageLength) {
         short oldDistanceAverageLength = distanceAverageLength;
         distanceAverageLength = newDistanceAverageLength;
-        if (eNotificationRequired()) {
+        if (eNotificationRequired())
             eNotify(new ENotificationImpl(this, Notification.SET,
                     ModelPackage.LASER_RANGE_FINDER_CONFIGURATION__DISTANCE_AVERAGE_LENGTH, oldDistanceAverageLength,
                     distanceAverageLength));
-        }
     }
 
     /**
@@ -200,11 +203,10 @@ public class LaserRangeFinderConfigurationImpl extends MinimalEObjectImpl.Contai
     public void setVelocityAverageLength(short newVelocityAverageLength) {
         short oldVelocityAverageLength = velocityAverageLength;
         velocityAverageLength = newVelocityAverageLength;
-        if (eNotificationRequired()) {
+        if (eNotificationRequired())
             eNotify(new ENotificationImpl(this, Notification.SET,
                     ModelPackage.LASER_RANGE_FINDER_CONFIGURATION__VELOCITY_AVERAGE_LENGTH, oldVelocityAverageLength,
                     velocityAverageLength));
-        }
     }
 
     /**
@@ -228,10 +230,9 @@ public class LaserRangeFinderConfigurationImpl extends MinimalEObjectImpl.Contai
     public void setMode(short newMode) {
         short oldMode = mode;
         mode = newMode;
-        if (eNotificationRequired()) {
+        if (eNotificationRequired())
             eNotify(new ENotificationImpl(this, Notification.SET, ModelPackage.LASER_RANGE_FINDER_CONFIGURATION__MODE,
                     oldMode, mode));
-        }
     }
 
     /**
@@ -255,11 +256,10 @@ public class LaserRangeFinderConfigurationImpl extends MinimalEObjectImpl.Contai
     public void setEnableLaserOnStartup(Boolean newEnableLaserOnStartup) {
         Boolean oldEnableLaserOnStartup = enableLaserOnStartup;
         enableLaserOnStartup = newEnableLaserOnStartup;
-        if (eNotificationRequired()) {
+        if (eNotificationRequired())
             eNotify(new ENotificationImpl(this, Notification.SET,
                     ModelPackage.LASER_RANGE_FINDER_CONFIGURATION__ENABLE_LASER_ON_STARTUP, oldEnableLaserOnStartup,
                     enableLaserOnStartup));
-        }
     }
 
     /**
@@ -363,9 +363,8 @@ public class LaserRangeFinderConfigurationImpl extends MinimalEObjectImpl.Contai
      */
     @Override
     public String toString() {
-        if (eIsProxy()) {
+        if (eIsProxy())
             return super.toString();
-        }
 
         StringBuffer result = new StringBuffer(super.toString());
         result.append(" (distanceAverageLength: ");

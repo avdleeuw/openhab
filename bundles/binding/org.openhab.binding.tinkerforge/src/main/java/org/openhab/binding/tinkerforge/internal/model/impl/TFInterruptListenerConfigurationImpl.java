@@ -1,10 +1,14 @@
 /**
- * Copyright (c) 2010-2016, openHAB.org and others.
+ * Copyright (c) 2010-2019 Contributors to the openHAB project
  *
- * All rights reserved. This program and the accompanying materials
- * are made available under the terms of the Eclipse Public License v1.0
- * which accompanies this distribution, and is available at
- * http://www.eclipse.org/legal/epl-v10.html
+ * See the NOTICE file(s) distributed with this work for additional
+ * information.
+ *
+ * This program and the accompanying materials are made available under the
+ * terms of the Eclipse Public License 2.0 which is available at
+ * http://www.eclipse.org/legal/epl-2.0
+ *
+ * SPDX-License-Identifier: EPL-2.0
  */
 package org.openhab.binding.tinkerforge.internal.model.impl;
 
@@ -24,12 +28,12 @@ import org.openhab.binding.tinkerforge.internal.model.TFInterruptListenerConfigu
  *        <!-- end-user-doc -->
  *        <p>
  *        The following features are implemented:
+ *        </p>
  *        <ul>
  *        <li>
  *        {@link org.openhab.binding.tinkerforge.internal.model.impl.TFInterruptListenerConfigurationImpl#getDebouncePeriod
  *        <em>Debounce Period</em>}</li>
  *        </ul>
- *        </p>
  *
  * @generated
  */
@@ -98,11 +102,10 @@ public class TFInterruptListenerConfigurationImpl extends MinimalEObjectImpl.Con
     public void setDebouncePeriod(long newDebouncePeriod) {
         long oldDebouncePeriod = debouncePeriod;
         debouncePeriod = newDebouncePeriod;
-        if (eNotificationRequired()) {
+        if (eNotificationRequired())
             eNotify(new ENotificationImpl(this, Notification.SET,
                     ModelPackage.TF_INTERRUPT_LISTENER_CONFIGURATION__DEBOUNCE_PERIOD, oldDebouncePeriod,
                     debouncePeriod));
-        }
     }
 
     /**
@@ -175,9 +178,8 @@ public class TFInterruptListenerConfigurationImpl extends MinimalEObjectImpl.Con
      */
     @Override
     public String toString() {
-        if (eIsProxy()) {
+        if (eIsProxy())
             return super.toString();
-        }
 
         StringBuffer result = new StringBuffer(super.toString());
         result.append(" (debouncePeriod: ");

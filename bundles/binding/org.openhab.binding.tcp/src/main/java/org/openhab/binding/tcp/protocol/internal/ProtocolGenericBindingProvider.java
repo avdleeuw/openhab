@@ -1,10 +1,14 @@
 /**
- * Copyright (c) 2010-2016, openHAB.org and others.
+ * Copyright (c) 2010-2019 Contributors to the openHAB project
  *
- * All rights reserved. This program and the accompanying materials
- * are made available under the terms of the Eclipse Public License v1.0
- * which accompanies this distribution, and is available at
- * http://www.eclipse.org/legal/epl-v10.html
+ * See the NOTICE file(s) distributed with this work for additional
+ * information.
+ *
+ * This program and the accompanying materials are made available under the
+ * terms of the Eclipse Public License 2.0 which is available at
+ * http://www.eclipse.org/legal/epl-2.0
+ *
+ * SPDX-License-Identifier: EPL-2.0
  */
 package org.openhab.binding.tcp.protocol.internal;
 
@@ -17,7 +21,6 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
-
 
 import org.apache.commons.lang.StringUtils;
 import org.openhab.binding.tcp.Direction;
@@ -61,9 +64,9 @@ abstract class ProtocolGenericBindingProvider extends AbstractGenericBindingProv
     private static final Pattern ACTION_CONFIG_PATTERN = Pattern
             .compile("(<|>)\\[(.*?):(.*?):(.*?):(?:'(.*)'|(.*))\\]");
     private static final Pattern STATUS_CONFIG_PATTERN = Pattern.compile("(<|>)\\[(.*?):(.*?):(?:'(.*)'|(.*))\\]");
-    
+
     private static final Command WILDCARD_COMMAND_KEY = StringType.valueOf("*");
-    
+
     static int counter = 0;
 
     @Override
@@ -273,7 +276,7 @@ abstract class ProtocolGenericBindingProvider extends AbstractGenericBindingProv
      * {@link ProtocolBindingConfigElement }. There will be map like
      * <code>ON->ProtocolBindingConfigElement</code>
      */
-    static class ProtocolBindingConfig extends HashMap<Command, ProtocolBindingConfigElement>implements BindingConfig {
+    static class ProtocolBindingConfig extends HashMap<Command, ProtocolBindingConfigElement> implements BindingConfig {
 
         private static final long serialVersionUID = 6363085986521089771L;
 

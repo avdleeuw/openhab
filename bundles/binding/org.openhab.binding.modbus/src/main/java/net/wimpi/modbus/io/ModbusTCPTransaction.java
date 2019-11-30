@@ -16,6 +16,9 @@
 
 package net.wimpi.modbus.io;
 
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+
 import net.wimpi.modbus.Modbus;
 import net.wimpi.modbus.ModbusException;
 import net.wimpi.modbus.ModbusIOException;
@@ -36,6 +39,8 @@ import net.wimpi.modbus.util.Mutex;
  */
 public class ModbusTCPTransaction implements ModbusTransaction {
 
+    private static final Logger logger = LoggerFactory.getLogger(ModbusTCPTransaction.class);
+
     // class attributes
     private static AtomicCounter c_TransactionID = new AtomicCounter(Modbus.DEFAULT_TRANSACTION_ID);
 
@@ -49,6 +54,8 @@ public class ModbusTCPTransaction implements ModbusTransaction {
     private int m_Retries = Modbus.DEFAULT_RETRIES;
 
     private Mutex m_TransactionLock = new Mutex();
+
+    private long m_RetryDelayMillis;
 
     /**
      * Constructs a new <tt>ModbusTCPTransaction</tt>
@@ -186,25 +193,41 @@ public class ModbusTCPTransaction implements ModbusTransaction {
 
             // 4. Retry transaction m_Retries times, in case of
             // I/O Exception problems.
-            int retryCounter = 0;
+            int tries = 0;
 
-            while (retryCounter <= m_Retries) {
+            do {
                 try {
                     // toggle and set the id
                     m_Request.setTransactionID(c_TransactionID.increment());
                     // 3. write request, and read response
+                    logger.trace("Sending request with transaction ID {}: {}", m_Request.getTransactionID(), m_Request);
                     m_IO.writeMessage(m_Request);
                     // read response message
                     m_Response = m_IO.readResponse();
+                    logger.trace("Received response with transaction ID {}", m_Response.getTransactionID());
                     break;
                 } catch (ModbusIOException ex) {
-                    if (retryCounter == m_Retries) {
+                    tries++;
+                    logger.error(
+                            "execute try {}/{} error: {}. Request: {} (unit id {} & transaction {}). Address: {}:{}",
+                            tries, m_Retries, ex.getMessage(), m_Request, m_Request.getUnitID(),
+                            m_Request.getTransactionID(), m_Connection.getAddress(), m_Connection.getPort());
+                    if (tries >= m_Retries) {
+                        logger.error(
+                                "execute reached max tries {}, throwing last error: {}. Request: {} (unit id {} & transaction {}). Address: {}:{}",
+                                m_Retries, ex.getMessage(), m_Request, m_Request.getUnitID(),
+                                m_Request.getTransactionID(), m_Connection.getAddress(), m_Connection.getPort());
                         throw new ModbusIOException("Executing transaction failed (tried " + m_Retries + " times)");
-                    } else {
-                        retryCounter++;
-                        continue;
                     }
+                    Thread.sleep(m_RetryDelayMillis);
                 }
+            } while (true);
+
+            if (tries > 0) {
+                logger.info(
+                        "execute eventually succeeded with {} re-tries. Request: {} (unit id {} & transaction {}). Address: {}:{}",
+                        tries, m_Request, m_Request.getUnitID(), m_Request.getTransactionID(),
+                        m_Connection.getAddress(), m_Connection.getPort());
             }
 
             // 5. deal with "application level" exceptions
@@ -252,5 +275,15 @@ public class ModbusTCPTransaction implements ModbusTransaction {
      */
     protected void checkValidity() throws ModbusException {
     }// checkValidity
+
+    @Override
+    public long getRetryDelayMillis() {
+        return m_RetryDelayMillis;
+    }
+
+    @Override
+    public void setRetryDelayMillis(long retryDelayMillis) {
+        this.m_RetryDelayMillis = retryDelayMillis;
+    }
 
 }// class ModbusTCPTransaction

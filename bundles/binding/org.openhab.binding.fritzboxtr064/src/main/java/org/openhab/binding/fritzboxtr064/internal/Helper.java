@@ -1,10 +1,14 @@
 /**
- * Copyright (c) 2010-2016, openHAB.org and others.
+ * Copyright (c) 2010-2019 Contributors to the openHAB project
  *
- * All rights reserved. This program and the accompanying materials
- * are made available under the terms of the Eclipse Public License v1.0
- * which accompanies this distribution, and is available at
- * http://www.eclipse.org/legal/epl-v10.html
+ * See the NOTICE file(s) distributed with this work for additional
+ * information.
+ *
+ * This program and the accompanying materials are made available under the
+ * terms of the Eclipse Public License 2.0 which is available at
+ * http://www.eclipse.org/legal/epl-2.0
+ *
+ * SPDX-License-Identifier: EPL-2.0
  */
 package org.openhab.binding.fritzboxtr064.internal;
 
@@ -34,7 +38,7 @@ import org.w3c.dom.ls.LSSerializer;
  * @since 1.8.0
  */
 public class Helper {
-    private static final Logger logger = LoggerFactory.getLogger(FritzboxTr064Binding.class);
+    private static final Logger logger = LoggerFactory.getLogger(Helper.class);
 
     /***
      * Helper method which converts XML Document into pretty formatted string
@@ -58,7 +62,7 @@ public class Helper {
             lsSerializer.write(doc, lsOutput);
             strMsg = stringWriter.toString();
         } catch (Exception e) {
-            logger.warn("Error occured when converting document to string", e);
+            logger.warn("Error occurred when converting document to string", e);
         }
         return strMsg;
     }

@@ -1,10 +1,14 @@
 /**
- * Copyright (c) 2010-2016, openHAB.org and others.
+ * Copyright (c) 2010-2019 Contributors to the openHAB project
  *
- * All rights reserved. This program and the accompanying materials
- * are made available under the terms of the Eclipse Public License v1.0
- * which accompanies this distribution, and is available at
- * http://www.eclipse.org/legal/epl-v10.html
+ * See the NOTICE file(s) distributed with this work for additional
+ * information.
+ *
+ * This program and the accompanying materials are made available under the
+ * terms of the Eclipse Public License 2.0 which is available at
+ * http://www.eclipse.org/legal/epl-2.0
+ *
+ * SPDX-License-Identifier: EPL-2.0
  */
 package org.openhab.binding.tinkerforge.internal.model.impl;
 
@@ -42,6 +46,7 @@ import com.tinkerforge.TimeoutException;
  * <!-- end-user-doc -->
  * <p>
  * The following features are implemented:
+ * </p>
  * <ul>
  * <li>{@link org.openhab.binding.tinkerforge.internal.model.impl.JoystickYPositionImpl#getLogger <em>Logger</em>}</li>
  * <li>{@link org.openhab.binding.tinkerforge.internal.model.impl.JoystickYPositionImpl#getUid <em>Uid</em>}</li>
@@ -50,12 +55,11 @@ import com.tinkerforge.TimeoutException;
  * </li>
  * <li>{@link org.openhab.binding.tinkerforge.internal.model.impl.JoystickYPositionImpl#getSubId <em>Sub Id</em>}</li>
  * <li>{@link org.openhab.binding.tinkerforge.internal.model.impl.JoystickYPositionImpl#getMbrick <em>Mbrick</em>}</li>
- * <li>{@link org.openhab.binding.tinkerforge.internal.model.impl.JoystickYPositionImpl#getSensorValue
- * <em>Sensor Value</em>}</li>
- * <li>{@link org.openhab.binding.tinkerforge.internal.model.impl.JoystickYPositionImpl#getDeviceType
- * <em>Device Type</em>}</li>
+ * <li>{@link org.openhab.binding.tinkerforge.internal.model.impl.JoystickYPositionImpl#getSensorValue <em>Sensor
+ * Value</em>}</li>
+ * <li>{@link org.openhab.binding.tinkerforge.internal.model.impl.JoystickYPositionImpl#getDeviceType <em>Device
+ * Type</em>}</li>
  * </ul>
- * </p>
  *
  * @generated
  */
@@ -249,10 +253,9 @@ public class JoystickYPositionImpl extends MinimalEObjectImpl.Container implemen
     public void setLogger(Logger newLogger) {
         Logger oldLogger = logger;
         logger = newLogger;
-        if (eNotificationRequired()) {
+        if (eNotificationRequired())
             eNotify(new ENotificationImpl(this, Notification.SET, ModelPackage.JOYSTICK_YPOSITION__LOGGER, oldLogger,
                     logger));
-        }
     }
 
     /**
@@ -276,9 +279,8 @@ public class JoystickYPositionImpl extends MinimalEObjectImpl.Container implemen
     public void setUid(String newUid) {
         String oldUid = uid;
         uid = newUid;
-        if (eNotificationRequired()) {
+        if (eNotificationRequired())
             eNotify(new ENotificationImpl(this, Notification.SET, ModelPackage.JOYSTICK_YPOSITION__UID, oldUid, uid));
-        }
     }
 
     /**
@@ -302,10 +304,9 @@ public class JoystickYPositionImpl extends MinimalEObjectImpl.Container implemen
     public void setPoll(boolean newPoll) {
         boolean oldPoll = poll;
         poll = newPoll;
-        if (eNotificationRequired()) {
+        if (eNotificationRequired())
             eNotify(new ENotificationImpl(this, Notification.SET, ModelPackage.JOYSTICK_YPOSITION__POLL, oldPoll,
                     poll));
-        }
     }
 
     /**
@@ -329,10 +330,9 @@ public class JoystickYPositionImpl extends MinimalEObjectImpl.Container implemen
     public void setEnabledA(AtomicBoolean newEnabledA) {
         AtomicBoolean oldEnabledA = enabledA;
         enabledA = newEnabledA;
-        if (eNotificationRequired()) {
+        if (eNotificationRequired())
             eNotify(new ENotificationImpl(this, Notification.SET, ModelPackage.JOYSTICK_YPOSITION__ENABLED_A,
                     oldEnabledA, enabledA));
-        }
     }
 
     /**
@@ -356,10 +356,9 @@ public class JoystickYPositionImpl extends MinimalEObjectImpl.Container implemen
     public void setSubId(String newSubId) {
         String oldSubId = subId;
         subId = newSubId;
-        if (eNotificationRequired()) {
+        if (eNotificationRequired())
             eNotify(new ENotificationImpl(this, Notification.SET, ModelPackage.JOYSTICK_YPOSITION__SUB_ID, oldSubId,
                     subId));
-        }
     }
 
     /**
@@ -370,10 +369,21 @@ public class JoystickYPositionImpl extends MinimalEObjectImpl.Container implemen
      */
     @Override
     public MBrickletJoystick getMbrick() {
-        if (eContainerFeatureID() != ModelPackage.JOYSTICK_YPOSITION__MBRICK) {
+        if (eContainerFeatureID() != ModelPackage.JOYSTICK_YPOSITION__MBRICK)
             return null;
-        }
         return (MBrickletJoystick) eContainer();
+    }
+
+    /**
+     * <!-- begin-user-doc -->
+     * <!-- end-user-doc -->
+     * 
+     * @generated
+     */
+    public MBrickletJoystick basicGetMbrick() {
+        if (eContainerFeatureID() != ModelPackage.JOYSTICK_YPOSITION__MBRICK)
+            return null;
+        return (MBrickletJoystick) eInternalContainer();
     }
 
     /**
@@ -397,25 +407,20 @@ public class JoystickYPositionImpl extends MinimalEObjectImpl.Container implemen
     public void setMbrick(MBrickletJoystick newMbrick) {
         if (newMbrick != eInternalContainer()
                 || (eContainerFeatureID() != ModelPackage.JOYSTICK_YPOSITION__MBRICK && newMbrick != null)) {
-            if (EcoreUtil.isAncestor(this, newMbrick)) {
+            if (EcoreUtil.isAncestor(this, newMbrick))
                 throw new IllegalArgumentException("Recursive containment not allowed for " + toString());
-            }
             NotificationChain msgs = null;
-            if (eInternalContainer() != null) {
+            if (eInternalContainer() != null)
                 msgs = eBasicRemoveFromContainer(msgs);
-            }
-            if (newMbrick != null) {
+            if (newMbrick != null)
                 msgs = ((InternalEObject) newMbrick).eInverseAdd(this, ModelPackage.MSUB_DEVICE_HOLDER__MSUBDEVICES,
                         MSubDeviceHolder.class, msgs);
-            }
             msgs = basicSetMbrick(newMbrick, msgs);
-            if (msgs != null) {
+            if (msgs != null)
                 msgs.dispatch();
-            }
-        } else if (eNotificationRequired()) {
+        } else if (eNotificationRequired())
             eNotify(new ENotificationImpl(this, Notification.SET, ModelPackage.JOYSTICK_YPOSITION__MBRICK, newMbrick,
                     newMbrick));
-        }
     }
 
     /**
@@ -439,10 +444,9 @@ public class JoystickYPositionImpl extends MinimalEObjectImpl.Container implemen
     public void setSensorValue(DecimalValue newSensorValue) {
         DecimalValue oldSensorValue = sensorValue;
         sensorValue = newSensorValue;
-        if (eNotificationRequired()) {
+        if (eNotificationRequired())
             eNotify(new ENotificationImpl(this, Notification.SET, ModelPackage.JOYSTICK_YPOSITION__SENSOR_VALUE,
                     oldSensorValue, sensorValue));
-        }
     }
 
     /**
@@ -547,9 +551,8 @@ public class JoystickYPositionImpl extends MinimalEObjectImpl.Container implemen
     public NotificationChain eInverseAdd(InternalEObject otherEnd, int featureID, NotificationChain msgs) {
         switch (featureID) {
             case ModelPackage.JOYSTICK_YPOSITION__MBRICK:
-                if (eInternalContainer() != null) {
+                if (eInternalContainer() != null)
                     msgs = eBasicRemoveFromContainer(msgs);
-                }
                 return basicSetMbrick((MBrickletJoystick) otherEnd, msgs);
         }
         return super.eInverseAdd(otherEnd, featureID, msgs);
@@ -606,7 +609,9 @@ public class JoystickYPositionImpl extends MinimalEObjectImpl.Container implemen
             case ModelPackage.JOYSTICK_YPOSITION__SUB_ID:
                 return getSubId();
             case ModelPackage.JOYSTICK_YPOSITION__MBRICK:
-                return getMbrick();
+                if (resolve)
+                    return getMbrick();
+                return basicGetMbrick();
             case ModelPackage.JOYSTICK_YPOSITION__SENSOR_VALUE:
                 return getSensorValue();
             case ModelPackage.JOYSTICK_YPOSITION__DEVICE_TYPE:
@@ -703,7 +708,7 @@ public class JoystickYPositionImpl extends MinimalEObjectImpl.Container implemen
             case ModelPackage.JOYSTICK_YPOSITION__SUB_ID:
                 return SUB_ID_EDEFAULT == null ? subId != null : !SUB_ID_EDEFAULT.equals(subId);
             case ModelPackage.JOYSTICK_YPOSITION__MBRICK:
-                return getMbrick() != null;
+                return basicGetMbrick() != null;
             case ModelPackage.JOYSTICK_YPOSITION__SENSOR_VALUE:
                 return sensorValue != null;
             case ModelPackage.JOYSTICK_YPOSITION__DEVICE_TYPE:
@@ -802,9 +807,8 @@ public class JoystickYPositionImpl extends MinimalEObjectImpl.Container implemen
      */
     @Override
     public String toString() {
-        if (eIsProxy()) {
+        if (eIsProxy())
             return super.toString();
-        }
 
         StringBuffer result = new StringBuffer(super.toString());
         result.append(" (logger: ");

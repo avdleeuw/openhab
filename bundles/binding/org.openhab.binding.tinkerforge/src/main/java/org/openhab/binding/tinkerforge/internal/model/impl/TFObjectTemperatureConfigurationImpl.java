@@ -1,10 +1,14 @@
 /**
- * Copyright (c) 2010-2016, openHAB.org and others.
+ * Copyright (c) 2010-2019 Contributors to the openHAB project
  *
- * All rights reserved. This program and the accompanying materials
- * are made available under the terms of the Eclipse Public License v1.0
- * which accompanies this distribution, and is available at
- * http://www.eclipse.org/legal/epl-v10.html
+ * See the NOTICE file(s) distributed with this work for additional
+ * information.
+ *
+ * This program and the accompanying materials are made available under the
+ * terms of the Eclipse Public License 2.0 which is available at
+ * http://www.eclipse.org/legal/epl-2.0
+ *
+ * SPDX-License-Identifier: EPL-2.0
  */
 package org.openhab.binding.tinkerforge.internal.model.impl;
 
@@ -23,12 +27,12 @@ import org.openhab.binding.tinkerforge.internal.model.TFObjectTemperatureConfigu
  *        <!-- end-user-doc -->
  *        <p>
  *        The following features are implemented:
+ *        </p>
  *        <ul>
  *        <li>
  *        {@link org.openhab.binding.tinkerforge.internal.model.impl.TFObjectTemperatureConfigurationImpl#getEmissivity
  *        <em>Emissivity</em>}</li>
  *        </ul>
- *        </p>
  *
  * @generated
  */
@@ -98,10 +102,9 @@ public class TFObjectTemperatureConfigurationImpl extends TFBaseConfigurationImp
     public void setEmissivity(int newEmissivity) {
         int oldEmissivity = emissivity;
         emissivity = newEmissivity;
-        if (eNotificationRequired()) {
+        if (eNotificationRequired())
             eNotify(new ENotificationImpl(this, Notification.SET,
                     ModelPackage.TF_OBJECT_TEMPERATURE_CONFIGURATION__EMISSIVITY, oldEmissivity, emissivity));
-        }
     }
 
     /**
@@ -174,9 +177,8 @@ public class TFObjectTemperatureConfigurationImpl extends TFBaseConfigurationImp
      */
     @Override
     public String toString() {
-        if (eIsProxy()) {
+        if (eIsProxy())
             return super.toString();
-        }
 
         StringBuffer result = new StringBuffer(super.toString());
         result.append(" (emissivity: ");

@@ -1,12 +1,18 @@
 /**
- * Copyright (c) 2010-2016, openHAB.org and others.
+ * Copyright (c) 2010-2019 Contributors to the openHAB project
  *
- * All rights reserved. This program and the accompanying materials
- * are made available under the terms of the Eclipse Public License v1.0
- * which accompanies this distribution, and is available at
- * http://www.eclipse.org/legal/epl-v10.html
+ * See the NOTICE file(s) distributed with this work for additional
+ * information.
+ *
+ * This program and the accompanying materials are made available under the
+ * terms of the Eclipse Public License 2.0 which is available at
+ * http://www.eclipse.org/legal/epl-2.0
+ *
+ * SPDX-License-Identifier: EPL-2.0
  */
 package org.openhab.binding.tellstick.internal;
+
+import java.util.SortedMap;
 
 import org.openhab.binding.tellstick.TellstickBindingConfig;
 import org.openhab.binding.tellstick.TellstickValueSelector;
@@ -27,22 +33,55 @@ import org.slf4j.LoggerFactory;
  *
  * @since 1.5.0
  * @author jarlebh
+ * @author Elias Gabrielsson
  *
  */
-public class TellstickController {
+public class TellstickController implements Runnable {
 
     private static final Logger logger = LoggerFactory.getLogger(TellstickController.class);
     private long lastSend = 0;
+
     public static final long DEFAULT_INTERVAL_BETWEEN_SEND = 250;
 
-    public void handleSendEvent(TellstickBindingConfig config, TellstickDevice dev, Command command)
+    private SortedMap<TellstickDevice, TellstickSendEvent> messageQue;
+
+    public TellstickController(SortedMap<TellstickDevice, TellstickSendEvent> m) {
+        messageQue = m;
+    }
+
+    @Override
+    public void run() {
+        while (!Thread.currentThread().isInterrupted()) {
+            try {
+                TellstickSendEvent sendEvent;
+                // GET EVENT TO SEND
+                synchronized (messageQue) {
+                    while (messageQue.isEmpty()) {
+                        messageQue.wait();
+                    }
+                    sendEvent = messageQue.remove(messageQue.firstKey());
+                }
+                // SEND EVENT
+                try {
+                    handleSendEvent(sendEvent.getConfig(), sendEvent.getDev(), sendEvent.getCommand());
+                } catch (TellstickException e) {
+                    logger.error("Failed to send msg to {}, error: {}", sendEvent.getConfig(), e);
+                }
+
+            } catch (InterruptedException ie) {
+                break; // Terminate
+            }
+        }
+    }
+
+    private void handleSendEvent(TellstickBindingConfig config, TellstickDevice dev, Command command)
             throws TellstickException {
 
         int resend = config.getResend();
         long resendInterval = config.getResendInterval();
         for (int i = 0; i < resend; i++) {
             checkLastAndWait(resendInterval);
-            logger.info("Send " + command + " to " + dev + " time=" + i + " conf " + config);
+            logger.info("Send {} to {} time={} conf: {}", command, dev, i, config);
             switch (config.getValueSelector()) {
 
                 case COMMAND:
@@ -71,7 +110,6 @@ public class TellstickController {
                     break;
             }
         }
-
     }
 
     private void increaseDecrease(TellstickDevice dev, IncreaseDecreaseType increaseDecreaseType)
@@ -125,7 +163,7 @@ public class TellstickController {
 
     private void checkLastAndWait(long resendInterval) {
         while ((System.currentTimeMillis() - lastSend) < resendInterval) {
-            logger.info("Wait for " + resendInterval + " millisec");
+            logger.info("Wait for {} millisec", resendInterval);
             try {
                 Thread.sleep(resendInterval);
             } catch (InterruptedException e) {
@@ -142,4 +180,5 @@ public class TellstickController {
     public void setLastSend(long currentTimeMillis) {
         lastSend = currentTimeMillis;
     }
+
 }

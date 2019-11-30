@@ -1,10 +1,14 @@
 /**
- * Copyright (c) 2010-2016, openHAB.org and others.
+ * Copyright (c) 2010-2019 Contributors to the openHAB project
  *
- * All rights reserved. This program and the accompanying materials
- * are made available under the terms of the Eclipse Public License v1.0
- * which accompanies this distribution, and is available at
- * http://www.eclipse.org/legal/epl-v10.html
+ * See the NOTICE file(s) distributed with this work for additional
+ * information.
+ *
+ * This program and the accompanying materials are made available under the
+ * terms of the Eclipse Public License 2.0 which is available at
+ * http://www.eclipse.org/legal/epl-2.0
+ *
+ * SPDX-License-Identifier: EPL-2.0
  */
 package org.openhab.binding.pioneeravr.internal.ipcontrolprotocol;
 
@@ -269,7 +273,7 @@ public class IpControl {
                 outStream.flush();
 
             } catch (IOException ioException) {
-                logger.error("Error occured when sending command", ioException);
+                logger.error("Error occurred when sending command", ioException);
 
                 if (retry > 0) {
                     logger.debug("Retry {}...", retry);
@@ -354,7 +358,7 @@ public class IpControl {
 
                 } catch (IpcontrolException e) {
 
-                    logger.error("Error occured during message waiting", e);
+                    logger.error("Error occurred during message waiting", e);
 
                 } catch (SocketTimeoutException e) {
 
@@ -366,7 +370,7 @@ public class IpControl {
                 } catch (Exception e) {
 
                     if (interrupted != true && this.isInterrupted() != true) {
-                        logger.error("Error occured during message waiting", e);
+                        logger.error("Error occurred during message waiting", e);
 
                         restartConnection = true;
 

@@ -1,3 +1,15 @@
+/**
+ * Copyright (c) 2010-2019 Contributors to the openHAB project
+ *
+ * See the NOTICE file(s) distributed with this work for additional
+ * information.
+ *
+ * This program and the accompanying materials are made available under the
+ * terms of the Eclipse Public License 2.0 which is available at
+ * http://www.eclipse.org/legal/epl-2.0
+ *
+ * SPDX-License-Identifier: EPL-2.0
+ */
 package org.openhab.io.transport.cul;
 
 import java.util.Dictionary;
@@ -69,6 +81,7 @@ public class CULLifecycleManager {
 
     public void open() {
         if (config == null || (cul != null && config.equals(cul.getConfig()))) {
+            logger.warn("CUL config is NULL, doing nothing");
             return;
         }
 
@@ -76,13 +89,13 @@ public class CULLifecycleManager {
         try {
             cul = culManager.getOpenCULHandler(config);
         } catch (CULDeviceException e) {
-            logger.error("Can't open CUL", e);
+            logger.warn("Can't open CUL", e);
         }
 
         try {
             listener.open(cul);
         } catch (CULCommunicationException e) {
-            logger.error("Can't set parameters", e);
+            logger.warn("Can't start listener", e);
             cul = null;
         }
     }

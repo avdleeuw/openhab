@@ -1,10 +1,14 @@
 /**
- * Copyright (c) 2010-2016, openHAB.org and others.
+ * Copyright (c) 2010-2019 Contributors to the openHAB project
  *
- * All rights reserved. This program and the accompanying materials
- * are made available under the terms of the Eclipse Public License v1.0
- * which accompanies this distribution, and is available at
- * http://www.eclipse.org/legal/epl-v10.html
+ * See the NOTICE file(s) distributed with this work for additional
+ * information.
+ *
+ * This program and the accompanying materials are made available under the
+ * terms of the Eclipse Public License 2.0 which is available at
+ * http://www.eclipse.org/legal/epl-2.0
+ *
+ * SPDX-License-Identifier: EPL-2.0
  */
 package org.openhab.binding.onewire.internal.scheduler;
 
@@ -19,7 +23,7 @@ import java.util.concurrent.LinkedBlockingQueue;
 import java.util.concurrent.ScheduledExecutorService;
 import java.util.concurrent.TimeUnit;
 
-import org.openhab.binding.onewire.internal.listener.InterfaceOneWireDevicePropertyWantsUpdateListener;
+import org.openhab.binding.onewire.internal.listener.OneWireDevicePropertyWantsUpdateListener;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -71,7 +75,7 @@ public class OneWireUpdateScheduler {
     /**
      * @param pvWantsUpdateListener
      */
-    public OneWireUpdateScheduler(InterfaceOneWireDevicePropertyWantsUpdateListener pvWantsUpdateListener) {
+    public OneWireUpdateScheduler(OneWireDevicePropertyWantsUpdateListener pvWantsUpdateListener) {
         super();
         ivOneWireUpdateTask = new OneWireUpdateTask(ivUpdateQueue, pvWantsUpdateListener);
     }
@@ -280,7 +284,7 @@ public class OneWireUpdateScheduler {
         for (int lvNumber : cvScheduleMap.keySet()) {
             List<String> lvItemListe = cvScheduleMap.get(lvNumber);
             if (lvItemListe.contains(pvItemName)) {
-                logger.debug("remove item=" + pvItemName + " from scheduler!");
+                logger.debug("remove item={} from scheduler!", pvItemName);
                 lvItemListe.remove(pvItemName);
             }
         }
@@ -311,7 +315,7 @@ public class OneWireUpdateScheduler {
                 } else {
                     logger.debug("Autorefresh: Adding {} item(s) with refresh time {} to reader queue.",
                             lvItemNameList.size(), ivAutoRefreshTimeInSecs);
-                    logger.debug("Update Task isAlive: " + ivOneWireUpdateTask.isAlive());
+                    logger.debug("Update Task isAlive: {}", ivOneWireUpdateTask.isAlive());
                     if (!ivOneWireUpdateTask.isAlive()) {
                         logger.debug("create and start a new Update Task again...");
 
@@ -326,10 +330,10 @@ public class OneWireUpdateScheduler {
                         // only add items to queue which aren't already in queue
                         for (String lvItemName : lvItemNameList) {
                             if (!ivUpdateQueue.contains(lvItemName)) {
-                                logger.debug("add item " + lvItemName + " to updateQueue");
+                                logger.debug("add item {} to updateQueue", lvItemName);
                                 ivUpdateQueue.add(lvItemName);
                             } else {
-                                logger.debug("didn't add item " + lvItemName + " to updateQueue, it is alread there");
+                                logger.debug("didn't add item {} to updateQueue; it is already there", lvItemName);
                             }
                         }
                     }

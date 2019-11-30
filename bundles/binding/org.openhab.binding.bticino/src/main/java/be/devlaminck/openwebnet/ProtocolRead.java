@@ -1,10 +1,14 @@
 /**
- * Copyright (c) 2010-2015, openHAB.org and others.
+ * Copyright (c) 2010-2019 Contributors to the openHAB project
  *
- * All rights reserved. This program and the accompanying materials
- * are made available under the terms of the Eclipse Public License v1.0
- * which accompanies this distribution, and is available at
- * http://www.eclipse.org/legal/epl-v10.html
+ * See the NOTICE file(s) distributed with this work for additional
+ * information.
+ *
+ * This program and the accompanying materials are made available under the
+ * terms of the Eclipse Public License 2.0 which is available at
+ * http://www.eclipse.org/legal/epl-2.0
+ *
+ * SPDX-License-Identifier: EPL-2.0
  */
 package be.devlaminck.openwebnet;
 
@@ -35,12 +39,12 @@ public class ProtocolRead {
 
     public ProtocolRead(String p_message) {
         m_message = p_message;
-        logger.info("Instance created for message [" + p_message + "]");
+        logger.debug("Instance created for message [{}]", p_message);
     }
 
     public void addProperty(String p_key, String p_value) {
         // TODO Auto-generated method stub
-        logger.info("addProperty Key : " + p_key + ", Value : " + p_value);
+        logger.debug("addProperty Key : {}, Value : {}", p_key, p_value);
         m_properties.put(p_key, p_value);
     }
 

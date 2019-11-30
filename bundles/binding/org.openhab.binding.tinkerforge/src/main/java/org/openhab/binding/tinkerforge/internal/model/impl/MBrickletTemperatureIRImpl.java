@@ -1,10 +1,14 @@
 /**
- * Copyright (c) 2010-2016, openHAB.org and others.
+ * Copyright (c) 2010-2019 Contributors to the openHAB project
  *
- * All rights reserved. This program and the accompanying materials
- * are made available under the terms of the Eclipse Public License v1.0
- * which accompanies this distribution, and is available at
- * http://www.eclipse.org/legal/epl-v10.html
+ * See the NOTICE file(s) distributed with this work for additional
+ * information.
+ *
+ * This program and the accompanying materials are made available under the
+ * terms of the Eclipse Public License 2.0 which is available at
+ * http://www.eclipse.org/legal/epl-2.0
+ *
+ * SPDX-License-Identifier: EPL-2.0
  */
 package org.openhab.binding.tinkerforge.internal.model.impl;
 
@@ -47,13 +51,14 @@ import com.tinkerforge.IPConnection;
  *        <!-- end-user-doc -->
  *        <p>
  *        The following features are implemented:
+ *        </p>
  *        <ul>
  *        <li>{@link org.openhab.binding.tinkerforge.internal.model.impl.MBrickletTemperatureIRImpl#getLogger
  *        <em>Logger</em>}</li>
- *        <li>{@link org.openhab.binding.tinkerforge.internal.model.impl.MBrickletTemperatureIRImpl#getUid <em>Uid</em>}
- *        </li>
- *        <li>{@link org.openhab.binding.tinkerforge.internal.model.impl.MBrickletTemperatureIRImpl#isPoll <em>Poll</em>
- *        }</li>
+ *        <li>{@link org.openhab.binding.tinkerforge.internal.model.impl.MBrickletTemperatureIRImpl#getUid
+ *        <em>Uid</em>}</li>
+ *        <li>{@link org.openhab.binding.tinkerforge.internal.model.impl.MBrickletTemperatureIRImpl#isPoll
+ *        <em>Poll</em>}</li>
  *        <li>{@link org.openhab.binding.tinkerforge.internal.model.impl.MBrickletTemperatureIRImpl#getEnabledA
  *        <em>Enabled A</em>}</li>
  *        <li>{@link org.openhab.binding.tinkerforge.internal.model.impl.MBrickletTemperatureIRImpl#getTinkerforgeDevice
@@ -75,7 +80,6 @@ import com.tinkerforge.IPConnection;
  *        <li>{@link org.openhab.binding.tinkerforge.internal.model.impl.MBrickletTemperatureIRImpl#getDeviceType
  *        <em>Device Type</em>}</li>
  *        </ul>
- *        </p>
  *
  * @generated
  */
@@ -364,10 +368,9 @@ public class MBrickletTemperatureIRImpl extends MinimalEObjectImpl.Container imp
     public void setLogger(Logger newLogger) {
         Logger oldLogger = logger;
         logger = newLogger;
-        if (eNotificationRequired()) {
+        if (eNotificationRequired())
             eNotify(new ENotificationImpl(this, Notification.SET, ModelPackage.MBRICKLET_TEMPERATURE_IR__LOGGER,
                     oldLogger, logger));
-        }
     }
 
     /**
@@ -391,10 +394,9 @@ public class MBrickletTemperatureIRImpl extends MinimalEObjectImpl.Container imp
     public void setUid(String newUid) {
         String oldUid = uid;
         uid = newUid;
-        if (eNotificationRequired()) {
+        if (eNotificationRequired())
             eNotify(new ENotificationImpl(this, Notification.SET, ModelPackage.MBRICKLET_TEMPERATURE_IR__UID, oldUid,
                     uid));
-        }
     }
 
     /**
@@ -418,10 +420,9 @@ public class MBrickletTemperatureIRImpl extends MinimalEObjectImpl.Container imp
     public void setPoll(boolean newPoll) {
         boolean oldPoll = poll;
         poll = newPoll;
-        if (eNotificationRequired()) {
+        if (eNotificationRequired())
             eNotify(new ENotificationImpl(this, Notification.SET, ModelPackage.MBRICKLET_TEMPERATURE_IR__POLL, oldPoll,
                     poll));
-        }
     }
 
     /**
@@ -445,10 +446,9 @@ public class MBrickletTemperatureIRImpl extends MinimalEObjectImpl.Container imp
     public void setEnabledA(AtomicBoolean newEnabledA) {
         AtomicBoolean oldEnabledA = enabledA;
         enabledA = newEnabledA;
-        if (eNotificationRequired()) {
+        if (eNotificationRequired())
             eNotify(new ENotificationImpl(this, Notification.SET, ModelPackage.MBRICKLET_TEMPERATURE_IR__ENABLED_A,
                     oldEnabledA, enabledA));
-        }
     }
 
     /**
@@ -472,11 +472,10 @@ public class MBrickletTemperatureIRImpl extends MinimalEObjectImpl.Container imp
     public void setTinkerforgeDevice(BrickletTemperatureIR newTinkerforgeDevice) {
         BrickletTemperatureIR oldTinkerforgeDevice = tinkerforgeDevice;
         tinkerforgeDevice = newTinkerforgeDevice;
-        if (eNotificationRequired()) {
+        if (eNotificationRequired())
             eNotify(new ENotificationImpl(this, Notification.SET,
                     ModelPackage.MBRICKLET_TEMPERATURE_IR__TINKERFORGE_DEVICE, oldTinkerforgeDevice,
                     tinkerforgeDevice));
-        }
     }
 
     /**
@@ -500,10 +499,9 @@ public class MBrickletTemperatureIRImpl extends MinimalEObjectImpl.Container imp
     public void setIpConnection(IPConnection newIpConnection) {
         IPConnection oldIpConnection = ipConnection;
         ipConnection = newIpConnection;
-        if (eNotificationRequired()) {
+        if (eNotificationRequired())
             eNotify(new ENotificationImpl(this, Notification.SET, ModelPackage.MBRICKLET_TEMPERATURE_IR__IP_CONNECTION,
                     oldIpConnection, ipConnection));
-        }
     }
 
     /**
@@ -527,10 +525,9 @@ public class MBrickletTemperatureIRImpl extends MinimalEObjectImpl.Container imp
     public void setConnectedUid(String newConnectedUid) {
         String oldConnectedUid = connectedUid;
         connectedUid = newConnectedUid;
-        if (eNotificationRequired()) {
+        if (eNotificationRequired())
             eNotify(new ENotificationImpl(this, Notification.SET, ModelPackage.MBRICKLET_TEMPERATURE_IR__CONNECTED_UID,
                     oldConnectedUid, connectedUid));
-        }
     }
 
     /**
@@ -554,10 +551,9 @@ public class MBrickletTemperatureIRImpl extends MinimalEObjectImpl.Container imp
     public void setPosition(char newPosition) {
         char oldPosition = position;
         position = newPosition;
-        if (eNotificationRequired()) {
+        if (eNotificationRequired())
             eNotify(new ENotificationImpl(this, Notification.SET, ModelPackage.MBRICKLET_TEMPERATURE_IR__POSITION,
                     oldPosition, position));
-        }
     }
 
     /**
@@ -581,10 +577,9 @@ public class MBrickletTemperatureIRImpl extends MinimalEObjectImpl.Container imp
     public void setDeviceIdentifier(int newDeviceIdentifier) {
         int oldDeviceIdentifier = deviceIdentifier;
         deviceIdentifier = newDeviceIdentifier;
-        if (eNotificationRequired()) {
+        if (eNotificationRequired())
             eNotify(new ENotificationImpl(this, Notification.SET,
                     ModelPackage.MBRICKLET_TEMPERATURE_IR__DEVICE_IDENTIFIER, oldDeviceIdentifier, deviceIdentifier));
-        }
     }
 
     /**
@@ -608,10 +603,9 @@ public class MBrickletTemperatureIRImpl extends MinimalEObjectImpl.Container imp
     public void setName(String newName) {
         String oldName = name;
         name = newName;
-        if (eNotificationRequired()) {
+        if (eNotificationRequired())
             eNotify(new ENotificationImpl(this, Notification.SET, ModelPackage.MBRICKLET_TEMPERATURE_IR__NAME, oldName,
                     name));
-        }
     }
 
     /**
@@ -622,10 +616,21 @@ public class MBrickletTemperatureIRImpl extends MinimalEObjectImpl.Container imp
      */
     @Override
     public MBrickd getBrickd() {
-        if (eContainerFeatureID() != ModelPackage.MBRICKLET_TEMPERATURE_IR__BRICKD) {
+        if (eContainerFeatureID() != ModelPackage.MBRICKLET_TEMPERATURE_IR__BRICKD)
             return null;
-        }
         return (MBrickd) eContainer();
+    }
+
+    /**
+     * <!-- begin-user-doc -->
+     * <!-- end-user-doc -->
+     * 
+     * @generated
+     */
+    public MBrickd basicGetBrickd() {
+        if (eContainerFeatureID() != ModelPackage.MBRICKLET_TEMPERATURE_IR__BRICKD)
+            return null;
+        return (MBrickd) eInternalContainer();
     }
 
     /**
@@ -649,25 +654,20 @@ public class MBrickletTemperatureIRImpl extends MinimalEObjectImpl.Container imp
     public void setBrickd(MBrickd newBrickd) {
         if (newBrickd != eInternalContainer()
                 || (eContainerFeatureID() != ModelPackage.MBRICKLET_TEMPERATURE_IR__BRICKD && newBrickd != null)) {
-            if (EcoreUtil.isAncestor(this, newBrickd)) {
+            if (EcoreUtil.isAncestor(this, newBrickd))
                 throw new IllegalArgumentException("Recursive containment not allowed for " + toString());
-            }
             NotificationChain msgs = null;
-            if (eInternalContainer() != null) {
+            if (eInternalContainer() != null)
                 msgs = eBasicRemoveFromContainer(msgs);
-            }
-            if (newBrickd != null) {
+            if (newBrickd != null)
                 msgs = ((InternalEObject) newBrickd).eInverseAdd(this, ModelPackage.MBRICKD__MDEVICES, MBrickd.class,
                         msgs);
-            }
             msgs = basicSetBrickd(newBrickd, msgs);
-            if (msgs != null) {
+            if (msgs != null)
                 msgs.dispatch();
-            }
-        } else if (eNotificationRequired()) {
+        } else if (eNotificationRequired())
             eNotify(new ENotificationImpl(this, Notification.SET, ModelPackage.MBRICKLET_TEMPERATURE_IR__BRICKD,
                     newBrickd, newBrickd));
-        }
     }
 
     /**
@@ -679,8 +679,15 @@ public class MBrickletTemperatureIRImpl extends MinimalEObjectImpl.Container imp
     @Override
     public EList<MTemperatureIRDevice> getMsubdevices() {
         if (msubdevices == null) {
-            msubdevices = new EObjectContainmentWithInverseEList<MTemperatureIRDevice>(MSubDevice.class, this,
-                    ModelPackage.MBRICKLET_TEMPERATURE_IR__MSUBDEVICES, ModelPackage.MSUB_DEVICE__MBRICK);
+            msubdevices = new EObjectContainmentWithInverseEList<MTemperatureIRDevice>(MTemperatureIRDevice.class, this,
+                    ModelPackage.MBRICKLET_TEMPERATURE_IR__MSUBDEVICES, ModelPackage.MSUB_DEVICE__MBRICK) {
+                private static final long serialVersionUID = 1L;
+
+                @Override
+                public Class<?> getInverseFeatureClass() {
+                    return MSubDevice.class;
+                }
+            };
         }
         return msubdevices;
     }
@@ -766,9 +773,8 @@ public class MBrickletTemperatureIRImpl extends MinimalEObjectImpl.Container imp
     public NotificationChain eInverseAdd(InternalEObject otherEnd, int featureID, NotificationChain msgs) {
         switch (featureID) {
             case ModelPackage.MBRICKLET_TEMPERATURE_IR__BRICKD:
-                if (eInternalContainer() != null) {
+                if (eInternalContainer() != null)
                     msgs = eBasicRemoveFromContainer(msgs);
-                }
                 return basicSetBrickd((MBrickd) otherEnd, msgs);
             case ModelPackage.MBRICKLET_TEMPERATURE_IR__MSUBDEVICES:
                 return ((InternalEList<InternalEObject>) (InternalEList<?>) getMsubdevices()).basicAdd(otherEnd, msgs);
@@ -838,7 +844,9 @@ public class MBrickletTemperatureIRImpl extends MinimalEObjectImpl.Container imp
             case ModelPackage.MBRICKLET_TEMPERATURE_IR__NAME:
                 return getName();
             case ModelPackage.MBRICKLET_TEMPERATURE_IR__BRICKD:
-                return getBrickd();
+                if (resolve)
+                    return getBrickd();
+                return basicGetBrickd();
             case ModelPackage.MBRICKLET_TEMPERATURE_IR__MSUBDEVICES:
                 return getMsubdevices();
             case ModelPackage.MBRICKLET_TEMPERATURE_IR__DEVICE_TYPE:
@@ -979,7 +987,7 @@ public class MBrickletTemperatureIRImpl extends MinimalEObjectImpl.Container imp
             case ModelPackage.MBRICKLET_TEMPERATURE_IR__NAME:
                 return NAME_EDEFAULT == null ? name != null : !NAME_EDEFAULT.equals(name);
             case ModelPackage.MBRICKLET_TEMPERATURE_IR__BRICKD:
-                return getBrickd() != null;
+                return basicGetBrickd() != null;
             case ModelPackage.MBRICKLET_TEMPERATURE_IR__MSUBDEVICES:
                 return msubdevices != null && !msubdevices.isEmpty();
             case ModelPackage.MBRICKLET_TEMPERATURE_IR__DEVICE_TYPE:
@@ -1078,9 +1086,8 @@ public class MBrickletTemperatureIRImpl extends MinimalEObjectImpl.Container imp
      */
     @Override
     public String toString() {
-        if (eIsProxy()) {
+        if (eIsProxy())
             return super.toString();
-        }
 
         StringBuffer result = new StringBuffer(super.toString());
         result.append(" (logger: ");

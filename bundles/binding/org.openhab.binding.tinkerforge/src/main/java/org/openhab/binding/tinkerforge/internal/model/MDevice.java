@@ -1,10 +1,14 @@
 /**
- * Copyright (c) 2010-2016, openHAB.org and others.
+ * Copyright (c) 2010-2019 Contributors to the openHAB project
  *
- * All rights reserved. This program and the accompanying materials
- * are made available under the terms of the Eclipse Public License v1.0
- * which accompanies this distribution, and is available at
- * http://www.eclipse.org/legal/epl-v10.html
+ * See the NOTICE file(s) distributed with this work for additional
+ * information.
+ *
+ * This program and the accompanying materials are made available under the
+ * terms of the Eclipse Public License 2.0 which is available at
+ * http://www.eclipse.org/legal/epl-2.0
+ *
+ * SPDX-License-Identifier: EPL-2.0
  */
 /**
  */
@@ -23,18 +27,18 @@ import com.tinkerforge.IPConnection;
  *
  *        <p>
  *        The following features are supported:
+ *        </p>
  *        <ul>
- *        <li>{@link org.openhab.binding.tinkerforge.internal.model.MDevice#getTinkerforgeDevice
- *        <em>Tinkerforge Device</em>}</li>
+ *        <li>{@link org.openhab.binding.tinkerforge.internal.model.MDevice#getTinkerforgeDevice <em>Tinkerforge
+ *        Device</em>}</li>
  *        <li>{@link org.openhab.binding.tinkerforge.internal.model.MDevice#getIpConnection <em>Ip Connection</em>}</li>
  *        <li>{@link org.openhab.binding.tinkerforge.internal.model.MDevice#getConnectedUid <em>Connected Uid</em>}</li>
  *        <li>{@link org.openhab.binding.tinkerforge.internal.model.MDevice#getPosition <em>Position</em>}</li>
- *        <li>{@link org.openhab.binding.tinkerforge.internal.model.MDevice#getDeviceIdentifier
- *        <em>Device Identifier</em>}</li>
+ *        <li>{@link org.openhab.binding.tinkerforge.internal.model.MDevice#getDeviceIdentifier <em>Device
+ *        Identifier</em>}</li>
  *        <li>{@link org.openhab.binding.tinkerforge.internal.model.MDevice#getName <em>Name</em>}</li>
  *        <li>{@link org.openhab.binding.tinkerforge.internal.model.MDevice#getBrickd <em>Brickd</em>}</li>
  *        </ul>
- *        </p>
  *
  * @see org.openhab.binding.tinkerforge.internal.model.ModelPackage#getMDevice()
  * @model interface="true" abstract="true" TFBounds="org.openhab.binding.tinkerforge.internal.model.MTinkerforgeDevice"
@@ -88,8 +92,8 @@ public interface MDevice<TF extends Device> extends MBaseDevice {
     IPConnection getIpConnection();
 
     /**
-     * Sets the value of the '{@link org.openhab.binding.tinkerforge.internal.model.MDevice#getIpConnection
-     * <em>Ip Connection</em>}' attribute.
+     * Sets the value of the '{@link org.openhab.binding.tinkerforge.internal.model.MDevice#getIpConnection <em>Ip
+     * Connection</em>}' attribute.
      * <!-- begin-user-doc -->
      * <!-- end-user-doc -->
      * 
@@ -217,8 +221,8 @@ public interface MDevice<TF extends Device> extends MBaseDevice {
 
     /**
      * Returns the value of the '<em><b>Brickd</b></em>' container reference.
-     * It is bidirectional and its opposite is '
-     * {@link org.openhab.binding.tinkerforge.internal.model.MBrickd#getMdevices <em>Mdevices</em>}'.
+     * It is bidirectional and its opposite is
+     * '{@link org.openhab.binding.tinkerforge.internal.model.MBrickd#getMdevices <em>Mdevices</em>}'.
      * <!-- begin-user-doc -->
      * <p>
      * If the meaning of the '<em>Brickd</em>' container reference isn't clear,

@@ -1,10 +1,14 @@
 /**
- * Copyright (c) 2010-2016, openHAB.org and others.
+ * Copyright (c) 2010-2019 Contributors to the openHAB project
  *
- * All rights reserved. This program and the accompanying materials
- * are made available under the terms of the Eclipse Public License v1.0
- * which accompanies this distribution, and is available at
- * http://www.eclipse.org/legal/epl-v10.html
+ * See the NOTICE file(s) distributed with this work for additional
+ * information.
+ *
+ * This program and the accompanying materials are made available under the
+ * terms of the Eclipse Public License 2.0 which is available at
+ * http://www.eclipse.org/legal/epl-2.0
+ *
+ * SPDX-License-Identifier: EPL-2.0
  */
 package org.openhab.binding.netatmo.internal.messages;
 
@@ -36,7 +40,7 @@ public class NetatmoError extends AbstractMessagePart {
      * <li>5 : The application has been deactivated
      * <li>9 : The device has not been found
      * <li>10 : A mandatory API parameter is missing
-     * <li>11 : An unexpected error occured
+     * <li>11 : An unexpected error occurred
      * <li>13 : Operation not allowed
      * <li>15 : Installation of the device has not been finalized
      * <li>21 : Invalid argument

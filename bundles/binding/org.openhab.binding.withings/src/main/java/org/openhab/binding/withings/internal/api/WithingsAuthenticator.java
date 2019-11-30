@@ -1,10 +1,14 @@
 /**
- * Copyright (c) 2010-2016, openHAB.org and others.
+ * Copyright (c) 2010-2019 Contributors to the openHAB project
  *
- * All rights reserved. This program and the accompanying materials
- * are made available under the terms of the Eclipse Public License v1.0
- * which accompanies this distribution, and is available at
- * http://www.eclipse.org/legal/epl-v10.html
+ * See the NOTICE file(s) distributed with this work for additional
+ * information.
+ *
+ * This program and the accompanying materials are made available under the
+ * terms of the Eclipse Public License 2.0 which is available at
+ * http://www.eclipse.org/legal/epl-2.0
+ *
+ * SPDX-License-Identifier: EPL-2.0
  */
 package org.openhab.binding.withings.internal.api;
 
@@ -248,7 +252,9 @@ public class WithingsAuthenticator implements ManagedService {
                 } else if ("tokensecret".equals(configKeyTail)) {
                     account.tokenSecret = value;
                 } else {
-                    throw new ConfigurationException(configKey, "The given configuration key is unknown!");
+                    String msg = "The configuration key '" + configKey + "' is not recognized and will be ignored.";
+                    logger.debug(msg);
+                    throw new ConfigurationException(configKey, msg);
                 }
             }
 
@@ -268,7 +274,7 @@ public class WithingsAuthenticator implements ManagedService {
                 printAuthenticationInfo(accountId);
             } else {
                 logger.warn(
-                        "Configuration details of Account '{}' are invalid please check openhab.cfg or withings.cfg.",
+                        "Configuration details of Account '{}' are invalid. Please check the configuration.",
                         accountId);
             }
         }

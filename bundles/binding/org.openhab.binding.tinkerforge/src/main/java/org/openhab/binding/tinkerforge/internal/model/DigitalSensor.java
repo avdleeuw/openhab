@@ -1,10 +1,14 @@
 /**
- * Copyright (c) 2010-2016, openHAB.org and others.
+ * Copyright (c) 2010-2019 Contributors to the openHAB project
  *
- * All rights reserved. This program and the accompanying materials
- * are made available under the terms of the Eclipse Public License v1.0
- * which accompanies this distribution, and is available at
- * http://www.eclipse.org/legal/epl-v10.html
+ * See the NOTICE file(s) distributed with this work for additional
+ * information.
+ *
+ * This program and the accompanying materials are made available under the
+ * terms of the Eclipse Public License 2.0 which is available at
+ * http://www.eclipse.org/legal/epl-2.0
+ *
+ * SPDX-License-Identifier: EPL-2.0
  */
 package org.openhab.binding.tinkerforge.internal.model;
 
@@ -20,19 +24,22 @@ import org.openhab.binding.tinkerforge.internal.types.HighLowValue;
  *
  *        <p>
  *        The following features are supported:
+ *        </p>
  *        <ul>
- *        <li>{@link org.openhab.binding.tinkerforge.internal.model.DigitalSensor#getDeviceType <em>Device Type</em>}
- *        </li>
- *        <li>{@link org.openhab.binding.tinkerforge.internal.model.DigitalSensor#isPullUpResistorEnabled
- *        <em>Pull Up Resistor Enabled</em>}</li>
+ *        <li>{@link org.openhab.binding.tinkerforge.internal.model.DigitalSensor#getDeviceType <em>Device
+ *        Type</em>}</li>
+ *        <li>{@link org.openhab.binding.tinkerforge.internal.model.DigitalSensor#isPullUpResistorEnabled <em>Pull Up
+ *        Resistor Enabled</em>}</li>
  *        <li>{@link org.openhab.binding.tinkerforge.internal.model.DigitalSensor#getPort <em>Port</em>}</li>
  *        <li>{@link org.openhab.binding.tinkerforge.internal.model.DigitalSensor#getPin <em>Pin</em>}</li>
  *        </ul>
- *        </p>
  *
  * @see org.openhab.binding.tinkerforge.internal.model.ModelPackage#getDigitalSensor()
- * @model superTypes=
- *        "org.openhab.binding.tinkerforge.internal.model.IODevice org.openhab.binding.tinkerforge.internal.model.MSensor<org.openhab.binding.tinkerforge.internal.model.DigitalValue> org.openhab.binding.tinkerforge.internal.model.MTFConfigConsumer<org.openhab.binding.tinkerforge.internal.model.TFIOSensorConfiguration>"
+ * @model superTypes="org.openhab.binding.tinkerforge.internal.model.IODevice
+ *        org.openhab.binding.tinkerforge.internal.model.MSensor
+ *        <org.openhab.binding.tinkerforge.internal.model.DigitalValue>
+ *        org.openhab.binding.tinkerforge.internal.model.MTFConfigConsumer
+ *        <org.openhab.binding.tinkerforge.internal.model.TFIOSensorConfiguration>"
  * @generated
  */
 public interface DigitalSensor extends IODevice, MSensor<HighLowValue>, MTFConfigConsumer<TFIOSensorConfiguration> {
@@ -72,9 +79,9 @@ public interface DigitalSensor extends IODevice, MSensor<HighLowValue>, MTFConfi
     boolean isPullUpResistorEnabled();
 
     /**
-     * Sets the value of the '
-     * {@link org.openhab.binding.tinkerforge.internal.model.DigitalSensor#isPullUpResistorEnabled
-     * <em>Pull Up Resistor Enabled</em>}' attribute.
+     * Sets the value of the
+     * '{@link org.openhab.binding.tinkerforge.internal.model.DigitalSensor#isPullUpResistorEnabled <em>Pull Up Resistor
+     * Enabled</em>}' attribute.
      * <!-- begin-user-doc -->
      * <!-- end-user-doc -->
      * 
@@ -102,8 +109,8 @@ public interface DigitalSensor extends IODevice, MSensor<HighLowValue>, MTFConfi
     char getPort();
 
     /**
-     * Sets the value of the '{@link org.openhab.binding.tinkerforge.internal.model.DigitalSensor#getPort <em>Port</em>}
-     * ' attribute.
+     * Sets the value of the '{@link org.openhab.binding.tinkerforge.internal.model.DigitalSensor#getPort
+     * <em>Port</em>}' attribute.
      * <!-- begin-user-doc -->
      * <!-- end-user-doc -->
      * 

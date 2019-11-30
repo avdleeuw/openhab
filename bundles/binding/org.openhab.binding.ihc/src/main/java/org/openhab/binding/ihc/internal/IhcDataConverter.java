@@ -1,10 +1,14 @@
 /**
- * Copyright (c) 2010-2016, openHAB.org and others.
+ * Copyright (c) 2010-2019 Contributors to the openHAB project
  *
- * All rights reserved. This program and the accompanying materials
- * are made available under the terms of the Eclipse Public License v1.0
- * which accompanies this distribution, and is available at
- * http://www.eclipse.org/legal/epl-v10.html
+ * See the NOTICE file(s) distributed with this work for additional
+ * information.
+ *
+ * This program and the accompanying materials are made available under the
+ * terms of the Eclipse Public License 2.0 which is available at
+ * http://www.eclipse.org/legal/epl-2.0
+ *
+ * SPDX-License-Identifier: EPL-2.0
  */
 package org.openhab.binding.ihc.internal;
 
@@ -47,12 +51,12 @@ public class IhcDataConverter {
 
     /**
      * Convert IHC data type to openHAB data type.
-     * 
+     *
      * @param itemType
      *            OpenHAB data type class
      * @param value
      *            IHC data value
-     * 
+     *
      * @return openHAB {@link State}
      */
     public static State convertResourceValueToState(Class<? extends Item> itemType, WSResourceValue value)
@@ -184,7 +188,7 @@ public class IhcDataConverter {
             short month = date.getMonth();
             short day = date.getDay();
 
-            cal.set(year, month, day, 0, 0, 0);
+            cal.set(year, month - 1, day, 0, 0, 0);
         }
 
         if (time != null) {
@@ -192,7 +196,7 @@ public class IhcDataConverter {
             int minute = time.getMinutes();
             int second = time.getSeconds();
 
-            cal.set(1900, 1, 1, hour, minute, second);
+            cal.set(1900, 0, 1, hour, minute, second);
         }
 
         return cal;
@@ -200,13 +204,13 @@ public class IhcDataConverter {
 
     /**
      * Convert openHAB data type to IHC data type.
-     * 
+     *
      * @param type
      *            openHAB data type
      * @param value
-     * 
+     *
      * @param enumValues
-     * 
+     *
      * @return IHC data type
      */
     public static WSResourceValue convertCommandToResourceValue(Type type, WSResourceValue value,
@@ -292,7 +296,7 @@ public class IhcDataConverter {
                 Calendar c = ((DateTimeType) type).getCalendar();
 
                 short year = (short) c.get(Calendar.YEAR);
-                byte month = (byte) c.get(Calendar.MONTH);
+                byte month = (byte) (c.get(Calendar.MONTH) + 1);
                 byte day = (byte) c.get(Calendar.DAY_OF_MONTH);
 
                 ((WSDateValue) value).setYear(year);
@@ -340,27 +344,6 @@ public class IhcDataConverter {
             } else {
 
                 throw new NumberFormatException("Can't convert StringType to " + value.getClass());
-
-            }
-
-        } else if (type instanceof PercentType) {
-
-            if (value instanceof WSIntegerValue) {
-
-                int newVal = ((DecimalType) type).intValue();
-                int max = ((WSIntegerValue) value).getMaximumValue();
-                int min = ((WSIntegerValue) value).getMinimumValue();
-
-                if (newVal >= min && newVal <= max) {
-                    ((WSIntegerValue) value).setInteger(newVal);
-                } else {
-                    throw new NumberFormatException(
-                            "Value is not between accetable limits (min=" + min + ", max=" + max + ")");
-                }
-
-            } else {
-
-                throw new NumberFormatException("Can't convert PercentType to " + value.getClass());
 
             }
 

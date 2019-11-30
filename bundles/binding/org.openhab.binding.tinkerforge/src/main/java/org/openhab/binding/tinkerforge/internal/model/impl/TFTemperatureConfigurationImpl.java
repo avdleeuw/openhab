@@ -1,10 +1,14 @@
 /**
- * Copyright (c) 2010-2016, openHAB.org and others.
+ * Copyright (c) 2010-2019 Contributors to the openHAB project
  *
- * All rights reserved. This program and the accompanying materials
- * are made available under the terms of the Eclipse Public License v1.0
- * which accompanies this distribution, and is available at
- * http://www.eclipse.org/legal/epl-v10.html
+ * See the NOTICE file(s) distributed with this work for additional
+ * information.
+ *
+ * This program and the accompanying materials are made available under the
+ * terms of the Eclipse Public License 2.0 which is available at
+ * http://www.eclipse.org/legal/epl-2.0
+ *
+ * SPDX-License-Identifier: EPL-2.0
  */
 /**
  */
@@ -22,11 +26,11 @@ import org.openhab.binding.tinkerforge.internal.model.TFTemperatureConfiguration
  * <!-- end-user-doc -->
  * <p>
  * The following features are implemented:
- * <ul>
- * <li>{@link org.openhab.binding.tinkerforge.internal.model.impl.TFTemperatureConfigurationImpl#isSlowI2C
- * <em>Slow I2C</em>}</li>
- * </ul>
  * </p>
+ * <ul>
+ * <li>{@link org.openhab.binding.tinkerforge.internal.model.impl.TFTemperatureConfigurationImpl#isSlowI2C <em>Slow
+ * I2C</em>}</li>
+ * </ul>
  *
  * @generated
  */
@@ -95,10 +99,9 @@ public class TFTemperatureConfigurationImpl extends TFBaseConfigurationImpl impl
     public void setSlowI2C(boolean newSlowI2C) {
         boolean oldSlowI2C = slowI2C;
         slowI2C = newSlowI2C;
-        if (eNotificationRequired()) {
+        if (eNotificationRequired())
             eNotify(new ENotificationImpl(this, Notification.SET, ModelPackage.TF_TEMPERATURE_CONFIGURATION__SLOW_I2C,
                     oldSlowI2C, slowI2C));
-        }
     }
 
     /**
@@ -171,9 +174,8 @@ public class TFTemperatureConfigurationImpl extends TFBaseConfigurationImpl impl
      */
     @Override
     public String toString() {
-        if (eIsProxy()) {
+        if (eIsProxy())
             return super.toString();
-        }
 
         StringBuffer result = new StringBuffer(super.toString());
         result.append(" (slowI2C: ");

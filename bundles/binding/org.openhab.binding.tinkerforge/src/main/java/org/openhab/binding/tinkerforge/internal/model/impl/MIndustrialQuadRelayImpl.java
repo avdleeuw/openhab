@@ -1,10 +1,14 @@
 /**
- * Copyright (c) 2010-2016, openHAB.org and others.
+ * Copyright (c) 2010-2019 Contributors to the openHAB project
  *
- * All rights reserved. This program and the accompanying materials
- * are made available under the terms of the Eclipse Public License v1.0
- * which accompanies this distribution, and is available at
- * http://www.eclipse.org/legal/epl-v10.html
+ * See the NOTICE file(s) distributed with this work for additional
+ * information.
+ *
+ * This program and the accompanying materials are made available under the
+ * terms of the Eclipse Public License 2.0 which is available at
+ * http://www.eclipse.org/legal/epl-2.0
+ *
+ * SPDX-License-Identifier: EPL-2.0
  */
 package org.openhab.binding.tinkerforge.internal.model.impl;
 
@@ -43,25 +47,25 @@ import com.tinkerforge.TimeoutException;
  *        <!-- end-user-doc -->
  *        <p>
  *        The following features are implemented:
+ *        </p>
  *        <ul>
  *        <li>{@link org.openhab.binding.tinkerforge.internal.model.impl.MIndustrialQuadRelayImpl#getSwitchState
  *        <em>Switch State</em>}</li>
  *        <li>{@link org.openhab.binding.tinkerforge.internal.model.impl.MIndustrialQuadRelayImpl#getLogger
  *        <em>Logger</em>}</li>
- *        <li>{@link org.openhab.binding.tinkerforge.internal.model.impl.MIndustrialQuadRelayImpl#getUid <em>Uid</em>}
- *        </li>
- *        <li>{@link org.openhab.binding.tinkerforge.internal.model.impl.MIndustrialQuadRelayImpl#isPoll <em>Poll</em>}
- *        </li>
+ *        <li>{@link org.openhab.binding.tinkerforge.internal.model.impl.MIndustrialQuadRelayImpl#getUid
+ *        <em>Uid</em>}</li>
+ *        <li>{@link org.openhab.binding.tinkerforge.internal.model.impl.MIndustrialQuadRelayImpl#isPoll
+ *        <em>Poll</em>}</li>
  *        <li>{@link org.openhab.binding.tinkerforge.internal.model.impl.MIndustrialQuadRelayImpl#getEnabledA
  *        <em>Enabled A</em>}</li>
- *        <li>{@link org.openhab.binding.tinkerforge.internal.model.impl.MIndustrialQuadRelayImpl#getSubId
- *        <em>Sub Id</em>}</li>
+ *        <li>{@link org.openhab.binding.tinkerforge.internal.model.impl.MIndustrialQuadRelayImpl#getSubId <em>Sub
+ *        Id</em>}</li>
  *        <li>{@link org.openhab.binding.tinkerforge.internal.model.impl.MIndustrialQuadRelayImpl#getMbrick
  *        <em>Mbrick</em>}</li>
  *        <li>{@link org.openhab.binding.tinkerforge.internal.model.impl.MIndustrialQuadRelayImpl#getDeviceType
  *        <em>Device Type</em>}</li>
  *        </ul>
- *        </p>
  *
  * @generated
  */
@@ -270,10 +274,9 @@ public class MIndustrialQuadRelayImpl extends MinimalEObjectImpl.Container imple
     public void setSwitchState(OnOffValue newSwitchState) {
         OnOffValue oldSwitchState = switchState;
         switchState = newSwitchState;
-        if (eNotificationRequired()) {
+        if (eNotificationRequired())
             eNotify(new ENotificationImpl(this, Notification.SET, ModelPackage.MINDUSTRIAL_QUAD_RELAY__SWITCH_STATE,
                     oldSwitchState, switchState));
-        }
     }
 
     /**
@@ -292,7 +295,7 @@ public class MIndustrialQuadRelayImpl extends MinimalEObjectImpl.Container imple
                 logger.debug("setSwitchState on");
                 getMbrick().getTinkerforgeDevice().setSelectedValues(mask, mask);
             } else {
-                logger.error("{} unkown switchstate {}", LoggerConstants.TFMODELUPDATE, state);
+                logger.error("{} unknown switchstate {}", LoggerConstants.TFMODELUPDATE, state);
             }
             setSwitchState(state);
         } catch (TimeoutException e) {
@@ -346,10 +349,9 @@ public class MIndustrialQuadRelayImpl extends MinimalEObjectImpl.Container imple
     public void setLogger(Logger newLogger) {
         Logger oldLogger = logger;
         logger = newLogger;
-        if (eNotificationRequired()) {
+        if (eNotificationRequired())
             eNotify(new ENotificationImpl(this, Notification.SET, ModelPackage.MINDUSTRIAL_QUAD_RELAY__LOGGER,
                     oldLogger, logger));
-        }
     }
 
     /**
@@ -373,10 +375,9 @@ public class MIndustrialQuadRelayImpl extends MinimalEObjectImpl.Container imple
     public void setUid(String newUid) {
         String oldUid = uid;
         uid = newUid;
-        if (eNotificationRequired()) {
+        if (eNotificationRequired())
             eNotify(new ENotificationImpl(this, Notification.SET, ModelPackage.MINDUSTRIAL_QUAD_RELAY__UID, oldUid,
                     uid));
-        }
     }
 
     /**
@@ -400,10 +401,9 @@ public class MIndustrialQuadRelayImpl extends MinimalEObjectImpl.Container imple
     public void setPoll(boolean newPoll) {
         boolean oldPoll = poll;
         poll = newPoll;
-        if (eNotificationRequired()) {
+        if (eNotificationRequired())
             eNotify(new ENotificationImpl(this, Notification.SET, ModelPackage.MINDUSTRIAL_QUAD_RELAY__POLL, oldPoll,
                     poll));
-        }
     }
 
     /**
@@ -427,10 +427,9 @@ public class MIndustrialQuadRelayImpl extends MinimalEObjectImpl.Container imple
     public void setEnabledA(AtomicBoolean newEnabledA) {
         AtomicBoolean oldEnabledA = enabledA;
         enabledA = newEnabledA;
-        if (eNotificationRequired()) {
+        if (eNotificationRequired())
             eNotify(new ENotificationImpl(this, Notification.SET, ModelPackage.MINDUSTRIAL_QUAD_RELAY__ENABLED_A,
                     oldEnabledA, enabledA));
-        }
     }
 
     /**
@@ -454,10 +453,9 @@ public class MIndustrialQuadRelayImpl extends MinimalEObjectImpl.Container imple
     public void setSubId(String newSubId) {
         String oldSubId = subId;
         subId = newSubId;
-        if (eNotificationRequired()) {
+        if (eNotificationRequired())
             eNotify(new ENotificationImpl(this, Notification.SET, ModelPackage.MINDUSTRIAL_QUAD_RELAY__SUB_ID, oldSubId,
                     subId));
-        }
     }
 
     /**
@@ -468,10 +466,21 @@ public class MIndustrialQuadRelayImpl extends MinimalEObjectImpl.Container imple
      */
     @Override
     public MIndustrialQuadRelayBricklet getMbrick() {
-        if (eContainerFeatureID() != ModelPackage.MINDUSTRIAL_QUAD_RELAY__MBRICK) {
+        if (eContainerFeatureID() != ModelPackage.MINDUSTRIAL_QUAD_RELAY__MBRICK)
             return null;
-        }
         return (MIndustrialQuadRelayBricklet) eContainer();
+    }
+
+    /**
+     * <!-- begin-user-doc -->
+     * <!-- end-user-doc -->
+     * 
+     * @generated
+     */
+    public MIndustrialQuadRelayBricklet basicGetMbrick() {
+        if (eContainerFeatureID() != ModelPackage.MINDUSTRIAL_QUAD_RELAY__MBRICK)
+            return null;
+        return (MIndustrialQuadRelayBricklet) eInternalContainer();
     }
 
     /**
@@ -495,25 +504,20 @@ public class MIndustrialQuadRelayImpl extends MinimalEObjectImpl.Container imple
     public void setMbrick(MIndustrialQuadRelayBricklet newMbrick) {
         if (newMbrick != eInternalContainer()
                 || (eContainerFeatureID() != ModelPackage.MINDUSTRIAL_QUAD_RELAY__MBRICK && newMbrick != null)) {
-            if (EcoreUtil.isAncestor(this, newMbrick)) {
+            if (EcoreUtil.isAncestor(this, newMbrick))
                 throw new IllegalArgumentException("Recursive containment not allowed for " + toString());
-            }
             NotificationChain msgs = null;
-            if (eInternalContainer() != null) {
+            if (eInternalContainer() != null)
                 msgs = eBasicRemoveFromContainer(msgs);
-            }
-            if (newMbrick != null) {
+            if (newMbrick != null)
                 msgs = ((InternalEObject) newMbrick).eInverseAdd(this, ModelPackage.MSUB_DEVICE_HOLDER__MSUBDEVICES,
                         MSubDeviceHolder.class, msgs);
-            }
             msgs = basicSetMbrick(newMbrick, msgs);
-            if (msgs != null) {
+            if (msgs != null)
                 msgs.dispatch();
-            }
-        } else if (eNotificationRequired()) {
+        } else if (eNotificationRequired())
             eNotify(new ENotificationImpl(this, Notification.SET, ModelPackage.MINDUSTRIAL_QUAD_RELAY__MBRICK,
                     newMbrick, newMbrick));
-        }
     }
 
     /**
@@ -571,9 +575,8 @@ public class MIndustrialQuadRelayImpl extends MinimalEObjectImpl.Container imple
     public NotificationChain eInverseAdd(InternalEObject otherEnd, int featureID, NotificationChain msgs) {
         switch (featureID) {
             case ModelPackage.MINDUSTRIAL_QUAD_RELAY__MBRICK:
-                if (eInternalContainer() != null) {
+                if (eInternalContainer() != null)
                     msgs = eBasicRemoveFromContainer(msgs);
-                }
                 return basicSetMbrick((MIndustrialQuadRelayBricklet) otherEnd, msgs);
         }
         return super.eInverseAdd(otherEnd, featureID, msgs);
@@ -632,7 +635,9 @@ public class MIndustrialQuadRelayImpl extends MinimalEObjectImpl.Container imple
             case ModelPackage.MINDUSTRIAL_QUAD_RELAY__SUB_ID:
                 return getSubId();
             case ModelPackage.MINDUSTRIAL_QUAD_RELAY__MBRICK:
-                return getMbrick();
+                if (resolve)
+                    return getMbrick();
+                return basicGetMbrick();
             case ModelPackage.MINDUSTRIAL_QUAD_RELAY__DEVICE_TYPE:
                 return getDeviceType();
         }
@@ -729,7 +734,7 @@ public class MIndustrialQuadRelayImpl extends MinimalEObjectImpl.Container imple
             case ModelPackage.MINDUSTRIAL_QUAD_RELAY__SUB_ID:
                 return SUB_ID_EDEFAULT == null ? subId != null : !SUB_ID_EDEFAULT.equals(subId);
             case ModelPackage.MINDUSTRIAL_QUAD_RELAY__MBRICK:
-                return getMbrick() != null;
+                return basicGetMbrick() != null;
             case ModelPackage.MINDUSTRIAL_QUAD_RELAY__DEVICE_TYPE:
                 return DEVICE_TYPE_EDEFAULT == null ? deviceType != null : !DEVICE_TYPE_EDEFAULT.equals(deviceType);
         }
@@ -871,9 +876,8 @@ public class MIndustrialQuadRelayImpl extends MinimalEObjectImpl.Container imple
      */
     @Override
     public String toString() {
-        if (eIsProxy()) {
+        if (eIsProxy())
             return super.toString();
-        }
 
         StringBuffer result = new StringBuffer(super.toString());
         result.append(" (switchState: ");

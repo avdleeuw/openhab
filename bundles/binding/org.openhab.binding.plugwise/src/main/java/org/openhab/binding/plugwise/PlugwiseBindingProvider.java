@@ -1,10 +1,14 @@
 /**
- * Copyright (c) 2010-2016, openHAB.org and others.
+ * Copyright (c) 2010-2019 Contributors to the openHAB project
  *
- * All rights reserved. This program and the accompanying materials
- * are made available under the terms of the Eclipse Public License v1.0
- * which accompanies this distribution, and is available at
- * http://www.eclipse.org/legal/epl-v10.html
+ * See the NOTICE file(s) distributed with this work for additional
+ * information.
+ *
+ * This program and the accompanying materials are made available under the
+ * terms of the Eclipse Public License 2.0 which is available at
+ * http://www.eclipse.org/legal/epl-2.0
+ *
+ * SPDX-License-Identifier: EPL-2.0
  */
 package org.openhab.binding.plugwise;
 
@@ -12,7 +16,7 @@ import java.util.List;
 import java.util.Set;
 
 import org.openhab.binding.plugwise.internal.PlugwiseGenericBindingProvider.PlugwiseBindingConfigElement;
-import org.openhab.core.autoupdate.AutoUpdateBindingProvider;
+import org.openhab.core.binding.BindingProvider;
 import org.openhab.core.types.Command;
 
 /**
@@ -21,37 +25,37 @@ import org.openhab.core.types.Command;
  * @author Karel Goderis
  * @since 1.1.0
  */
-public interface PlugwiseBindingProvider extends AutoUpdateBindingProvider {
+public interface PlugwiseBindingProvider extends BindingProvider {
 
     /**
-     * Returns a <code>List</code> of matching Plugwise ids (associated to <code>itemName</code>.
+     * Returns a <code>List</code> of matching Plugwise IDs (associated to <code>itemName</code>.
      *
-     * @param itemName the item for which to find a Plugwise id
-     * @return a List of matching Plugwise ids or <code>null</code> if no matching Plugwise id
+     * @param itemName the item for which to find a Plugwise ID
+     * @return a List of matching Plugwise ids or <code>null</code> if no matching Plugwise ID
      *         could be found.
      */
     public List<String> getPlugwiseID(String itemName);
 
     /**
-     * Returns the matching Plugwise id (associated to <code>itemName</code> and aCommand).
+     * Returns the matching Plugwise ID (associated to <code>itemName</code> and aCommand).
      *
-     * @param itemName the item for which to find a Plugwise id
-     * @param aCommand the a command
-     * @return a List of matching Plugwise ids or <code>null</code> if no matching Plugwise id
+     * @param itemName the item for which to find a Plugwise ID (the device MAC or name)
+     * @param command  the a command
+     * @return a List of matching Plugwise IDs or <code>null</code> if no matching Plugwise ID
      *         could be found.
      */
-    public String getPlugwiseID(String itemName, Command aCommand);
+    public String getPlugwiseID(String itemName, Command command);
 
     /**
      * Returns the matching Plugwise command (associated to <code>itemName</code> and aCommand).
      *
-     * @param PlugwiseID the plugwise id
-     * @param type the type
-     * @return a List of matching Plugwise ids or <code>null</code> if no matching Plugwise id
+     * @param plugwiseID the Plugwise ID (the device MAC or name)
+     * @param type       the type
+     * @return a List of matching Plugwise IDs or <code>null</code> if no matching Plugwise ID
      *         could be found.
      */
 
-    public Set<String> getItemNames(String PlugwiseID, PlugwiseCommandType type);
+    public Set<String> getItemNames(String plugwiseID, PlugwiseCommandType type);
 
     /**
      * Gets the interval list. the Interval list is a list of Plugwise Configuration elements that is used to schedule
@@ -67,20 +71,20 @@ public interface PlugwiseBindingProvider extends AutoUpdateBindingProvider {
     /**
      * Gets the commands by type.
      *
-     * @param itemName the item name
-     * @param class1 the class1
+     * @param itemName     the item name
+     * @param commandClass the command class
      * @return the commands by type
      */
-    public List<Command> getCommandsByType(String itemName, Class<? extends Command> class1);
+    public List<Command> getCommandsByType(String itemName, Class<? extends Command> commandClass);
 
     /**
      * Gets the corresponding plugwise command type for a given Item and Command
      *
      * @param itemName the item name
-     * @param someCommand the command
+     * @param command  the command
      * @return the plugwise command type
      */
-    public PlugwiseCommandType getPlugwiseCommandType(String itemName, Command someCommand);
+    public PlugwiseCommandType getPlugwiseCommandType(String itemName, Command command);
 
     /**
      * Gets all the openHAB commands for the given Item

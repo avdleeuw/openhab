@@ -1,10 +1,14 @@
 /**
- * Copyright (c) 2010-2016, openHAB.org and others.
+ * Copyright (c) 2010-2019 Contributors to the openHAB project
  *
- * All rights reserved. This program and the accompanying materials
- * are made available under the terms of the Eclipse Public License v1.0
- * which accompanies this distribution, and is available at
- * http://www.eclipse.org/legal/epl-v10.html
+ * See the NOTICE file(s) distributed with this work for additional
+ * information.
+ *
+ * This program and the accompanying materials are made available under the
+ * terms of the Eclipse Public License 2.0 which is available at
+ * http://www.eclipse.org/legal/epl-2.0
+ *
+ * SPDX-License-Identifier: EPL-2.0
  */
 package org.openhab.binding.tinkerforge.internal.model.impl;
 
@@ -64,62 +68,62 @@ import com.tinkerforge.TimeoutException;
  * @since 1.3.0 <!-- end-user-doc -->
  *        <p>
  *        The following features are implemented:
+ *        </p>
  *        <ul>
- *        <li>{@link org.openhab.binding.tinkerforge.internal.model.impl.MBrickDCImpl#getSensorValue
- *        <em>Sensor Value</em>}</li>
- *        <li>{@link org.openhab.binding.tinkerforge.internal.model.impl.MBrickDCImpl#getSwitchState
- *        <em>Switch State</em>}</li>
+ *        <li>{@link org.openhab.binding.tinkerforge.internal.model.impl.MBrickDCImpl#getSensorValue <em>Sensor
+ *        Value</em>}</li>
+ *        <li>{@link org.openhab.binding.tinkerforge.internal.model.impl.MBrickDCImpl#getSwitchState <em>Switch
+ *        State</em>}</li>
  *        <li>{@link org.openhab.binding.tinkerforge.internal.model.impl.MBrickDCImpl#getLogger <em>Logger</em>}</li>
  *        <li>{@link org.openhab.binding.tinkerforge.internal.model.impl.MBrickDCImpl#getUid <em>Uid</em>}</li>
  *        <li>{@link org.openhab.binding.tinkerforge.internal.model.impl.MBrickDCImpl#isPoll <em>Poll</em>}</li>
- *        <li>{@link org.openhab.binding.tinkerforge.internal.model.impl.MBrickDCImpl#getEnabledA <em>Enabled A</em>}
- *        </li>
+ *        <li>{@link org.openhab.binding.tinkerforge.internal.model.impl.MBrickDCImpl#getEnabledA <em>Enabled
+ *        A</em>}</li>
  *        <li>{@link org.openhab.binding.tinkerforge.internal.model.impl.MBrickDCImpl#getTinkerforgeDevice
  *        <em>Tinkerforge Device</em>}</li>
- *        <li>{@link org.openhab.binding.tinkerforge.internal.model.impl.MBrickDCImpl#getIpConnection
- *        <em>Ip Connection</em>}</li>
- *        <li>{@link org.openhab.binding.tinkerforge.internal.model.impl.MBrickDCImpl#getConnectedUid
- *        <em>Connected Uid</em>}</li>
- *        <li>{@link org.openhab.binding.tinkerforge.internal.model.impl.MBrickDCImpl#getPosition <em>Position</em>}
- *        </li>
- *        <li>{@link org.openhab.binding.tinkerforge.internal.model.impl.MBrickDCImpl#getDeviceIdentifier
- *        <em>Device Identifier</em>}</li>
+ *        <li>{@link org.openhab.binding.tinkerforge.internal.model.impl.MBrickDCImpl#getIpConnection <em>Ip
+ *        Connection</em>}</li>
+ *        <li>{@link org.openhab.binding.tinkerforge.internal.model.impl.MBrickDCImpl#getConnectedUid <em>Connected
+ *        Uid</em>}</li>
+ *        <li>{@link org.openhab.binding.tinkerforge.internal.model.impl.MBrickDCImpl#getPosition
+ *        <em>Position</em>}</li>
+ *        <li>{@link org.openhab.binding.tinkerforge.internal.model.impl.MBrickDCImpl#getDeviceIdentifier <em>Device
+ *        Identifier</em>}</li>
  *        <li>{@link org.openhab.binding.tinkerforge.internal.model.impl.MBrickDCImpl#getName <em>Name</em>}</li>
  *        <li>{@link org.openhab.binding.tinkerforge.internal.model.impl.MBrickDCImpl#getBrickd <em>Brickd</em>}</li>
- *        <li>{@link org.openhab.binding.tinkerforge.internal.model.impl.MBrickDCImpl#getDirection <em>Direction</em>}
- *        </li>
- *        <li>{@link org.openhab.binding.tinkerforge.internal.model.impl.MBrickDCImpl#getTfConfig <em>Tf Config</em>}
- *        </li>
- *        <li>{@link org.openhab.binding.tinkerforge.internal.model.impl.MBrickDCImpl#getMinValue <em>Min Value</em>}
- *        </li>
- *        <li>{@link org.openhab.binding.tinkerforge.internal.model.impl.MBrickDCImpl#getMaxValue <em>Max Value</em>}
- *        </li>
- *        <li>{@link org.openhab.binding.tinkerforge.internal.model.impl.MBrickDCImpl#getPercentValue
- *        <em>Percent Value</em>}</li>
- *        <li>{@link org.openhab.binding.tinkerforge.internal.model.impl.MBrickDCImpl#getCallbackPeriod
- *        <em>Callback Period</em>}</li>
- *        <li>{@link org.openhab.binding.tinkerforge.internal.model.impl.MBrickDCImpl#getDeviceType <em>Device Type</em>
- *        }</li>
- *        <li>{@link org.openhab.binding.tinkerforge.internal.model.impl.MBrickDCImpl#getThreshold <em>Threshold</em>}
- *        </li>
- *        <li>{@link org.openhab.binding.tinkerforge.internal.model.impl.MBrickDCImpl#getMaxVelocity
- *        <em>Max Velocity</em>}</li>
- *        <li>{@link org.openhab.binding.tinkerforge.internal.model.impl.MBrickDCImpl#getMinVelocity
- *        <em>Min Velocity</em>}</li>
- *        <li>{@link org.openhab.binding.tinkerforge.internal.model.impl.MBrickDCImpl#getVelocity <em>Velocity</em>}
- *        </li>
+ *        <li>{@link org.openhab.binding.tinkerforge.internal.model.impl.MBrickDCImpl#getDirection
+ *        <em>Direction</em>}</li>
+ *        <li>{@link org.openhab.binding.tinkerforge.internal.model.impl.MBrickDCImpl#getTfConfig <em>Tf
+ *        Config</em>}</li>
+ *        <li>{@link org.openhab.binding.tinkerforge.internal.model.impl.MBrickDCImpl#getMinValue <em>Min
+ *        Value</em>}</li>
+ *        <li>{@link org.openhab.binding.tinkerforge.internal.model.impl.MBrickDCImpl#getMaxValue <em>Max
+ *        Value</em>}</li>
+ *        <li>{@link org.openhab.binding.tinkerforge.internal.model.impl.MBrickDCImpl#getPercentValue <em>Percent
+ *        Value</em>}</li>
+ *        <li>{@link org.openhab.binding.tinkerforge.internal.model.impl.MBrickDCImpl#getCallbackPeriod <em>Callback
+ *        Period</em>}</li>
+ *        <li>{@link org.openhab.binding.tinkerforge.internal.model.impl.MBrickDCImpl#getDeviceType <em>Device
+ *        Type</em>}</li>
+ *        <li>{@link org.openhab.binding.tinkerforge.internal.model.impl.MBrickDCImpl#getThreshold
+ *        <em>Threshold</em>}</li>
+ *        <li>{@link org.openhab.binding.tinkerforge.internal.model.impl.MBrickDCImpl#getMaxVelocity <em>Max
+ *        Velocity</em>}</li>
+ *        <li>{@link org.openhab.binding.tinkerforge.internal.model.impl.MBrickDCImpl#getMinVelocity <em>Min
+ *        Velocity</em>}</li>
+ *        <li>{@link org.openhab.binding.tinkerforge.internal.model.impl.MBrickDCImpl#getVelocity
+ *        <em>Velocity</em>}</li>
  *        <li>{@link org.openhab.binding.tinkerforge.internal.model.impl.MBrickDCImpl#getTargetvelocity
  *        <em>Targetvelocity</em>}</li>
- *        <li>{@link org.openhab.binding.tinkerforge.internal.model.impl.MBrickDCImpl#getCurrentVelocity
- *        <em>Current Velocity</em>}</li>
+ *        <li>{@link org.openhab.binding.tinkerforge.internal.model.impl.MBrickDCImpl#getCurrentVelocity <em>Current
+ *        Velocity</em>}</li>
  *        <li>{@link org.openhab.binding.tinkerforge.internal.model.impl.MBrickDCImpl#getAcceleration
  *        <em>Acceleration</em>}</li>
- *        <li>{@link org.openhab.binding.tinkerforge.internal.model.impl.MBrickDCImpl#getPwmFrequency
- *        <em>Pwm Frequency</em>}</li>
- *        <li>{@link org.openhab.binding.tinkerforge.internal.model.impl.MBrickDCImpl#getDriveMode <em>Drive Mode</em>}
- *        </li>
+ *        <li>{@link org.openhab.binding.tinkerforge.internal.model.impl.MBrickDCImpl#getPwmFrequency <em>Pwm
+ *        Frequency</em>}</li>
+ *        <li>{@link org.openhab.binding.tinkerforge.internal.model.impl.MBrickDCImpl#getDriveMode <em>Drive
+ *        Mode</em>}</li>
  *        </ul>
- *        </p>
  *
  * @generated
  */
@@ -751,10 +755,9 @@ public class MBrickDCImpl extends MinimalEObjectImpl.Container implements MBrick
     public void setSensorValue(DecimalValue newSensorValue) {
         DecimalValue oldSensorValue = sensorValue;
         sensorValue = newSensorValue;
-        if (eNotificationRequired()) {
+        if (eNotificationRequired())
             eNotify(new ENotificationImpl(this, Notification.SET, ModelPackage.MBRICK_DC__SENSOR_VALUE, oldSensorValue,
                     sensorValue));
-        }
     }
 
     /**
@@ -778,10 +781,9 @@ public class MBrickDCImpl extends MinimalEObjectImpl.Container implements MBrick
     public void setSwitchState(OnOffValue newSwitchState) {
         OnOffValue oldSwitchState = switchState;
         switchState = newSwitchState;
-        if (eNotificationRequired()) {
+        if (eNotificationRequired())
             eNotify(new ENotificationImpl(this, Notification.SET, ModelPackage.MBRICK_DC__SWITCH_STATE, oldSwitchState,
                     switchState));
-        }
     }
 
     /**
@@ -805,9 +807,8 @@ public class MBrickDCImpl extends MinimalEObjectImpl.Container implements MBrick
     public void setLogger(Logger newLogger) {
         Logger oldLogger = logger;
         logger = newLogger;
-        if (eNotificationRequired()) {
+        if (eNotificationRequired())
             eNotify(new ENotificationImpl(this, Notification.SET, ModelPackage.MBRICK_DC__LOGGER, oldLogger, logger));
-        }
     }
 
     /**
@@ -831,9 +832,8 @@ public class MBrickDCImpl extends MinimalEObjectImpl.Container implements MBrick
     public void setUid(String newUid) {
         String oldUid = uid;
         uid = newUid;
-        if (eNotificationRequired()) {
+        if (eNotificationRequired())
             eNotify(new ENotificationImpl(this, Notification.SET, ModelPackage.MBRICK_DC__UID, oldUid, uid));
-        }
     }
 
     /**
@@ -857,9 +857,8 @@ public class MBrickDCImpl extends MinimalEObjectImpl.Container implements MBrick
     public void setPoll(boolean newPoll) {
         boolean oldPoll = poll;
         poll = newPoll;
-        if (eNotificationRequired()) {
+        if (eNotificationRequired())
             eNotify(new ENotificationImpl(this, Notification.SET, ModelPackage.MBRICK_DC__POLL, oldPoll, poll));
-        }
     }
 
     /**
@@ -883,10 +882,9 @@ public class MBrickDCImpl extends MinimalEObjectImpl.Container implements MBrick
     public void setEnabledA(AtomicBoolean newEnabledA) {
         AtomicBoolean oldEnabledA = enabledA;
         enabledA = newEnabledA;
-        if (eNotificationRequired()) {
+        if (eNotificationRequired())
             eNotify(new ENotificationImpl(this, Notification.SET, ModelPackage.MBRICK_DC__ENABLED_A, oldEnabledA,
                     enabledA));
-        }
     }
 
     /**
@@ -910,10 +908,9 @@ public class MBrickDCImpl extends MinimalEObjectImpl.Container implements MBrick
     public void setTinkerforgeDevice(BrickDC newTinkerforgeDevice) {
         BrickDC oldTinkerforgeDevice = tinkerforgeDevice;
         tinkerforgeDevice = newTinkerforgeDevice;
-        if (eNotificationRequired()) {
+        if (eNotificationRequired())
             eNotify(new ENotificationImpl(this, Notification.SET, ModelPackage.MBRICK_DC__TINKERFORGE_DEVICE,
                     oldTinkerforgeDevice, tinkerforgeDevice));
-        }
     }
 
     /**
@@ -937,10 +934,9 @@ public class MBrickDCImpl extends MinimalEObjectImpl.Container implements MBrick
     public void setIpConnection(IPConnection newIpConnection) {
         IPConnection oldIpConnection = ipConnection;
         ipConnection = newIpConnection;
-        if (eNotificationRequired()) {
+        if (eNotificationRequired())
             eNotify(new ENotificationImpl(this, Notification.SET, ModelPackage.MBRICK_DC__IP_CONNECTION,
                     oldIpConnection, ipConnection));
-        }
     }
 
     /**
@@ -964,10 +960,9 @@ public class MBrickDCImpl extends MinimalEObjectImpl.Container implements MBrick
     public void setConnectedUid(String newConnectedUid) {
         String oldConnectedUid = connectedUid;
         connectedUid = newConnectedUid;
-        if (eNotificationRequired()) {
+        if (eNotificationRequired())
             eNotify(new ENotificationImpl(this, Notification.SET, ModelPackage.MBRICK_DC__CONNECTED_UID,
                     oldConnectedUid, connectedUid));
-        }
     }
 
     /**
@@ -991,10 +986,9 @@ public class MBrickDCImpl extends MinimalEObjectImpl.Container implements MBrick
     public void setPosition(char newPosition) {
         char oldPosition = position;
         position = newPosition;
-        if (eNotificationRequired()) {
+        if (eNotificationRequired())
             eNotify(new ENotificationImpl(this, Notification.SET, ModelPackage.MBRICK_DC__POSITION, oldPosition,
                     position));
-        }
     }
 
     /**
@@ -1018,10 +1012,9 @@ public class MBrickDCImpl extends MinimalEObjectImpl.Container implements MBrick
     public void setDeviceIdentifier(int newDeviceIdentifier) {
         int oldDeviceIdentifier = deviceIdentifier;
         deviceIdentifier = newDeviceIdentifier;
-        if (eNotificationRequired()) {
+        if (eNotificationRequired())
             eNotify(new ENotificationImpl(this, Notification.SET, ModelPackage.MBRICK_DC__DEVICE_IDENTIFIER,
                     oldDeviceIdentifier, deviceIdentifier));
-        }
     }
 
     /**
@@ -1045,9 +1038,8 @@ public class MBrickDCImpl extends MinimalEObjectImpl.Container implements MBrick
     public void setName(String newName) {
         String oldName = name;
         name = newName;
-        if (eNotificationRequired()) {
+        if (eNotificationRequired())
             eNotify(new ENotificationImpl(this, Notification.SET, ModelPackage.MBRICK_DC__NAME, oldName, name));
-        }
     }
 
     /**
@@ -1058,10 +1050,21 @@ public class MBrickDCImpl extends MinimalEObjectImpl.Container implements MBrick
      */
     @Override
     public MBrickd getBrickd() {
-        if (eContainerFeatureID() != ModelPackage.MBRICK_DC__BRICKD) {
+        if (eContainerFeatureID() != ModelPackage.MBRICK_DC__BRICKD)
             return null;
-        }
         return (MBrickd) eContainer();
+    }
+
+    /**
+     * <!-- begin-user-doc -->
+     * <!-- end-user-doc -->
+     * 
+     * @generated
+     */
+    public MBrickd basicGetBrickd() {
+        if (eContainerFeatureID() != ModelPackage.MBRICK_DC__BRICKD)
+            return null;
+        return (MBrickd) eInternalContainer();
     }
 
     /**
@@ -1085,25 +1088,20 @@ public class MBrickDCImpl extends MinimalEObjectImpl.Container implements MBrick
     public void setBrickd(MBrickd newBrickd) {
         if (newBrickd != eInternalContainer()
                 || (eContainerFeatureID() != ModelPackage.MBRICK_DC__BRICKD && newBrickd != null)) {
-            if (EcoreUtil.isAncestor(this, newBrickd)) {
+            if (EcoreUtil.isAncestor(this, newBrickd))
                 throw new IllegalArgumentException("Recursive containment not allowed for " + toString());
-            }
             NotificationChain msgs = null;
-            if (eInternalContainer() != null) {
+            if (eInternalContainer() != null)
                 msgs = eBasicRemoveFromContainer(msgs);
-            }
-            if (newBrickd != null) {
+            if (newBrickd != null)
                 msgs = ((InternalEObject) newBrickd).eInverseAdd(this, ModelPackage.MBRICKD__MDEVICES, MBrickd.class,
                         msgs);
-            }
             msgs = basicSetBrickd(newBrickd, msgs);
-            if (msgs != null) {
+            if (msgs != null)
                 msgs.dispatch();
-            }
-        } else if (eNotificationRequired()) {
+        } else if (eNotificationRequired())
             eNotify(new ENotificationImpl(this, Notification.SET, ModelPackage.MBRICK_DC__BRICKD, newBrickd,
                     newBrickd));
-        }
     }
 
     /**
@@ -1129,11 +1127,10 @@ public class MBrickDCImpl extends MinimalEObjectImpl.Container implements MBrick
         if (eNotificationRequired()) {
             ENotificationImpl notification = new ENotificationImpl(this, Notification.SET,
                     ModelPackage.MBRICK_DC__TF_CONFIG, oldTfConfig, newTfConfig);
-            if (msgs == null) {
+            if (msgs == null)
                 msgs = notification;
-            } else {
+            else
                 msgs.add(notification);
-            }
         }
         return msgs;
     }
@@ -1148,22 +1145,18 @@ public class MBrickDCImpl extends MinimalEObjectImpl.Container implements MBrick
     public void setTfConfig(TFBrickDCConfiguration newTfConfig) {
         if (newTfConfig != tfConfig) {
             NotificationChain msgs = null;
-            if (tfConfig != null) {
+            if (tfConfig != null)
                 msgs = ((InternalEObject) tfConfig).eInverseRemove(this,
                         EOPPOSITE_FEATURE_BASE - ModelPackage.MBRICK_DC__TF_CONFIG, null, msgs);
-            }
-            if (newTfConfig != null) {
+            if (newTfConfig != null)
                 msgs = ((InternalEObject) newTfConfig).eInverseAdd(this,
                         EOPPOSITE_FEATURE_BASE - ModelPackage.MBRICK_DC__TF_CONFIG, null, msgs);
-            }
             msgs = basicSetTfConfig(newTfConfig, msgs);
-            if (msgs != null) {
+            if (msgs != null)
                 msgs.dispatch();
-            }
-        } else if (eNotificationRequired()) {
+        } else if (eNotificationRequired())
             eNotify(new ENotificationImpl(this, Notification.SET, ModelPackage.MBRICK_DC__TF_CONFIG, newTfConfig,
                     newTfConfig));
-        }
     }
 
     /**
@@ -1187,10 +1180,9 @@ public class MBrickDCImpl extends MinimalEObjectImpl.Container implements MBrick
     public void setMinValue(BigDecimal newMinValue) {
         BigDecimal oldMinValue = minValue;
         minValue = newMinValue;
-        if (eNotificationRequired()) {
+        if (eNotificationRequired())
             eNotify(new ENotificationImpl(this, Notification.SET, ModelPackage.MBRICK_DC__MIN_VALUE, oldMinValue,
                     minValue));
-        }
     }
 
     /**
@@ -1214,10 +1206,9 @@ public class MBrickDCImpl extends MinimalEObjectImpl.Container implements MBrick
     public void setMaxValue(BigDecimal newMaxValue) {
         BigDecimal oldMaxValue = maxValue;
         maxValue = newMaxValue;
-        if (eNotificationRequired()) {
+        if (eNotificationRequired())
             eNotify(new ENotificationImpl(this, Notification.SET, ModelPackage.MBRICK_DC__MAX_VALUE, oldMaxValue,
                     maxValue));
-        }
     }
 
     /**
@@ -1241,10 +1232,9 @@ public class MBrickDCImpl extends MinimalEObjectImpl.Container implements MBrick
     public void setPercentValue(PercentValue newPercentValue) {
         PercentValue oldPercentValue = percentValue;
         percentValue = newPercentValue;
-        if (eNotificationRequired()) {
+        if (eNotificationRequired())
             eNotify(new ENotificationImpl(this, Notification.SET, ModelPackage.MBRICK_DC__PERCENT_VALUE,
                     oldPercentValue, percentValue));
-        }
     }
 
     /**
@@ -1268,10 +1258,9 @@ public class MBrickDCImpl extends MinimalEObjectImpl.Container implements MBrick
     public void setDirection(DirectionValue newDirection) {
         DirectionValue oldDirection = direction;
         direction = newDirection;
-        if (eNotificationRequired()) {
+        if (eNotificationRequired())
             eNotify(new ENotificationImpl(this, Notification.SET, ModelPackage.MBRICK_DC__DIRECTION, oldDirection,
                     direction));
-        }
     }
 
     /**
@@ -1295,10 +1284,9 @@ public class MBrickDCImpl extends MinimalEObjectImpl.Container implements MBrick
     public void setCallbackPeriod(long newCallbackPeriod) {
         long oldCallbackPeriod = callbackPeriod;
         callbackPeriod = newCallbackPeriod;
-        if (eNotificationRequired()) {
+        if (eNotificationRequired())
             eNotify(new ENotificationImpl(this, Notification.SET, ModelPackage.MBRICK_DC__CALLBACK_PERIOD,
                     oldCallbackPeriod, callbackPeriod));
-        }
     }
 
     /**
@@ -1322,10 +1310,9 @@ public class MBrickDCImpl extends MinimalEObjectImpl.Container implements MBrick
     public void setThreshold(BigDecimal newThreshold) {
         BigDecimal oldThreshold = threshold;
         threshold = newThreshold;
-        if (eNotificationRequired()) {
+        if (eNotificationRequired())
             eNotify(new ENotificationImpl(this, Notification.SET, ModelPackage.MBRICK_DC__THRESHOLD, oldThreshold,
                     threshold));
-        }
     }
 
     /**
@@ -1349,10 +1336,9 @@ public class MBrickDCImpl extends MinimalEObjectImpl.Container implements MBrick
     public void setMaxVelocity(Short newMaxVelocity) {
         Short oldMaxVelocity = maxVelocity;
         maxVelocity = newMaxVelocity;
-        if (eNotificationRequired()) {
+        if (eNotificationRequired())
             eNotify(new ENotificationImpl(this, Notification.SET, ModelPackage.MBRICK_DC__MAX_VELOCITY, oldMaxVelocity,
                     maxVelocity));
-        }
     }
 
     /**
@@ -1376,10 +1362,9 @@ public class MBrickDCImpl extends MinimalEObjectImpl.Container implements MBrick
     public void setMinVelocity(Short newMinVelocity) {
         Short oldMinVelocity = minVelocity;
         minVelocity = newMinVelocity;
-        if (eNotificationRequired()) {
+        if (eNotificationRequired())
             eNotify(new ENotificationImpl(this, Notification.SET, ModelPackage.MBRICK_DC__MIN_VELOCITY, oldMinVelocity,
                     minVelocity));
-        }
     }
 
     /**
@@ -1414,10 +1399,9 @@ public class MBrickDCImpl extends MinimalEObjectImpl.Container implements MBrick
     public void setVelocity(short newVelocity) {
         short oldVelocity = velocity;
         velocity = newVelocity;
-        if (eNotificationRequired()) {
+        if (eNotificationRequired())
             eNotify(new ENotificationImpl(this, Notification.SET, ModelPackage.MBRICK_DC__VELOCITY, oldVelocity,
                     velocity));
-        }
     }
 
     /**
@@ -1441,10 +1425,9 @@ public class MBrickDCImpl extends MinimalEObjectImpl.Container implements MBrick
     public void setTargetvelocity(short newTargetvelocity) {
         short oldTargetvelocity = targetvelocity;
         targetvelocity = newTargetvelocity;
-        if (eNotificationRequired()) {
+        if (eNotificationRequired())
             eNotify(new ENotificationImpl(this, Notification.SET, ModelPackage.MBRICK_DC__TARGETVELOCITY,
                     oldTargetvelocity, targetvelocity));
-        }
     }
 
     /**
@@ -1468,10 +1451,9 @@ public class MBrickDCImpl extends MinimalEObjectImpl.Container implements MBrick
     public void setCurrentVelocity(short newCurrentVelocity) {
         short oldCurrentVelocity = currentVelocity;
         currentVelocity = newCurrentVelocity;
-        if (eNotificationRequired()) {
+        if (eNotificationRequired())
             eNotify(new ENotificationImpl(this, Notification.SET, ModelPackage.MBRICK_DC__CURRENT_VELOCITY,
                     oldCurrentVelocity, currentVelocity));
-        }
     }
 
     /**
@@ -1495,10 +1477,9 @@ public class MBrickDCImpl extends MinimalEObjectImpl.Container implements MBrick
     public void setAcceleration(int newAcceleration) {
         int oldAcceleration = acceleration;
         acceleration = newAcceleration;
-        if (eNotificationRequired()) {
+        if (eNotificationRequired())
             eNotify(new ENotificationImpl(this, Notification.SET, ModelPackage.MBRICK_DC__ACCELERATION, oldAcceleration,
                     acceleration));
-        }
     }
 
     /**
@@ -1522,10 +1503,9 @@ public class MBrickDCImpl extends MinimalEObjectImpl.Container implements MBrick
     public void setPwmFrequency(int newPwmFrequency) {
         int oldPwmFrequency = pwmFrequency;
         pwmFrequency = newPwmFrequency;
-        if (eNotificationRequired()) {
+        if (eNotificationRequired())
             eNotify(new ENotificationImpl(this, Notification.SET, ModelPackage.MBRICK_DC__PWM_FREQUENCY,
                     oldPwmFrequency, pwmFrequency));
-        }
     }
 
     /**
@@ -1549,10 +1529,9 @@ public class MBrickDCImpl extends MinimalEObjectImpl.Container implements MBrick
     public void setDriveMode(DCDriveMode newDriveMode) {
         DCDriveMode oldDriveMode = driveMode;
         driveMode = newDriveMode == null ? DRIVE_MODE_EDEFAULT : newDriveMode;
-        if (eNotificationRequired()) {
+        if (eNotificationRequired())
             eNotify(new ENotificationImpl(this, Notification.SET, ModelPackage.MBRICK_DC__DRIVE_MODE, oldDriveMode,
                     driveMode));
-        }
     }
 
     /**
@@ -1702,7 +1681,7 @@ public class MBrickDCImpl extends MinimalEObjectImpl.Container implements MBrick
         } else if (state == OnOffValue.ON) {
             setSpeed(Tools.getShortOpt(ConfigOptsSwitchSpeed.SPEED.toString(), opts), null, null, null);
         } else {
-            logger.error("{} unkown switchstate {}", LoggerConstants.TFMODELUPDATE, state);
+            logger.error("{} unknown switchstate {}", LoggerConstants.TFMODELUPDATE, state);
         }
     }
 
@@ -1997,9 +1976,8 @@ public class MBrickDCImpl extends MinimalEObjectImpl.Container implements MBrick
     public NotificationChain eInverseAdd(InternalEObject otherEnd, int featureID, NotificationChain msgs) {
         switch (featureID) {
             case ModelPackage.MBRICK_DC__BRICKD:
-                if (eInternalContainer() != null) {
+                if (eInternalContainer() != null)
                     msgs = eBasicRemoveFromContainer(msgs);
-                }
                 return basicSetBrickd((MBrickd) otherEnd, msgs);
         }
         return super.eInverseAdd(otherEnd, featureID, msgs);
@@ -2071,7 +2049,9 @@ public class MBrickDCImpl extends MinimalEObjectImpl.Container implements MBrick
             case ModelPackage.MBRICK_DC__NAME:
                 return getName();
             case ModelPackage.MBRICK_DC__BRICKD:
-                return getBrickd();
+                if (resolve)
+                    return getBrickd();
+                return basicGetBrickd();
             case ModelPackage.MBRICK_DC__DIRECTION:
                 return getDirection();
             case ModelPackage.MBRICK_DC__TF_CONFIG:
@@ -2338,7 +2318,7 @@ public class MBrickDCImpl extends MinimalEObjectImpl.Container implements MBrick
             case ModelPackage.MBRICK_DC__NAME:
                 return NAME_EDEFAULT == null ? name != null : !NAME_EDEFAULT.equals(name);
             case ModelPackage.MBRICK_DC__BRICKD:
-                return getBrickd() != null;
+                return basicGetBrickd() != null;
             case ModelPackage.MBRICK_DC__DIRECTION:
                 return DIRECTION_EDEFAULT == null ? direction != null : !DIRECTION_EDEFAULT.equals(direction);
             case ModelPackage.MBRICK_DC__TF_CONFIG:
@@ -2742,9 +2722,8 @@ public class MBrickDCImpl extends MinimalEObjectImpl.Container implements MBrick
      */
     @Override
     public String toString() {
-        if (eIsProxy()) {
+        if (eIsProxy())
             return super.toString();
-        }
 
         StringBuffer result = new StringBuffer(super.toString());
         result.append(" (sensorValue: ");

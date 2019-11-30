@@ -1,14 +1,16 @@
 /**
- * Copyright (c) 2010-2016, openHAB.org and others.
+ * Copyright (c) 2010-2019 Contributors to the openHAB project
  *
- * All rights reserved. This program and the accompanying materials
- * are made available under the terms of the Eclipse Public License v1.0
- * which accompanies this distribution, and is available at
- * http://www.eclipse.org/legal/epl-v10.html
+ * See the NOTICE file(s) distributed with this work for additional
+ * information.
+ *
+ * This program and the accompanying materials are made available under the
+ * terms of the Eclipse Public License 2.0 which is available at
+ * http://www.eclipse.org/legal/epl-2.0
+ *
+ * SPDX-License-Identifier: EPL-2.0
  */
 package org.openhab.binding.weather.internal.parser;
-
-import java.io.InputStream;
 
 import org.apache.commons.lang.StringUtils;
 import org.apache.commons.lang.reflect.FieldUtils;
@@ -33,6 +35,7 @@ import org.slf4j.LoggerFactory;
  * Common base class for all weather parsers.
  *
  * @author Gerhard Riegler
+ * @author Christoph Weitkamp - Replaced org.apache.commons.httpclient with HttpUtil
  * @since 1.6.0
  */
 public abstract class AbstractWeatherParser implements WeatherParser {
@@ -41,11 +44,8 @@ public abstract class AbstractWeatherParser implements WeatherParser {
 
     private MetadataHandler metadataHandler = MetadataHandler.getInstance();
 
-    /**
-     * {@inheritDoc}
-     */
     @Override
-    public void parseInto(InputStream is, Weather weather) throws Exception {
+    public void parseInto(String r, Weather weather) throws Exception {
         postProcessEach(weather);
         for (Forecast forecast : weather.getForecast()) {
             postProcessEach(forecast);
@@ -144,8 +144,9 @@ public abstract class AbstractWeatherParser implements WeatherParser {
         }
 
         Precipitation precip = weather.getPrecipitation();
-        if (weather.getProvider() == ProviderName.FORECASTIO
-                && StringUtils.equalsIgnoreCase("snow", precip.getType())) {
+        if ((weather.getProvider() == ProviderName.FORECASTIO && StringUtils.equalsIgnoreCase("snow", precip.getType()))
+                || (weather.getProvider() == ProviderName.METEOBLUE
+                        && StringUtils.equalsIgnoreCase("1", precip.getType()))) {
             precip.setSnow(precip.getRain());
             precip.setRain(null);
         }

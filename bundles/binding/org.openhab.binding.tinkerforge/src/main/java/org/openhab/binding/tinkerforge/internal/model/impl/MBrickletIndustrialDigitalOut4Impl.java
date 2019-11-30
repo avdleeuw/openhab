@@ -1,10 +1,14 @@
 /**
- * Copyright (c) 2010-2016, openHAB.org and others.
+ * Copyright (c) 2010-2019 Contributors to the openHAB project
  *
- * All rights reserved. This program and the accompanying materials
- * are made available under the terms of the Eclipse Public License v1.0
- * which accompanies this distribution, and is available at
- * http://www.eclipse.org/legal/epl-v10.html
+ * See the NOTICE file(s) distributed with this work for additional
+ * information.
+ *
+ * This program and the accompanying materials are made available under the
+ * terms of the Eclipse Public License 2.0 which is available at
+ * http://www.eclipse.org/legal/epl-2.0
+ *
+ * SPDX-License-Identifier: EPL-2.0
  */
 package org.openhab.binding.tinkerforge.internal.model.impl;
 
@@ -45,6 +49,7 @@ import com.tinkerforge.IPConnection;
  *        <!-- end-user-doc -->
  *        <p>
  *        The following features are implemented:
+ *        </p>
  *        <ul>
  *        <li>{@link org.openhab.binding.tinkerforge.internal.model.impl.MBrickletIndustrialDigitalOut4Impl#getLogger
  *        <em>Logger</em>}</li>
@@ -79,7 +84,6 @@ import com.tinkerforge.IPConnection;
  *        {@link org.openhab.binding.tinkerforge.internal.model.impl.MBrickletIndustrialDigitalOut4Impl#getDeviceType
  *        <em>Device Type</em>}</li>
  *        </ul>
- *        </p>
  *
  * @generated
  */
@@ -369,10 +373,9 @@ public class MBrickletIndustrialDigitalOut4Impl extends MinimalEObjectImpl.Conta
     public void setLogger(Logger newLogger) {
         Logger oldLogger = logger;
         logger = newLogger;
-        if (eNotificationRequired()) {
+        if (eNotificationRequired())
             eNotify(new ENotificationImpl(this, Notification.SET,
                     ModelPackage.MBRICKLET_INDUSTRIAL_DIGITAL_OUT4__LOGGER, oldLogger, logger));
-        }
     }
 
     /**
@@ -396,10 +399,9 @@ public class MBrickletIndustrialDigitalOut4Impl extends MinimalEObjectImpl.Conta
     public void setUid(String newUid) {
         String oldUid = uid;
         uid = newUid;
-        if (eNotificationRequired()) {
+        if (eNotificationRequired())
             eNotify(new ENotificationImpl(this, Notification.SET, ModelPackage.MBRICKLET_INDUSTRIAL_DIGITAL_OUT4__UID,
                     oldUid, uid));
-        }
     }
 
     /**
@@ -423,10 +425,9 @@ public class MBrickletIndustrialDigitalOut4Impl extends MinimalEObjectImpl.Conta
     public void setPoll(boolean newPoll) {
         boolean oldPoll = poll;
         poll = newPoll;
-        if (eNotificationRequired()) {
+        if (eNotificationRequired())
             eNotify(new ENotificationImpl(this, Notification.SET, ModelPackage.MBRICKLET_INDUSTRIAL_DIGITAL_OUT4__POLL,
                     oldPoll, poll));
-        }
     }
 
     /**
@@ -450,10 +451,9 @@ public class MBrickletIndustrialDigitalOut4Impl extends MinimalEObjectImpl.Conta
     public void setEnabledA(AtomicBoolean newEnabledA) {
         AtomicBoolean oldEnabledA = enabledA;
         enabledA = newEnabledA;
-        if (eNotificationRequired()) {
+        if (eNotificationRequired())
             eNotify(new ENotificationImpl(this, Notification.SET,
                     ModelPackage.MBRICKLET_INDUSTRIAL_DIGITAL_OUT4__ENABLED_A, oldEnabledA, enabledA));
-        }
     }
 
     /**
@@ -477,11 +477,10 @@ public class MBrickletIndustrialDigitalOut4Impl extends MinimalEObjectImpl.Conta
     public void setTinkerforgeDevice(BrickletIndustrialDigitalOut4 newTinkerforgeDevice) {
         BrickletIndustrialDigitalOut4 oldTinkerforgeDevice = tinkerforgeDevice;
         tinkerforgeDevice = newTinkerforgeDevice;
-        if (eNotificationRequired()) {
+        if (eNotificationRequired())
             eNotify(new ENotificationImpl(this, Notification.SET,
                     ModelPackage.MBRICKLET_INDUSTRIAL_DIGITAL_OUT4__TINKERFORGE_DEVICE, oldTinkerforgeDevice,
                     tinkerforgeDevice));
-        }
     }
 
     /**
@@ -505,10 +504,9 @@ public class MBrickletIndustrialDigitalOut4Impl extends MinimalEObjectImpl.Conta
     public void setIpConnection(IPConnection newIpConnection) {
         IPConnection oldIpConnection = ipConnection;
         ipConnection = newIpConnection;
-        if (eNotificationRequired()) {
+        if (eNotificationRequired())
             eNotify(new ENotificationImpl(this, Notification.SET,
                     ModelPackage.MBRICKLET_INDUSTRIAL_DIGITAL_OUT4__IP_CONNECTION, oldIpConnection, ipConnection));
-        }
     }
 
     /**
@@ -532,10 +530,9 @@ public class MBrickletIndustrialDigitalOut4Impl extends MinimalEObjectImpl.Conta
     public void setConnectedUid(String newConnectedUid) {
         String oldConnectedUid = connectedUid;
         connectedUid = newConnectedUid;
-        if (eNotificationRequired()) {
+        if (eNotificationRequired())
             eNotify(new ENotificationImpl(this, Notification.SET,
                     ModelPackage.MBRICKLET_INDUSTRIAL_DIGITAL_OUT4__CONNECTED_UID, oldConnectedUid, connectedUid));
-        }
     }
 
     /**
@@ -559,10 +556,9 @@ public class MBrickletIndustrialDigitalOut4Impl extends MinimalEObjectImpl.Conta
     public void setPosition(char newPosition) {
         char oldPosition = position;
         position = newPosition;
-        if (eNotificationRequired()) {
+        if (eNotificationRequired())
             eNotify(new ENotificationImpl(this, Notification.SET,
                     ModelPackage.MBRICKLET_INDUSTRIAL_DIGITAL_OUT4__POSITION, oldPosition, position));
-        }
     }
 
     /**
@@ -586,11 +582,10 @@ public class MBrickletIndustrialDigitalOut4Impl extends MinimalEObjectImpl.Conta
     public void setDeviceIdentifier(int newDeviceIdentifier) {
         int oldDeviceIdentifier = deviceIdentifier;
         deviceIdentifier = newDeviceIdentifier;
-        if (eNotificationRequired()) {
+        if (eNotificationRequired())
             eNotify(new ENotificationImpl(this, Notification.SET,
                     ModelPackage.MBRICKLET_INDUSTRIAL_DIGITAL_OUT4__DEVICE_IDENTIFIER, oldDeviceIdentifier,
                     deviceIdentifier));
-        }
     }
 
     /**
@@ -614,10 +609,9 @@ public class MBrickletIndustrialDigitalOut4Impl extends MinimalEObjectImpl.Conta
     public void setName(String newName) {
         String oldName = name;
         name = newName;
-        if (eNotificationRequired()) {
+        if (eNotificationRequired())
             eNotify(new ENotificationImpl(this, Notification.SET, ModelPackage.MBRICKLET_INDUSTRIAL_DIGITAL_OUT4__NAME,
                     oldName, name));
-        }
     }
 
     /**
@@ -628,10 +622,21 @@ public class MBrickletIndustrialDigitalOut4Impl extends MinimalEObjectImpl.Conta
      */
     @Override
     public MBrickd getBrickd() {
-        if (eContainerFeatureID() != ModelPackage.MBRICKLET_INDUSTRIAL_DIGITAL_OUT4__BRICKD) {
+        if (eContainerFeatureID() != ModelPackage.MBRICKLET_INDUSTRIAL_DIGITAL_OUT4__BRICKD)
             return null;
-        }
         return (MBrickd) eContainer();
+    }
+
+    /**
+     * <!-- begin-user-doc -->
+     * <!-- end-user-doc -->
+     * 
+     * @generated
+     */
+    public MBrickd basicGetBrickd() {
+        if (eContainerFeatureID() != ModelPackage.MBRICKLET_INDUSTRIAL_DIGITAL_OUT4__BRICKD)
+            return null;
+        return (MBrickd) eInternalContainer();
     }
 
     /**
@@ -657,25 +662,20 @@ public class MBrickletIndustrialDigitalOut4Impl extends MinimalEObjectImpl.Conta
         if (newBrickd != eInternalContainer()
                 || (eContainerFeatureID() != ModelPackage.MBRICKLET_INDUSTRIAL_DIGITAL_OUT4__BRICKD
                         && newBrickd != null)) {
-            if (EcoreUtil.isAncestor(this, newBrickd)) {
+            if (EcoreUtil.isAncestor(this, newBrickd))
                 throw new IllegalArgumentException("Recursive containment not allowed for " + toString());
-            }
             NotificationChain msgs = null;
-            if (eInternalContainer() != null) {
+            if (eInternalContainer() != null)
                 msgs = eBasicRemoveFromContainer(msgs);
-            }
-            if (newBrickd != null) {
+            if (newBrickd != null)
                 msgs = ((InternalEObject) newBrickd).eInverseAdd(this, ModelPackage.MBRICKD__MDEVICES, MBrickd.class,
                         msgs);
-            }
             msgs = basicSetBrickd(newBrickd, msgs);
-            if (msgs != null) {
+            if (msgs != null)
                 msgs.dispatch();
-            }
-        } else if (eNotificationRequired()) {
+        } else if (eNotificationRequired())
             eNotify(new ENotificationImpl(this, Notification.SET,
                     ModelPackage.MBRICKLET_INDUSTRIAL_DIGITAL_OUT4__BRICKD, newBrickd, newBrickd));
-        }
     }
 
     /**
@@ -687,8 +687,16 @@ public class MBrickletIndustrialDigitalOut4Impl extends MinimalEObjectImpl.Conta
     @Override
     public EList<DigitalActorDigitalOut4> getMsubdevices() {
         if (msubdevices == null) {
-            msubdevices = new EObjectContainmentWithInverseEList<DigitalActorDigitalOut4>(MSubDevice.class, this,
-                    ModelPackage.MBRICKLET_INDUSTRIAL_DIGITAL_OUT4__MSUBDEVICES, ModelPackage.MSUB_DEVICE__MBRICK);
+            msubdevices = new EObjectContainmentWithInverseEList<DigitalActorDigitalOut4>(DigitalActorDigitalOut4.class,
+                    this, ModelPackage.MBRICKLET_INDUSTRIAL_DIGITAL_OUT4__MSUBDEVICES,
+                    ModelPackage.MSUB_DEVICE__MBRICK) {
+                private static final long serialVersionUID = 1L;
+
+                @Override
+                public Class<?> getInverseFeatureClass() {
+                    return MSubDevice.class;
+                }
+            };
         }
         return msubdevices;
     }
@@ -772,9 +780,8 @@ public class MBrickletIndustrialDigitalOut4Impl extends MinimalEObjectImpl.Conta
     public NotificationChain eInverseAdd(InternalEObject otherEnd, int featureID, NotificationChain msgs) {
         switch (featureID) {
             case ModelPackage.MBRICKLET_INDUSTRIAL_DIGITAL_OUT4__BRICKD:
-                if (eInternalContainer() != null) {
+                if (eInternalContainer() != null)
                     msgs = eBasicRemoveFromContainer(msgs);
-                }
                 return basicSetBrickd((MBrickd) otherEnd, msgs);
             case ModelPackage.MBRICKLET_INDUSTRIAL_DIGITAL_OUT4__MSUBDEVICES:
                 return ((InternalEList<InternalEObject>) (InternalEList<?>) getMsubdevices()).basicAdd(otherEnd, msgs);
@@ -844,7 +851,9 @@ public class MBrickletIndustrialDigitalOut4Impl extends MinimalEObjectImpl.Conta
             case ModelPackage.MBRICKLET_INDUSTRIAL_DIGITAL_OUT4__NAME:
                 return getName();
             case ModelPackage.MBRICKLET_INDUSTRIAL_DIGITAL_OUT4__BRICKD:
-                return getBrickd();
+                if (resolve)
+                    return getBrickd();
+                return basicGetBrickd();
             case ModelPackage.MBRICKLET_INDUSTRIAL_DIGITAL_OUT4__MSUBDEVICES:
                 return getMsubdevices();
             case ModelPackage.MBRICKLET_INDUSTRIAL_DIGITAL_OUT4__DEVICE_TYPE:
@@ -985,7 +994,7 @@ public class MBrickletIndustrialDigitalOut4Impl extends MinimalEObjectImpl.Conta
             case ModelPackage.MBRICKLET_INDUSTRIAL_DIGITAL_OUT4__NAME:
                 return NAME_EDEFAULT == null ? name != null : !NAME_EDEFAULT.equals(name);
             case ModelPackage.MBRICKLET_INDUSTRIAL_DIGITAL_OUT4__BRICKD:
-                return getBrickd() != null;
+                return basicGetBrickd() != null;
             case ModelPackage.MBRICKLET_INDUSTRIAL_DIGITAL_OUT4__MSUBDEVICES:
                 return msubdevices != null && !msubdevices.isEmpty();
             case ModelPackage.MBRICKLET_INDUSTRIAL_DIGITAL_OUT4__DEVICE_TYPE:
@@ -1084,9 +1093,8 @@ public class MBrickletIndustrialDigitalOut4Impl extends MinimalEObjectImpl.Conta
      */
     @Override
     public String toString() {
-        if (eIsProxy()) {
+        if (eIsProxy())
             return super.toString();
-        }
 
         StringBuffer result = new StringBuffer(super.toString());
         result.append(" (logger: ");

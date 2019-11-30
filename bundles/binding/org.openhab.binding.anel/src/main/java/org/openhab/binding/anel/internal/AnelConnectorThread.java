@@ -1,10 +1,14 @@
 /**
- * Copyright (c) 2010-2016, openHAB.org and others.
+ * Copyright (c) 2010-2019 Contributors to the openHAB project
  *
- * All rights reserved. This program and the accompanying materials
- * are made available under the terms of the Eclipse Public License v1.0
- * which accompanies this distribution, and is available at
- * http://www.eclipse.org/legal/epl-v10.html
+ * See the NOTICE file(s) distributed with this work for additional
+ * information.
+ *
+ * This program and the accompanying materials are made available under the
+ * terms of the Eclipse Public License 2.0 which is available at
+ * http://www.eclipse.org/legal/epl-2.0
+ *
+ * SPDX-License-Identifier: EPL-2.0
  */
 package org.openhab.binding.anel.internal;
 
@@ -127,7 +131,7 @@ class AnelConnectorThread extends Thread {
                 try {
                     connector.sendDatagram(cmd.getBytes());
                 } catch (Exception e) {
-                    logger.error("Error occured when sending UDP data to Anel device: " + cmd, e);
+                    logger.error("Error occurred when sending UDP data to Anel device: " + cmd, e);
                 }
             } else {
                 logger.debug("switch " + switchNr + " is locked, nothing sent.");
@@ -179,7 +183,7 @@ class AnelConnectorThread extends Thread {
             if (e.getCause() instanceof UnknownHostException) {
                 logger.error("Could not check status of Anel device '" + state.host + "'");
             } else {
-                logger.error("Error occured when sending UDP data to Anel device: " + cmd, e);
+                logger.error("Error occurred when sending UDP data to Anel device: " + cmd, e);
             }
         }
     }
@@ -207,7 +211,7 @@ class AnelConnectorThread extends Thread {
         try {
             connector.sendDatagram(UDP_STATE_REQUEST.getBytes());
         } catch (Exception e) {
-            logger.error("Error occured when sending UDP data to Anel device: '" + UDP_STATE_REQUEST + "'", e);
+            logger.error("Error occurred when sending UDP data to Anel device: '" + UDP_STATE_REQUEST + "'", e);
         }
         // }
     }
@@ -220,7 +224,7 @@ class AnelConnectorThread extends Thread {
         try {
             connector.connect();
         } catch (Exception e) {
-            logger.error("Error occured when connecting to NET-PwrCtrl device", e);
+            logger.error("Error occurred when connecting to NET-PwrCtrl device", e);
             logger.warn("Closing NET-PwrCtrl message listener");
 
             interrupted = true; // exit
@@ -274,20 +278,19 @@ class AnelConnectorThread extends Thread {
             } catch (SocketTimeoutException e) {
                 // nothing received after timeout. continue with loop
             } catch (Exception e) {
-                logger.error("Error occured when received data from Anel device: " + state.host, e);
+                logger.error("Error occurred when received data from Anel device: " + state.host, e);
             }
         }
         try {
             connector.disconnect();
         } catch (Exception e) {
-            logger.error("Error occured when disconnecting from Anel device: " + state.host, e);
+            logger.error("Error occurred when disconnecting from Anel device: " + state.host, e);
         }
     }
 
     @Override
     public String toString() {
         return "Anel connection to '" + state.host + "', send UDP port " + connector.sendPort + ", receive UDP port "
-                + connector.receivePort + ", user='" + user + "', password='" + password + "', cache period="
-                + cachePeriod + "min.";
+                + connector.receivePort + ", user='" + user + "', cache period=" + cachePeriod + "min.";
     }
 }

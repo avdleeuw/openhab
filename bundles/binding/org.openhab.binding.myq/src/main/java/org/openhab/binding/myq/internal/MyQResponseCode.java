@@ -1,10 +1,14 @@
 /**
- * Copyright (c) 2010-2016, openHAB.org and others.
+ * Copyright (c) 2010-2019 Contributors to the openHAB project
  *
- * All rights reserved. This program and the accompanying materials
- * are made available under the terms of the Eclipse Public License v1.0
- * which accompanies this distribution, and is available at
- * http://www.eclipse.org/legal/epl-v10.html
+ * See the NOTICE file(s) distributed with this work for additional
+ * information.
+ *
+ * This program and the accompanying materials are made available under the
+ * terms of the Eclipse Public License 2.0 which is available at
+ * http://www.eclipse.org/legal/epl-2.0
+ *
+ * SPDX-License-Identifier: EPL-2.0
  */
 package org.openhab.binding.myq.internal;
 
@@ -30,7 +34,7 @@ public enum MyQResponseCode {
     DEVICE_LEARNMODE(305, "The device is currently in Learn Mode."),
     DEVICE_NOT_RESPONDING(308, "The device is not responding. Please check that the device is powered and in range."),
     DEVICE_OFFLINE(309, "The gateway or hub is offline. Please check the power and network connections."),
-    UNKNOWN(-1, "Unknow resonse");
+    UNKNOWN(-1, "Unknown resonse");
 
     private int code;
     private String desc;

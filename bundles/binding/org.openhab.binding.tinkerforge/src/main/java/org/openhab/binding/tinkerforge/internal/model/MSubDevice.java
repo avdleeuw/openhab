@@ -1,10 +1,14 @@
 /**
- * Copyright (c) 2010-2016, openHAB.org and others.
+ * Copyright (c) 2010-2019 Contributors to the openHAB project
  *
- * All rights reserved. This program and the accompanying materials
- * are made available under the terms of the Eclipse Public License v1.0
- * which accompanies this distribution, and is available at
- * http://www.eclipse.org/legal/epl-v10.html
+ * See the NOTICE file(s) distributed with this work for additional
+ * information.
+ *
+ * This program and the accompanying materials are made available under the
+ * terms of the Eclipse Public License 2.0 which is available at
+ * http://www.eclipse.org/legal/epl-2.0
+ *
+ * SPDX-License-Identifier: EPL-2.0
  */
 package org.openhab.binding.tinkerforge.internal.model;
 
@@ -18,11 +22,11 @@ package org.openhab.binding.tinkerforge.internal.model;
  *
  *        <p>
  *        The following features are supported:
+ *        </p>
  *        <ul>
  *        <li>{@link org.openhab.binding.tinkerforge.internal.model.MSubDevice#getSubId <em>Sub Id</em>}</li>
  *        <li>{@link org.openhab.binding.tinkerforge.internal.model.MSubDevice#getMbrick <em>Mbrick</em>}</li>
  *        </ul>
- *        </p>
  *
  * @see org.openhab.binding.tinkerforge.internal.model.ModelPackage#getMSubDevice()
  * @model interface="true" abstract="true"
@@ -47,8 +51,8 @@ public interface MSubDevice<B extends MSubDeviceHolder<?>> extends MBaseDevice {
     String getSubId();
 
     /**
-     * Sets the value of the '{@link org.openhab.binding.tinkerforge.internal.model.MSubDevice#getSubId <em>Sub Id</em>}
-     * ' attribute.
+     * Sets the value of the '{@link org.openhab.binding.tinkerforge.internal.model.MSubDevice#getSubId <em>Sub
+     * Id</em>}' attribute.
      * <!-- begin-user-doc -->
      * <!-- end-user-doc -->
      * 
@@ -60,8 +64,8 @@ public interface MSubDevice<B extends MSubDeviceHolder<?>> extends MBaseDevice {
 
     /**
      * Returns the value of the '<em><b>Mbrick</b></em>' container reference.
-     * It is bidirectional and its opposite is '
-     * {@link org.openhab.binding.tinkerforge.internal.model.MSubDeviceHolder#getMsubdevices <em>Msubdevices</em>}'.
+     * It is bidirectional and its opposite is
+     * '{@link org.openhab.binding.tinkerforge.internal.model.MSubDeviceHolder#getMsubdevices <em>Msubdevices</em>}'.
      * <!-- begin-user-doc -->
      * <p>
      * If the meaning of the '<em>Mbrick</em>' container reference isn't clear,
@@ -79,8 +83,8 @@ public interface MSubDevice<B extends MSubDeviceHolder<?>> extends MBaseDevice {
     B getMbrick();
 
     /**
-     * Sets the value of the '{@link org.openhab.binding.tinkerforge.internal.model.MSubDevice#getMbrick <em>Mbrick</em>
-     * }' container reference.
+     * Sets the value of the '{@link org.openhab.binding.tinkerforge.internal.model.MSubDevice#getMbrick
+     * <em>Mbrick</em>}' container reference.
      * <!-- begin-user-doc -->
      * <!-- end-user-doc -->
      * 

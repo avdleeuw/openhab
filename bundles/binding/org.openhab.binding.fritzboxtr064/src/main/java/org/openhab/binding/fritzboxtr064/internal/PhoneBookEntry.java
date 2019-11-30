@@ -1,10 +1,14 @@
 /**
- * Copyright (c) 2010-2016, openHAB.org and others.
+ * Copyright (c) 2010-2019 Contributors to the openHAB project
  *
- * All rights reserved. This program and the accompanying materials
- * are made available under the terms of the Eclipse Public License v1.0
- * which accompanies this distribution, and is available at
- * http://www.eclipse.org/legal/epl-v10.html
+ * See the NOTICE file(s) distributed with this work for additional
+ * information.
+ *
+ * This program and the accompanying materials are made available under the
+ * terms of the Eclipse Public License 2.0 which is available at
+ * http://www.eclipse.org/legal/epl-2.0
+ *
+ * SPDX-License-Identifier: EPL-2.0
  */
 package org.openhab.binding.fritzboxtr064.internal;
 
@@ -20,7 +24,7 @@ import org.w3c.dom.Node;
 public class PhoneBookEntry {
 
     // default logger
-    private static final Logger logger = LoggerFactory.getLogger(FritzboxTr064Binding.class);
+    private static final Logger logger = LoggerFactory.getLogger(PhoneBookEntry.class);
 
     // Phone numbers
     private String _privateTel;
@@ -39,16 +43,15 @@ public class PhoneBookEntry {
 
     /***
      * Creates Entry Object by parsing the Node <contact>
-     * 
+     *
      * @param xmlNode
      */
     public PhoneBookEntry() {
-
     }
 
     /***
      * Parses the Object from xml node.
-     * 
+     *
      * @param xmlNode needs to be node with <contact>...</contact>
      * @return treu if successfully parsed
      */
@@ -57,19 +60,17 @@ public class PhoneBookEntry {
         XPath xPath = XPathFactory.newInstance().newXPath();
         logger.debug(Helper.nodeToString(xmlNode));
         try {
-            this._name = (String) xPath.evaluate("person/realName", xmlNode, XPathConstants.STRING);
-            this._uniqueid = (String) xPath.evaluate("uniqueid", xmlNode, XPathConstants.STRING);
-            this._businessTel = (String) xPath.evaluate("telephony/number[@type='work']", xmlNode,
+            _name = (String) xPath.evaluate("person/realName", xmlNode, XPathConstants.STRING);
+            _uniqueid = (String) xPath.evaluate("uniqueid", xmlNode, XPathConstants.STRING);
+            _businessTel = (String) xPath.evaluate("telephony/number[@type='work']", xmlNode,
                     XPathConstants.STRING);
-            this._privateTel = (String) xPath.evaluate("telephony/number[@type='home']", xmlNode,
+            _privateTel = (String) xPath.evaluate("telephony/number[@type='home']", xmlNode,
                     XPathConstants.STRING);
-            this._mobileTel = (String) xPath.evaluate("telephony/number[@type='mobile']", xmlNode,
+            _mobileTel = (String) xPath.evaluate("telephony/number[@type='mobile']", xmlNode,
                     XPathConstants.STRING);
-            this._fax = (String) xPath.evaluate("telephony/number[@type='fax']", xmlNode, XPathConstants.STRING);
-            // xpath is awesome :)
-
+            _fax = (String) xPath.evaluate("telephony/number[@type='fax']", xmlNode, XPathConstants.STRING);
         } catch (XPathExpressionException e) {
-            logger.error("Could not parse Phonebook Entry ", e);
+            logger.warn("Could not parse phone book entry", e);
         }
         // check if id could be parsed as success
         if (!this._uniqueid.isEmpty()) {
@@ -135,5 +136,4 @@ public class PhoneBookEntry {
     public void setId(String _id) {
         this._uniqueid = _id;
     }
-
 }

@@ -1,10 +1,14 @@
 /**
- * Copyright (c) 2010-2016, openHAB.org and others.
+ * Copyright (c) 2010-2019 Contributors to the openHAB project
  *
- * All rights reserved. This program and the accompanying materials
- * are made available under the terms of the Eclipse Public License v1.0
- * which accompanies this distribution, and is available at
- * http://www.eclipse.org/legal/epl-v10.html
+ * See the NOTICE file(s) distributed with this work for additional
+ * information.
+ *
+ * This program and the accompanying materials are made available under the
+ * terms of the Eclipse Public License 2.0 which is available at
+ * http://www.eclipse.org/legal/epl-2.0
+ *
+ * SPDX-License-Identifier: EPL-2.0
  */
 package org.openhab.binding.rfxcom.internal.messages;
 
@@ -15,9 +19,7 @@ import javax.xml.bind.DatatypeConverter;
 
 import org.openhab.binding.rfxcom.RFXComValueSelector;
 import org.openhab.binding.rfxcom.internal.RFXComException;
-import org.openhab.core.library.items.NumberItem;
 import org.openhab.core.library.items.StringItem;
-import org.openhab.core.library.types.DecimalType;
 import org.openhab.core.library.types.StringType;
 import org.openhab.core.types.State;
 import org.openhab.core.types.Type;
@@ -55,7 +57,7 @@ public class RFXComUndecodedRFMessage extends RFXComBaseMessage {
         RTS(0x14),
         SELECT_PLUS(0x15),
         HOME_CONFORT(0x16),
-        
+
         UNKNOWN(255);
 
         private final int subType;
@@ -71,9 +73,20 @@ public class RFXComUndecodedRFMessage extends RFXComBaseMessage {
         public byte toByte() {
             return (byte) subType;
         }
+
+        public static SubType fromByte(int input) {
+            for (SubType c : SubType.values()) {
+                if (c.subType == input) {
+                    return c;
+                }
+            }
+
+            return SubType.UNKNOWN;
+        }
     }
 
-    private final static List<RFXComValueSelector> supportedValueSelectors = Arrays.asList(RFXComValueSelector.RAW_DATA);
+    private final static List<RFXComValueSelector> supportedValueSelectors = Arrays.asList(RFXComValueSelector.RAW_DATA,
+            RFXComValueSelector.DATA);
 
     public SubType subType = SubType.UNKNOWN;
     private byte[] rawData = new byte[0];
@@ -97,19 +110,13 @@ public class RFXComUndecodedRFMessage extends RFXComBaseMessage {
 
         return str;
     }
-    
 
     @Override
     public void encodeMessage(byte[] data) {
 
         super.encodeMessage(data);
 
-        try {
-            subType = SubType.values()[super.subType];
-        } catch (Exception e) {
-            subType = SubType.UNKNOWN;
-        }
-
+        subType = SubType.fromByte(super.subType);
         rawData = Arrays.copyOfRange(rawMessage, 4, rawMessage.length);
     }
 
@@ -118,13 +125,13 @@ public class RFXComUndecodedRFMessage extends RFXComBaseMessage {
         final int rawLen = Math.min(rawData.length, 33);
         byte[] data = new byte[4 + rawLen];
 
-        data[0] = (byte)(data.length-1);
+        data[0] = (byte) (data.length - 1);
         data[1] = RFXComBaseMessage.PacketType.UNDECODED_RF_MESSAGE.toByte();
         data[2] = subType.toByte();
         data[3] = seqNbr;
 
         for (int i = 0; i < rawLen; i++) {
-            data[i+4] = rawData[i];
+            data[i + 4] = rawData[i];
         }
         return data;
     }
@@ -140,18 +147,15 @@ public class RFXComUndecodedRFMessage extends RFXComBaseMessage {
         org.openhab.core.types.State state = UnDefType.UNDEF;
 
         if (valueSelector.getItemClass() == StringItem.class) {
-
             if (valueSelector == RFXComValueSelector.RAW_DATA) {
-
                 state = new StringType(DatatypeConverter.printHexBinary(rawMessage));
-
+            } else if (valueSelector == RFXComValueSelector.DATA) {
+                state = new StringType(DatatypeConverter.printHexBinary(rawData));
             } else {
                 throw new RFXComException("Can't convert " + valueSelector + " to StringItem");
             }
         } else {
-
             throw new RFXComException("Can't convert " + valueSelector + " to " + valueSelector.getItemClass());
-
         }
 
         return state;

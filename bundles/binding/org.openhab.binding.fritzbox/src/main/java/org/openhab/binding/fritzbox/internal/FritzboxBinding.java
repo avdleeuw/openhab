@@ -1,10 +1,14 @@
 /**
- * Copyright (c) 2010-2016, openHAB.org and others.
+ * Copyright (c) 2010-2019 Contributors to the openHAB project
  *
- * All rights reserved. This program and the accompanying materials
- * are made available under the terms of the Eclipse Public License v1.0
- * which accompanies this distribution, and is available at
- * http://www.eclipse.org/legal/epl-v10.html
+ * See the NOTICE file(s) distributed with this work for additional
+ * information.
+ *
+ * This program and the accompanying materials are made available under the
+ * terms of the Eclipse Public License 2.0 which is available at
+ * http://www.eclipse.org/legal/epl-2.0
+ *
+ * SPDX-License-Identifier: EPL-2.0
  */
 package org.openhab.binding.fritzbox.internal;
 
@@ -20,6 +24,7 @@ import java.net.Socket;
 import java.util.Collection;
 import java.util.Dictionary;
 import java.util.HashMap;
+import java.util.Objects;
 
 import org.apache.commons.lang.StringUtils;
 import org.apache.commons.net.telnet.TelnetClient;
@@ -61,7 +66,7 @@ import org.slf4j.LoggerFactory;
  * @author Jan N. Klug
  * @since 0.7.0
  */
-public class FritzboxBinding extends AbstractActiveBinding<FritzboxBindingProvider>implements ManagedService {
+public class FritzboxBinding extends AbstractActiveBinding<FritzboxBindingProvider> implements ManagedService {
 
     private static HashMap<String, String> commandMap = new HashMap<String, String>();
     private static HashMap<String, String> queryMap = new HashMap<String, String>();
@@ -182,7 +187,7 @@ public class FritzboxBinding extends AbstractActiveBinding<FritzboxBindingProvid
     public void updated(Dictionary config) throws ConfigurationException {
 
         if (config != null) {
-            String ip = (String) config.get("ip");
+            String ip = Objects.toString(config.get("ip"), null);
             if (StringUtils.isNotBlank(ip)) {
                 if (!ip.equals(FritzboxBinding.ip)) {
                     // only do something if the ip has changed
@@ -216,12 +221,12 @@ public class FritzboxBinding extends AbstractActiveBinding<FritzboxBindingProvid
                     }
                 }
             }
-            String password = (String) config.get("password");
+            String password = Objects.toString(config.get("password"), null);
             if (StringUtils.isNotBlank(password)) {
                 FritzboxBinding.password = password;
             }
 
-            String username = (String) config.get("user");
+            String username = Objects.toString(config.get("user"), null);
             if (StringUtils.isNotBlank(username)) {
                 FritzboxBinding.username = username;
             }

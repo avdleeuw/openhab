@@ -1,10 +1,14 @@
 /**
- * Copyright (c) 2010-2016, openHAB.org and others.
+ * Copyright (c) 2010-2019 Contributors to the openHAB project
  *
- * All rights reserved. This program and the accompanying materials
- * are made available under the terms of the Eclipse Public License v1.0
- * which accompanies this distribution, and is available at
- * http://www.eclipse.org/legal/epl-v10.html
+ * See the NOTICE file(s) distributed with this work for additional
+ * information.
+ *
+ * This program and the accompanying materials are made available under the
+ * terms of the Eclipse Public License 2.0 which is available at
+ * http://www.eclipse.org/legal/epl-2.0
+ *
+ * SPDX-License-Identifier: EPL-2.0
  */
 /**
  */
@@ -22,11 +26,11 @@ import org.openhab.binding.tinkerforge.internal.model.ModelPackage;
  * <!-- end-user-doc -->
  * <p>
  * The following features are implemented:
- * <ul>
- * <li>{@link org.openhab.binding.tinkerforge.internal.model.impl.LoadCellConfigurationImpl#getMovingAverage
- * <em>Moving Average</em>}</li>
- * </ul>
  * </p>
+ * <ul>
+ * <li>{@link org.openhab.binding.tinkerforge.internal.model.impl.LoadCellConfigurationImpl#getMovingAverage <em>Moving
+ * Average</em>}</li>
+ * </ul>
  *
  * @generated
  */
@@ -95,10 +99,9 @@ public class LoadCellConfigurationImpl extends TFBaseConfigurationImpl implement
     public void setMovingAverage(short newMovingAverage) {
         short oldMovingAverage = movingAverage;
         movingAverage = newMovingAverage;
-        if (eNotificationRequired()) {
+        if (eNotificationRequired())
             eNotify(new ENotificationImpl(this, Notification.SET, ModelPackage.LOAD_CELL_CONFIGURATION__MOVING_AVERAGE,
                     oldMovingAverage, movingAverage));
-        }
     }
 
     /**
@@ -171,9 +174,8 @@ public class LoadCellConfigurationImpl extends TFBaseConfigurationImpl implement
      */
     @Override
     public String toString() {
-        if (eIsProxy()) {
+        if (eIsProxy())
             return super.toString();
-        }
 
         StringBuffer result = new StringBuffer(super.toString());
         result.append(" (movingAverage: ");

@@ -1,10 +1,14 @@
 /**
- * Copyright (c) 2010-2016, openHAB.org and others.
+ * Copyright (c) 2010-2019 Contributors to the openHAB project
  *
- * All rights reserved. This program and the accompanying materials
- * are made available under the terms of the Eclipse Public License v1.0
- * which accompanies this distribution, and is available at
- * http://www.eclipse.org/legal/epl-v10.html
+ * See the NOTICE file(s) distributed with this work for additional
+ * information.
+ *
+ * This program and the accompanying materials are made available under the
+ * terms of the Eclipse Public License 2.0 which is available at
+ * http://www.eclipse.org/legal/epl-2.0
+ *
+ * SPDX-License-Identifier: EPL-2.0
  */
 package org.openhab.binding.zwave.internal.protocol.commandclass;
 
@@ -84,7 +88,7 @@ public class ZWaveMultiCommandCommandClass extends ZWaveCommandClass {
             int commandClassCode = serialMessage.getMessagePayloadByte(offset + 1);
             commandClass = CommandClass.getCommandClass(commandClassCode);
             if (commandClass == null) {
-                logger.error(String.format("NODE %d: Unknown command class 0x%02x", getNode().getNodeId(),
+                logger.debug(String.format("NODE %d: Unknown command class 0x%02x", getNode().getNodeId(),
                         commandClassCode));
             } else {
                 logger.debug("NODE {}: Incoming command class {}", getNode().getNodeId(), commandClass.getLabel());
@@ -107,7 +111,7 @@ public class ZWaveMultiCommandCommandClass extends ZWaveCommandClass {
                 }
 
                 if (zwaveCommandClass == null) {
-                    logger.error("NODE {}: CommandClass %s not implemented.", this.getNode().getNodeId(),
+                    logger.debug("NODE {}: CommandClass %s not implemented.", this.getNode().getNodeId(),
                             commandClass.getLabel());
                 } else {
                     logger.debug("NODE {}: Calling handleApplicationCommandRequest.", this.getNode().getNodeId());

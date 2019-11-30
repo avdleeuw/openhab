@@ -1,10 +1,14 @@
 /**
- * Copyright (c) 2010-2016, openHAB.org and others.
+ * Copyright (c) 2010-2019 Contributors to the openHAB project
  *
- * All rights reserved. This program and the accompanying materials
- * are made available under the terms of the Eclipse Public License v1.0
- * which accompanies this distribution, and is available at
- * http://www.eclipse.org/legal/epl-v10.html
+ * See the NOTICE file(s) distributed with this work for additional
+ * information.
+ *
+ * This program and the accompanying materials are made available under the
+ * terms of the Eclipse Public License 2.0 which is available at
+ * http://www.eclipse.org/legal/epl-2.0
+ *
+ * SPDX-License-Identifier: EPL-2.0
  */
 package org.openhab.binding.astro.internal.job;
 
@@ -178,7 +182,7 @@ public class JobScheduler {
         if (nextSeason == null) {
             nextSeason = DateTimeUtils.getFirstDayOfNextYear();
         }
-        schedule(nextSeason, "Season", new JobDataMap());
+        schedule(nextSeason, "Season", new JobDataMap(), SeasonJob.class);
     }
 
     /**
@@ -187,14 +191,14 @@ public class JobScheduler {
     public void scheduleItem(Calendar calendar, String itemName) {
         JobDataMap jobDataMap = new JobDataMap();
         jobDataMap.put("itemName", itemName);
-        schedule(calendar, itemName, jobDataMap);
+        schedule(calendar, itemName, jobDataMap, ItemJob.class);
     }
 
     /**
      * Schedules a job at the specified date/time, deletes a previously
      * scheduled job.
      */
-    private void schedule(Calendar calendar, String jobName, JobDataMap jobDataMap) {
+    private void schedule(Calendar calendar, String jobName, JobDataMap jobDataMap, Class<? extends Job> jobClass) {
         if (System.currentTimeMillis() < calendar.getTimeInMillis()) {
             try {
                 JobKey jobKey = new JobKey(jobName, JOB_GROUP);
@@ -203,7 +207,7 @@ public class JobScheduler {
                 }
                 Trigger trigger = newTrigger().withIdentity(jobName + "-Trigger", JOB_GROUP).startAt(calendar.getTime())
                         .build();
-                JobDetail jobDetail = newJob(ItemJob.class).withIdentity(jobKey).usingJobData(jobDataMap).build();
+                JobDetail jobDetail = newJob(jobClass).withIdentity(jobKey).usingJobData(jobDataMap).build();
                 scheduler.scheduleJob(jobDetail, trigger);
                 logger.debug("Scheduled job with name {} at {}", jobName, sdf.format(calendar.getTime()));
             } catch (SchedulerException ex) {

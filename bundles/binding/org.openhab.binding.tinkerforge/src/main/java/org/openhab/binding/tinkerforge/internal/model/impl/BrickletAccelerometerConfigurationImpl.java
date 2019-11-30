@@ -1,10 +1,14 @@
 /**
- * Copyright (c) 2010-2016, openHAB.org and others.
+ * Copyright (c) 2010-2019 Contributors to the openHAB project
  *
- * All rights reserved. This program and the accompanying materials
- * are made available under the terms of the Eclipse Public License v1.0
- * which accompanies this distribution, and is available at
- * http://www.eclipse.org/legal/epl-v10.html
+ * See the NOTICE file(s) distributed with this work for additional
+ * information.
+ *
+ * This program and the accompanying materials are made available under the
+ * terms of the Eclipse Public License 2.0 which is available at
+ * http://www.eclipse.org/legal/epl-2.0
+ *
+ * SPDX-License-Identifier: EPL-2.0
  */
 /**
  */
@@ -23,6 +27,7 @@ import org.openhab.binding.tinkerforge.internal.model.ModelPackage;
  * <!-- end-user-doc -->
  * <p>
  * The following features are implemented:
+ * </p>
  * <ul>
  * <li>{@link org.openhab.binding.tinkerforge.internal.model.impl.BrickletAccelerometerConfigurationImpl#getDataRate
  * <em>Data Rate</em>}</li>
@@ -32,7 +37,6 @@ import org.openhab.binding.tinkerforge.internal.model.ModelPackage;
  * {@link org.openhab.binding.tinkerforge.internal.model.impl.BrickletAccelerometerConfigurationImpl#getFilterBandwidth
  * <em>Filter Bandwidth</em>}</li>
  * </ul>
- * </p>
  *
  * @generated
  */
@@ -146,10 +150,9 @@ public class BrickletAccelerometerConfigurationImpl extends MinimalEObjectImpl.C
     public void setDataRate(Short newDataRate) {
         Short oldDataRate = dataRate;
         dataRate = newDataRate;
-        if (eNotificationRequired()) {
+        if (eNotificationRequired())
             eNotify(new ENotificationImpl(this, Notification.SET,
                     ModelPackage.BRICKLET_ACCELEROMETER_CONFIGURATION__DATA_RATE, oldDataRate, dataRate));
-        }
     }
 
     /**
@@ -173,10 +176,9 @@ public class BrickletAccelerometerConfigurationImpl extends MinimalEObjectImpl.C
     public void setFullScale(Short newFullScale) {
         Short oldFullScale = fullScale;
         fullScale = newFullScale;
-        if (eNotificationRequired()) {
+        if (eNotificationRequired())
             eNotify(new ENotificationImpl(this, Notification.SET,
                     ModelPackage.BRICKLET_ACCELEROMETER_CONFIGURATION__FULL_SCALE, oldFullScale, fullScale));
-        }
     }
 
     /**
@@ -200,11 +202,10 @@ public class BrickletAccelerometerConfigurationImpl extends MinimalEObjectImpl.C
     public void setFilterBandwidth(Short newFilterBandwidth) {
         Short oldFilterBandwidth = filterBandwidth;
         filterBandwidth = newFilterBandwidth;
-        if (eNotificationRequired()) {
+        if (eNotificationRequired())
             eNotify(new ENotificationImpl(this, Notification.SET,
                     ModelPackage.BRICKLET_ACCELEROMETER_CONFIGURATION__FILTER_BANDWIDTH, oldFilterBandwidth,
                     filterBandwidth));
-        }
     }
 
     /**
@@ -298,9 +299,8 @@ public class BrickletAccelerometerConfigurationImpl extends MinimalEObjectImpl.C
      */
     @Override
     public String toString() {
-        if (eIsProxy()) {
+        if (eIsProxy())
             return super.toString();
-        }
 
         StringBuffer result = new StringBuffer(super.toString());
         result.append(" (dataRate: ");

@@ -1,10 +1,14 @@
 /**
- * Copyright (c) 2010-2016, openHAB.org and others.
+ * Copyright (c) 2010-2019 Contributors to the openHAB project
  *
- * All rights reserved. This program and the accompanying materials
- * are made available under the terms of the Eclipse Public License v1.0
- * which accompanies this distribution, and is available at
- * http://www.eclipse.org/legal/epl-v10.html
+ * See the NOTICE file(s) distributed with this work for additional
+ * information.
+ *
+ * This program and the accompanying materials are made available under the
+ * terms of the Eclipse Public License 2.0 which is available at
+ * http://www.eclipse.org/legal/epl-2.0
+ *
+ * SPDX-License-Identifier: EPL-2.0
  */
 package org.openhab.persistence.jpa.internal;
 
@@ -77,7 +81,7 @@ public class JpaConfiguration {
         dbPassword = (String) properties.get(CFG_PASSWORD);
 
         if (properties.get(CFG_SYNCMAPPING) == null) {
-            logger.info("{} was not specified!", CFG_SYNCMAPPING);
+            logger.debug("{} was not specified!", CFG_SYNCMAPPING);
         }
         dbSyncMapping = (String) properties.get(CFG_SYNCMAPPING);
 

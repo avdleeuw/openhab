@@ -1,10 +1,14 @@
 /**
- * Copyright (c) 2010-2016, openHAB.org and others.
+ * Copyright (c) 2010-2019 Contributors to the openHAB project
  *
- * All rights reserved. This program and the accompanying materials
- * are made available under the terms of the Eclipse Public License v1.0
- * which accompanies this distribution, and is available at
- * http://www.eclipse.org/legal/epl-v10.html
+ * See the NOTICE file(s) distributed with this work for additional
+ * information.
+ *
+ * This program and the accompanying materials are made available under the
+ * terms of the Eclipse Public License 2.0 which is available at
+ * http://www.eclipse.org/legal/epl-2.0
+ *
+ * SPDX-License-Identifier: EPL-2.0
  */
 package org.openhab.binding.tinkerforge.internal.model.impl;
 
@@ -26,6 +30,7 @@ import org.openhab.binding.tinkerforge.internal.model.TFBrickDCConfiguration;
  *        <!-- end-user-doc -->
  *        <p>
  *        The following features are implemented:
+ *        </p>
  *        <ul>
  *        <li>{@link org.openhab.binding.tinkerforge.internal.model.impl.TFBrickDCConfigurationImpl#getThreshold
  *        <em>Threshold</em>}</li>
@@ -40,7 +45,6 @@ import org.openhab.binding.tinkerforge.internal.model.TFBrickDCConfiguration;
  *        <li>{@link org.openhab.binding.tinkerforge.internal.model.impl.TFBrickDCConfigurationImpl#getDriveMode
  *        <em>Drive Mode</em>}</li>
  *        </ul>
- *        </p>
  *
  * @generated
  */
@@ -219,10 +223,9 @@ public class TFBrickDCConfigurationImpl extends DimmableConfigurationImpl implem
     public void setThreshold(BigDecimal newThreshold) {
         BigDecimal oldThreshold = threshold;
         threshold = newThreshold;
-        if (eNotificationRequired()) {
+        if (eNotificationRequired())
             eNotify(new ENotificationImpl(this, Notification.SET, ModelPackage.TF_BRICK_DC_CONFIGURATION__THRESHOLD,
                     oldThreshold, threshold));
-        }
     }
 
     /**
@@ -246,10 +249,9 @@ public class TFBrickDCConfigurationImpl extends DimmableConfigurationImpl implem
     public void setCallbackPeriod(int newCallbackPeriod) {
         int oldCallbackPeriod = callbackPeriod;
         callbackPeriod = newCallbackPeriod;
-        if (eNotificationRequired()) {
+        if (eNotificationRequired())
             eNotify(new ENotificationImpl(this, Notification.SET,
                     ModelPackage.TF_BRICK_DC_CONFIGURATION__CALLBACK_PERIOD, oldCallbackPeriod, callbackPeriod));
-        }
     }
 
     /**
@@ -273,10 +275,9 @@ public class TFBrickDCConfigurationImpl extends DimmableConfigurationImpl implem
     public void setVelocity(short newVelocity) {
         short oldVelocity = velocity;
         velocity = newVelocity;
-        if (eNotificationRequired()) {
+        if (eNotificationRequired())
             eNotify(new ENotificationImpl(this, Notification.SET, ModelPackage.TF_BRICK_DC_CONFIGURATION__VELOCITY,
                     oldVelocity, velocity));
-        }
     }
 
     /**
@@ -300,10 +301,9 @@ public class TFBrickDCConfigurationImpl extends DimmableConfigurationImpl implem
     public void setAcceleration(int newAcceleration) {
         int oldAcceleration = acceleration;
         acceleration = newAcceleration;
-        if (eNotificationRequired()) {
+        if (eNotificationRequired())
             eNotify(new ENotificationImpl(this, Notification.SET, ModelPackage.TF_BRICK_DC_CONFIGURATION__ACCELERATION,
                     oldAcceleration, acceleration));
-        }
     }
 
     /**
@@ -327,10 +327,9 @@ public class TFBrickDCConfigurationImpl extends DimmableConfigurationImpl implem
     public void setPwmFrequency(int newPwmFrequency) {
         int oldPwmFrequency = pwmFrequency;
         pwmFrequency = newPwmFrequency;
-        if (eNotificationRequired()) {
+        if (eNotificationRequired())
             eNotify(new ENotificationImpl(this, Notification.SET, ModelPackage.TF_BRICK_DC_CONFIGURATION__PWM_FREQUENCY,
                     oldPwmFrequency, pwmFrequency));
-        }
     }
 
     /**
@@ -354,10 +353,9 @@ public class TFBrickDCConfigurationImpl extends DimmableConfigurationImpl implem
     public void setDriveMode(String newDriveMode) {
         String oldDriveMode = driveMode;
         driveMode = newDriveMode;
-        if (eNotificationRequired()) {
+        if (eNotificationRequired())
             eNotify(new ENotificationImpl(this, Notification.SET, ModelPackage.TF_BRICK_DC_CONFIGURATION__DRIVE_MODE,
                     oldDriveMode, driveMode));
-        }
     }
 
     /**
@@ -522,9 +520,8 @@ public class TFBrickDCConfigurationImpl extends DimmableConfigurationImpl implem
      */
     @Override
     public String toString() {
-        if (eIsProxy()) {
+        if (eIsProxy())
             return super.toString();
-        }
 
         StringBuffer result = new StringBuffer(super.toString());
         result.append(" (threshold: ");

@@ -24,6 +24,7 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 import net.wimpi.modbus.Modbus;
+import net.wimpi.modbus.io.ModbusSocketBasedTransportFactory;
 import net.wimpi.modbus.io.ModbusTCPTransport;
 import net.wimpi.modbus.io.ModbusTransport;
 
@@ -34,13 +35,25 @@ import net.wimpi.modbus.io.ModbusTransport;
  * @version @version@ (@date@)
  */
 public class TCPSlaveConnection {
+
+    public static class ModbusTCPTransportFactory implements ModbusSocketBasedTransportFactory {
+
+        @Override
+        public ModbusTransport create(Socket socket) {
+            return new ModbusTCPTransport(socket);
+        }
+
+    }
+
     private static final Logger logger = LoggerFactory.getLogger(TCPSlaveConnection.class);
 
     // instance attributes
     private Socket m_Socket;
     private int m_Timeout = Modbus.DEFAULT_TIMEOUT;
     private boolean m_Connected;
-    private ModbusTCPTransport m_ModbusTransport;
+    private ModbusTransport m_ModbusTransport;
+
+    private ModbusSocketBasedTransportFactory m_TransportFactory;
 
     /**
      * Constructs a <tt>TCPSlaveConnection</tt> instance
@@ -48,7 +61,8 @@ public class TCPSlaveConnection {
      *
      * @param socket the socket instance to be used for communication.
      */
-    public TCPSlaveConnection(Socket socket) {
+    public TCPSlaveConnection(Socket socket, ModbusSocketBasedTransportFactory transportFactory) {
+        this.m_TransportFactory = transportFactory;
         try {
             setSocket(socket);
         } catch (IOException ex) {
@@ -59,6 +73,10 @@ public class TCPSlaveConnection {
             // @commentend@
         }
     }// constructor
+
+    public TCPSlaveConnection(Socket socket) {
+        this(socket, new ModbusTCPTransportFactory());
+    }
 
     /**
      * Closes this <tt>TCPSlaveConnection</tt>.
@@ -97,9 +115,9 @@ public class TCPSlaveConnection {
     private void setSocket(Socket socket) throws IOException {
         m_Socket = socket;
         if (m_ModbusTransport == null) {
-            m_ModbusTransport = new ModbusTCPTransport(m_Socket);
+            m_ModbusTransport = this.m_TransportFactory.create(m_Socket);
         } else {
-            m_ModbusTransport.setSocket(m_Socket);
+            throw new IllegalStateException("socket cannot be re-set");
         }
         m_Connected = true;
     }// prepareIO

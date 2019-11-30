@@ -1,10 +1,14 @@
 /**
- * Copyright (c) 2010-2016, openHAB.org and others.
+ * Copyright (c) 2010-2019 Contributors to the openHAB project
  *
- * All rights reserved. This program and the accompanying materials
- * are made available under the terms of the Eclipse Public License v1.0
- * which accompanies this distribution, and is available at
- * http://www.eclipse.org/legal/epl-v10.html
+ * See the NOTICE file(s) distributed with this work for additional
+ * information.
+ *
+ * This program and the accompanying materials are made available under the
+ * terms of the Eclipse Public License 2.0 which is available at
+ * http://www.eclipse.org/legal/epl-2.0
+ *
+ * SPDX-License-Identifier: EPL-2.0
  */
 package org.openhab.binding.dsmr.internal.p1telegram;
 
@@ -44,7 +48,7 @@ public class P1TelegramParser {
 
     /**
      * Creates a new P1TelegramParser
-     * 
+     *
      * @param factory
      *            OBISMsgFactory object
      */
@@ -59,7 +63,7 @@ public class P1TelegramParser {
      * Parses data. If parsing is not ready yet nothing will be returned. If
      * parsing fails completely nothing will be returned. If parsing succeeds
      * (partial) the received OBIS messages will be returned.
-     * 
+     *
      * @param data
      *            byte data
      * @param offset
@@ -72,8 +76,10 @@ public class P1TelegramParser {
     public List<OBISMessage> parseData(byte[] data, int offset, int length) {
         List<OBISMessage> receivedMessages = new LinkedList<OBISMessage>();
 
-        logger.trace("Data:" + Arrays.toString(Arrays.copyOfRange(data, offset, length)) + ", state before parsing:"
-                + parserState);
+        if (logger.isTraceEnabled()) {
+            logger.trace("Data: {}, state before parsing: {}", new String(Arrays.copyOfRange(data, offset, length)),
+                    parserState);
+        }
         for (int i = offset; i < (offset + length); i++) {
             char c = (char) data[i];
 
@@ -115,8 +121,8 @@ public class P1TelegramParser {
                     } else if (c == '(') {
                         parserState.setState(P1TelegramParserState.State.DATA_OBIS_VALUE_START);
                     } else if (c == '!') {
-                        logger.warn(
-                                "Unexpected character '!'. Going to state:" + P1TelegramParserState.State.CRC_VALUE);
+                        logger.warn("Unexpected character '!'. Going to state: {}",
+                                P1TelegramParserState.State.CRC_VALUE);
 
                         parserState.setState(P1TelegramParserState.State.CRC_VALUE);
                     } else {
@@ -174,7 +180,7 @@ public class P1TelegramParser {
             }
             parserState.handleCharacter(c);
         }
-        logger.trace("State after parsing:" + parserState);
+        logger.trace("State after parsing: {}", parserState);
 
         return receivedMessages;
     }
@@ -199,11 +205,11 @@ public class P1TelegramParser {
 
         for (OBISDataLine obisDataLine : obisDataLines) {
             OBISMessage obisMessage = factory.getMessage(obisDataLine.obisId, obisDataLine.obisStringValues);
-            logger.debug("Parsed:" + obisDataLine + ", to:" + obisMessage);
+            logger.debug("Parsed: {}, to: {}", obisDataLine, obisMessage);
             if (obisMessage != null) {
                 obisMessages.add(obisMessage);
             } else {
-                logger.warn("Failed to parse:" + obisDataLine);
+                logger.warn("Failed to parse: {}", obisDataLine);
             }
         }
 
@@ -213,13 +219,13 @@ public class P1TelegramParser {
     /**
      * Handles an unexpected character. The character will be logged and the P1
      * telegram will be finished.
-     * 
+     *
      * @param c
      *            the unexpected character
      */
     private void handleUnexpectedCharacter(char c) {
-        logger.warn("Unexpected character '" + c + "' in state:" + parserState
-                + ". Publishing partial P1Telegram and wait for new P1Telegram");
+        logger.warn("Unexpected character '{}' in state: {}. Publishing partial P1Telegram and wait for new P1Telegram",
+                c, parserState);
 
         handleEndP1Telegram();
     }
@@ -248,7 +254,7 @@ public class P1TelegramParser {
 
     /**
      * Class representing a OBISDataLine, e.g. '0-0:96.3.10(1)'
-     * 
+     *
      * @author mvolaart
      * @since 1.7.0
      */
@@ -261,7 +267,7 @@ public class P1TelegramParser {
 
         /**
          * Creates a new OBISDataLine
-         * 
+         *
          * @param obisId
          *            OBISIdentifer
          */

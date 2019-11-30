@@ -1,10 +1,14 @@
 /**
- * Copyright (c) 2010-2016, openHAB.org and others.
+ * Copyright (c) 2010-2019 Contributors to the openHAB project
  *
- * All rights reserved. This program and the accompanying materials
- * are made available under the terms of the Eclipse Public License v1.0
- * which accompanies this distribution, and is available at
- * http://www.eclipse.org/legal/epl-v10.html
+ * See the NOTICE file(s) distributed with this work for additional
+ * information.
+ *
+ * This program and the accompanying materials are made available under the
+ * terms of the Eclipse Public License 2.0 which is available at
+ * http://www.eclipse.org/legal/epl-2.0
+ *
+ * SPDX-License-Identifier: EPL-2.0
  */
 /**
  */
@@ -41,23 +45,23 @@ import com.tinkerforge.TimeoutException;
  * <!-- end-user-doc -->
  * <p>
  * The following features are implemented:
+ * </p>
  * <ul>
  * <li>{@link org.openhab.binding.tinkerforge.internal.model.impl.LaserRangeFinderLaserImpl#getLogger <em>Logger</em>}
  * </li>
  * <li>{@link org.openhab.binding.tinkerforge.internal.model.impl.LaserRangeFinderLaserImpl#getUid <em>Uid</em>}</li>
  * <li>{@link org.openhab.binding.tinkerforge.internal.model.impl.LaserRangeFinderLaserImpl#isPoll <em>Poll</em>}</li>
- * <li>{@link org.openhab.binding.tinkerforge.internal.model.impl.LaserRangeFinderLaserImpl#getEnabledA
- * <em>Enabled A</em>}</li>
+ * <li>{@link org.openhab.binding.tinkerforge.internal.model.impl.LaserRangeFinderLaserImpl#getEnabledA <em>Enabled
+ * A</em>}</li>
  * <li>{@link org.openhab.binding.tinkerforge.internal.model.impl.LaserRangeFinderLaserImpl#getSubId <em>Sub Id</em>}
  * </li>
  * <li>{@link org.openhab.binding.tinkerforge.internal.model.impl.LaserRangeFinderLaserImpl#getMbrick <em>Mbrick</em>}
  * </li>
- * <li>{@link org.openhab.binding.tinkerforge.internal.model.impl.LaserRangeFinderLaserImpl#getDigitalState
- * <em>Digital State</em>}</li>
- * <li>{@link org.openhab.binding.tinkerforge.internal.model.impl.LaserRangeFinderLaserImpl#getDeviceType
- * <em>Device Type</em>}</li>
+ * <li>{@link org.openhab.binding.tinkerforge.internal.model.impl.LaserRangeFinderLaserImpl#getDigitalState <em>Digital
+ * State</em>}</li>
+ * <li>{@link org.openhab.binding.tinkerforge.internal.model.impl.LaserRangeFinderLaserImpl#getDeviceType <em>Device
+ * Type</em>}</li>
  * </ul>
- * </p>
  *
  * @generated
  */
@@ -260,10 +264,9 @@ public class LaserRangeFinderLaserImpl extends MinimalEObjectImpl.Container impl
     public void setLogger(Logger newLogger) {
         Logger oldLogger = logger;
         logger = newLogger;
-        if (eNotificationRequired()) {
+        if (eNotificationRequired())
             eNotify(new ENotificationImpl(this, Notification.SET, ModelPackage.LASER_RANGE_FINDER_LASER__LOGGER,
                     oldLogger, logger));
-        }
     }
 
     /**
@@ -287,10 +290,9 @@ public class LaserRangeFinderLaserImpl extends MinimalEObjectImpl.Container impl
     public void setUid(String newUid) {
         String oldUid = uid;
         uid = newUid;
-        if (eNotificationRequired()) {
+        if (eNotificationRequired())
             eNotify(new ENotificationImpl(this, Notification.SET, ModelPackage.LASER_RANGE_FINDER_LASER__UID, oldUid,
                     uid));
-        }
     }
 
     /**
@@ -314,10 +316,9 @@ public class LaserRangeFinderLaserImpl extends MinimalEObjectImpl.Container impl
     public void setPoll(boolean newPoll) {
         boolean oldPoll = poll;
         poll = newPoll;
-        if (eNotificationRequired()) {
+        if (eNotificationRequired())
             eNotify(new ENotificationImpl(this, Notification.SET, ModelPackage.LASER_RANGE_FINDER_LASER__POLL, oldPoll,
                     poll));
-        }
     }
 
     /**
@@ -341,10 +342,9 @@ public class LaserRangeFinderLaserImpl extends MinimalEObjectImpl.Container impl
     public void setEnabledA(AtomicBoolean newEnabledA) {
         AtomicBoolean oldEnabledA = enabledA;
         enabledA = newEnabledA;
-        if (eNotificationRequired()) {
+        if (eNotificationRequired())
             eNotify(new ENotificationImpl(this, Notification.SET, ModelPackage.LASER_RANGE_FINDER_LASER__ENABLED_A,
                     oldEnabledA, enabledA));
-        }
     }
 
     /**
@@ -368,10 +368,9 @@ public class LaserRangeFinderLaserImpl extends MinimalEObjectImpl.Container impl
     public void setSubId(String newSubId) {
         String oldSubId = subId;
         subId = newSubId;
-        if (eNotificationRequired()) {
+        if (eNotificationRequired())
             eNotify(new ENotificationImpl(this, Notification.SET, ModelPackage.LASER_RANGE_FINDER_LASER__SUB_ID,
                     oldSubId, subId));
-        }
     }
 
     /**
@@ -382,10 +381,21 @@ public class LaserRangeFinderLaserImpl extends MinimalEObjectImpl.Container impl
      */
     @Override
     public MBrickletLaserRangeFinder getMbrick() {
-        if (eContainerFeatureID() != ModelPackage.LASER_RANGE_FINDER_LASER__MBRICK) {
+        if (eContainerFeatureID() != ModelPackage.LASER_RANGE_FINDER_LASER__MBRICK)
             return null;
-        }
         return (MBrickletLaserRangeFinder) eContainer();
+    }
+
+    /**
+     * <!-- begin-user-doc -->
+     * <!-- end-user-doc -->
+     * 
+     * @generated
+     */
+    public MBrickletLaserRangeFinder basicGetMbrick() {
+        if (eContainerFeatureID() != ModelPackage.LASER_RANGE_FINDER_LASER__MBRICK)
+            return null;
+        return (MBrickletLaserRangeFinder) eInternalContainer();
     }
 
     /**
@@ -409,25 +419,20 @@ public class LaserRangeFinderLaserImpl extends MinimalEObjectImpl.Container impl
     public void setMbrick(MBrickletLaserRangeFinder newMbrick) {
         if (newMbrick != eInternalContainer()
                 || (eContainerFeatureID() != ModelPackage.LASER_RANGE_FINDER_LASER__MBRICK && newMbrick != null)) {
-            if (EcoreUtil.isAncestor(this, newMbrick)) {
+            if (EcoreUtil.isAncestor(this, newMbrick))
                 throw new IllegalArgumentException("Recursive containment not allowed for " + toString());
-            }
             NotificationChain msgs = null;
-            if (eInternalContainer() != null) {
+            if (eInternalContainer() != null)
                 msgs = eBasicRemoveFromContainer(msgs);
-            }
-            if (newMbrick != null) {
+            if (newMbrick != null)
                 msgs = ((InternalEObject) newMbrick).eInverseAdd(this, ModelPackage.MSUB_DEVICE_HOLDER__MSUBDEVICES,
                         MSubDeviceHolder.class, msgs);
-            }
             msgs = basicSetMbrick(newMbrick, msgs);
-            if (msgs != null) {
+            if (msgs != null)
                 msgs.dispatch();
-            }
-        } else if (eNotificationRequired()) {
+        } else if (eNotificationRequired())
             eNotify(new ENotificationImpl(this, Notification.SET, ModelPackage.LASER_RANGE_FINDER_LASER__MBRICK,
                     newMbrick, newMbrick));
-        }
     }
 
     /**
@@ -451,10 +456,9 @@ public class LaserRangeFinderLaserImpl extends MinimalEObjectImpl.Container impl
     public void setDigitalState(HighLowValue newDigitalState) {
         HighLowValue oldDigitalState = digitalState;
         digitalState = newDigitalState;
-        if (eNotificationRequired()) {
+        if (eNotificationRequired())
             eNotify(new ENotificationImpl(this, Notification.SET, ModelPackage.LASER_RANGE_FINDER_LASER__DIGITAL_STATE,
                     oldDigitalState, digitalState));
-        }
     }
 
     /**
@@ -555,9 +559,8 @@ public class LaserRangeFinderLaserImpl extends MinimalEObjectImpl.Container impl
     public NotificationChain eInverseAdd(InternalEObject otherEnd, int featureID, NotificationChain msgs) {
         switch (featureID) {
             case ModelPackage.LASER_RANGE_FINDER_LASER__MBRICK:
-                if (eInternalContainer() != null) {
+                if (eInternalContainer() != null)
                     msgs = eBasicRemoveFromContainer(msgs);
-                }
                 return basicSetMbrick((MBrickletLaserRangeFinder) otherEnd, msgs);
         }
         return super.eInverseAdd(otherEnd, featureID, msgs);
@@ -614,7 +617,9 @@ public class LaserRangeFinderLaserImpl extends MinimalEObjectImpl.Container impl
             case ModelPackage.LASER_RANGE_FINDER_LASER__SUB_ID:
                 return getSubId();
             case ModelPackage.LASER_RANGE_FINDER_LASER__MBRICK:
-                return getMbrick();
+                if (resolve)
+                    return getMbrick();
+                return basicGetMbrick();
             case ModelPackage.LASER_RANGE_FINDER_LASER__DIGITAL_STATE:
                 return getDigitalState();
             case ModelPackage.LASER_RANGE_FINDER_LASER__DEVICE_TYPE:
@@ -711,7 +716,7 @@ public class LaserRangeFinderLaserImpl extends MinimalEObjectImpl.Container impl
             case ModelPackage.LASER_RANGE_FINDER_LASER__SUB_ID:
                 return SUB_ID_EDEFAULT == null ? subId != null : !SUB_ID_EDEFAULT.equals(subId);
             case ModelPackage.LASER_RANGE_FINDER_LASER__MBRICK:
-                return getMbrick() != null;
+                return basicGetMbrick() != null;
             case ModelPackage.LASER_RANGE_FINDER_LASER__DIGITAL_STATE:
                 return DIGITAL_STATE_EDEFAULT == null ? digitalState != null
                         : !DIGITAL_STATE_EDEFAULT.equals(digitalState);
@@ -816,9 +821,8 @@ public class LaserRangeFinderLaserImpl extends MinimalEObjectImpl.Container impl
      */
     @Override
     public String toString() {
-        if (eIsProxy()) {
+        if (eIsProxy())
             return super.toString();
-        }
 
         StringBuffer result = new StringBuffer(super.toString());
         result.append(" (logger: ");

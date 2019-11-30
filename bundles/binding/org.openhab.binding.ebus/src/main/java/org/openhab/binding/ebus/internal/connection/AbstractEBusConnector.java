@@ -1,10 +1,14 @@
 /**
- * Copyright (c) 2010-2016, openHAB.org and others.
+ * Copyright (c) 2010-2019 Contributors to the openHAB project
  *
- * All rights reserved. This program and the accompanying materials
- * are made available under the terms of the Eclipse Public License v1.0
- * which accompanies this distribution, and is available at
- * http://www.eclipse.org/legal/epl-v10.html
+ * See the NOTICE file(s) distributed with this work for additional
+ * information.
+ *
+ * This program and the accompanying materials are made available under the
+ * terms of the Eclipse Public License 2.0 which is available at
+ * http://www.eclipse.org/legal/epl-2.0
+ *
+ * SPDX-License-Identifier: EPL-2.0
  */
 package org.openhab.binding.ebus.internal.connection;
 
@@ -155,7 +159,7 @@ public abstract class AbstractEBusConnector extends Thread {
                     // lastReceiveTime = System.nanoTime();
 
                     if (read == -1) {
-                        logger.debug("eBUS read timeout occured, no data on bus ...");
+                        logger.debug("eBUS read timeout occurred, no data on bus ...");
 
                     } else {
 
@@ -179,7 +183,7 @@ public abstract class AbstractEBusConnector extends Thread {
                 }
 
             } catch (IOException e) {
-                logger.error("An IO exception has occured! Try to reconnect eBus connector ...", e);
+                logger.error("An IO exception has occurred! Try to reconnect eBus connector ...", e);
 
                 try {
                     reconnect();

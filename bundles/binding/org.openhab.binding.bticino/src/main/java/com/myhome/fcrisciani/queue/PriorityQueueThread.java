@@ -1,10 +1,14 @@
 /**
- * Copyright (c) 2010-2015, openHAB.org and others.
+ * Copyright (c) 2010-2019 Contributors to the openHAB project
  *
- * All rights reserved. This program and the accompanying materials
- * are made available under the terms of the Eclipse Public License v1.0
- * which accompanies this distribution, and is available at
- * http://www.eclipse.org/legal/epl-v10.html
+ * See the NOTICE file(s) distributed with this work for additional
+ * information.
+ *
+ * This program and the accompanying materials are made available under the
+ * terms of the Eclipse Public License 2.0 which is available at
+ * http://www.eclipse.org/legal/epl-2.0
+ *
+ * SPDX-License-Identifier: EPL-2.0
  */
 package com.myhome.fcrisciani.queue;
 
@@ -60,7 +64,7 @@ public class PriorityQueueThread implements Runnable {
     /**
      * Create the Priority Queue Thread giving the reference to the MyHome
      * connector and the Priority queue
-     * 
+     *
      * @param myConnector
      *            myhome connector used only for IP, port read
      * @param list
@@ -76,10 +80,11 @@ public class PriorityQueueThread implements Runnable {
         do {
             try {
                 tosend = list.getCommand();
-                logger.info("OpenWebNet CMD [" + tosend + "]");
+                logger.debug("OpenWebNet CMD [" + tosend + "]");
                 if (sk == null) { // Create a new command session
                     try {
-                        sk = MyHomeSocketFactory.openCommandSession(myConnector.ip, myConnector.port);
+                        sk = MyHomeSocketFactory.openCommandSession(myConnector.ip, myConnector.port,
+                                myConnector.passwd);
                     } catch (IOException e) {
                         System.err.println(
                                 "PriorityQueueThread: Problem during socket monitor opening - " + e.toString());

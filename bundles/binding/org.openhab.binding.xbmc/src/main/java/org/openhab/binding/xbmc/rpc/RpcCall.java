@@ -1,10 +1,14 @@
 /**
- * Copyright (c) 2010-2016, openHAB.org and others.
+ * Copyright (c) 2010-2019 Contributors to the openHAB project
  *
- * All rights reserved. This program and the accompanying materials
- * are made available under the terms of the Eclipse Public License v1.0
- * which accompanies this distribution, and is available at
- * http://www.eclipse.org/legal/epl-v10.html
+ * See the NOTICE file(s) distributed with this work for additional
+ * information.
+ *
+ * This program and the accompanying materials are made available under the
+ * terms of the Eclipse Public License 2.0 which is available at
+ * http://www.eclipse.org/legal/epl-2.0
+ *
+ * SPDX-License-Identifier: EPL-2.0
  */
 package org.openhab.binding.xbmc.rpc;
 
@@ -35,7 +39,7 @@ import com.ning.http.client.Response;
  *
  * XBMC JSON RPC API: http://wiki.xbmc.org/?title=JSON-RPC_API
  *
- * @author tlan, Ben Jones
+ * @author tlan, Ben Jones, Plebs
  * @since 1.5.0
  */
 public abstract class RpcCall {
@@ -131,11 +135,14 @@ public abstract class RpcCall {
         try {
             // we fire this request off asynchronously and let the completeHandler
             // process any response as necessary (can be null)
-            ListenableFuture<Response> future = client.preparePost(uri).setBody(writeJson(request))
+            String resultWrite = writeJson(request);
+            logger.debug("Write JSON: {}", resultWrite);
+            ListenableFuture<Response> future = client.preparePost(uri).setBody(resultWrite)
                     .setHeader("content-type", "application/json").setHeader("accept", "application/json")
                     .execute(new AsyncCompletionHandler<Response>() {
                         @Override
                         public Response onCompleted(Response response) throws Exception {
+                            logger.debug("Read JSON: {}", response.getResponseBody());
                             Map<String, Object> json = readJson(response.getResponseBody());
 
                             // if we get an error then throw an exception to stop the

@@ -1,10 +1,14 @@
 /**
- * Copyright (c) 2010-2016, openHAB.org and others.
+ * Copyright (c) 2010-2019 Contributors to the openHAB project
  *
- * All rights reserved. This program and the accompanying materials
- * are made available under the terms of the Eclipse Public License v1.0
- * which accompanies this distribution, and is available at
- * http://www.eclipse.org/legal/epl-v10.html
+ * See the NOTICE file(s) distributed with this work for additional
+ * information.
+ *
+ * This program and the accompanying materials are made available under the
+ * terms of the Eclipse Public License 2.0 which is available at
+ * http://www.eclipse.org/legal/epl-2.0
+ *
+ * SPDX-License-Identifier: EPL-2.0
  */
 package org.openhab.binding.maxcul.internal;
 
@@ -275,7 +279,7 @@ public class MaxCulMsgHandler implements CULListener {
                     logger.debug("Retransmitting packet " + qi.msg.msgCount + " attempt " + qi.retryCount);
                     sendMessage(qi.msg, qi);
                 } else {
-                    logger.error("Transmission of packet " + qi.msg.msgCount + " failed 3 times");
+                    logger.error("Transmission of packet {} failed 3 times, message was: {} to address {} => {}",  qi.msg.msgCount, qi.msg.msgType, qi.msg.dstAddrStr, qi.msg.rawMsg);
                 }
             }
         }

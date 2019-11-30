@@ -1,10 +1,14 @@
 /**
- * Copyright (c) 2010-2016, openHAB.org and others.
+ * Copyright (c) 2010-2019 Contributors to the openHAB project
  *
- * All rights reserved. This program and the accompanying materials
- * are made available under the terms of the Eclipse Public License v1.0
- * which accompanies this distribution, and is available at
- * http://www.eclipse.org/legal/epl-v10.html
+ * See the NOTICE file(s) distributed with this work for additional
+ * information.
+ *
+ * This program and the accompanying materials are made available under the
+ * terms of the Eclipse Public License 2.0 which is available at
+ * http://www.eclipse.org/legal/epl-2.0
+ *
+ * SPDX-License-Identifier: EPL-2.0
  */
 package org.openhab.binding.tcp;
 
@@ -191,7 +195,7 @@ public abstract class AbstractDatagramChannelBinding<P extends ChannelBindingPro
                 response = response + "]";
                 return response;
             } catch (Exception e) {
-                logger.error("An exception occurred while converting Channel to String {}", e.getMessage());
+                logger.warn("An exception occurred while converting Channel to String {}", e.getMessage());
             }
             return "";
         }
@@ -692,11 +696,11 @@ public abstract class AbstractDatagramChannelBinding<P extends ChannelBindingPro
                 try {
                     listenerKey = listenerChannel.register(selector, listenerChannel.validOps());
                 } catch (ClosedChannelException e1) {
-                    logger.error("An exception occurred while registering a selector: {}", e1.getMessage());
+                    logger.warn("An exception occurred while registering a selector: {}", e1.getMessage());
                 }
             }
         } catch (Exception e3) {
-            logger.error("An exception occurred while creating the Listener Channel on port number {} ({})",
+            logger.warn("An exception occurred while creating the Listener Channel on port number {} ({})",
                     listenerPort, e3.getMessage());
         }
     }
@@ -711,7 +715,7 @@ public abstract class AbstractDatagramChannelBinding<P extends ChannelBindingPro
         try {
             selector = Selector.open();
         } catch (IOException e) {
-            logger.error("An exception occurred while registering the selector: {}", e.getMessage());
+            logger.warn("An exception occurred while registering the selector: {}", e.getMessage());
         }
     }
 
@@ -724,13 +728,15 @@ public abstract class AbstractDatagramChannelBinding<P extends ChannelBindingPro
         try {
             selector.close();
         } catch (IOException e) {
-            logger.error("An exception occurred while closing the selector: {}", e.getMessage());
+            logger.warn("An exception occurred while closing the selector: {}", e.getMessage());
         }
 
         try {
-            listenerChannel.close();
+            if (listenerChannel != null) {
+                listenerChannel.close();
+            }
         } catch (IOException e) {
-            logger.error("An exception occurred while closing the Listener Channel on port number {} ({})",
+            logger.warn("An exception occurred while closing the Listener Channel on port number {} ({})",
                     listenerPort, e.getMessage());
         }
     }
@@ -917,7 +923,7 @@ public abstract class AbstractDatagramChannelBinding<P extends ChannelBindingPro
                         try {
                             scheduler = StdSchedulerFactory.getDefaultScheduler();
                         } catch (SchedulerException e1) {
-                            logger.error("An exception occurred while getting the Quartz scheduler: {}",
+                            logger.warn("An exception occurred while getting the Quartz scheduler: {}",
                                     e1.getMessage());
                         }
 
@@ -943,7 +949,7 @@ public abstract class AbstractDatagramChannelBinding<P extends ChannelBindingPro
                                 }
                             }
                         } catch (SchedulerException e) {
-                            logger.error("An exception occurred while scheduling a job with the Quartz Scheduler {}",
+                            logger.warn("An exception occurred while scheduling a job with the Quartz Scheduler {}",
                                     e.getMessage());
                         }
                     }
@@ -958,7 +964,7 @@ public abstract class AbstractDatagramChannelBinding<P extends ChannelBindingPro
                         }
                     }
                 } else {
-                    logger.error("there is no channel that services [itemName={}, command={}]", itemName, command);
+                    logger.warn("There is no channel that services [itemName={}, command={}]", itemName, command);
                 }
             }
         }
@@ -1102,13 +1108,13 @@ public abstract class AbstractDatagramChannelBinding<P extends ChannelBindingPro
                         try {
                             theChannel.channel.close();
                         } catch (IOException e) {
-                            logger.error("An exception occurred while closing a channel: {}", e.getMessage());
+                            logger.warn("An exception occurred while closing a channel: {}", e.getMessage());
                         }
 
                         try {
                             theChannel.channel = DatagramChannel.open();
                         } catch (IOException e) {
-                            logger.error("An exception occurred while opening a channel: {}", e.getMessage());
+                            logger.warn("An exception occurred while opening a channel: {}", e.getMessage());
                         }
 
                         theChannel.isBlocking = false;
@@ -1118,7 +1124,7 @@ public abstract class AbstractDatagramChannelBinding<P extends ChannelBindingPro
                             theChannel.channel.configureBlocking(false);
                             // setKeepAlive(true);
                         } catch (Exception e) {
-                            logger.error("An exception occurred while configuring a channel: {}", e.getMessage());
+                            logger.warn("An exception occurred while configuring a channel: {}", e.getMessage());
                         }
 
                         synchronized (theBinding.selector) {
@@ -1128,7 +1134,7 @@ public abstract class AbstractDatagramChannelBinding<P extends ChannelBindingPro
                                     theChannel.channel.register(theBinding.selector, theChannel.channel.validOps());
                                 }
                             } catch (ClosedChannelException e1) {
-                                logger.error("An exception occurred while registering a selector: {}", e1.getMessage());
+                                logger.warn("An exception occurred while registering a selector: {}", e1.getMessage());
                             }
                         }
 
@@ -1156,10 +1162,10 @@ public abstract class AbstractDatagramChannelBinding<P extends ChannelBindingPro
                                 logger.info("Attempting to reconnect the channel for {}", theChannel.remote);
                             }
                         } catch (Exception e) {
-                            logger.error("An exception occurred while connecting a channel: {}", e.getMessage());
+                            logger.warn("An exception occurred while connecting a channel: {}", e.getMessage());
                         }
                     } else {
-                        logger.warn("The listener channel can not be closed!");
+                        logger.warn("The listener channel cannot be closed!");
                     }
                 } else {
                     logger.debug("I cannot proceed without remote address");
@@ -1287,7 +1293,7 @@ public abstract class AbstractDatagramChannelBinding<P extends ChannelBindingPro
                             boolean assigned = false;
 
                             if (useAddressMask && (remoteHost.equals("*") || remotePort.equals("*"))) {
-                                logger.error(
+                                logger.warn(
                                         "We do not accept outgoing connections for Items that do use address masks");
                             } else {
 
@@ -1337,7 +1343,7 @@ public abstract class AbstractDatagramChannelBinding<P extends ChannelBindingPro
                                         try {
                                             newDatagramChannel = DatagramChannel.open();
                                         } catch (IOException e2) {
-                                            logger.error("An exception occurred while opening a channel: {}",
+                                            logger.warn("An exception occurred while opening a channel: {}",
                                                     e2.getMessage());
                                         }
 
@@ -1345,7 +1351,7 @@ public abstract class AbstractDatagramChannelBinding<P extends ChannelBindingPro
                                             newDatagramChannel.configureBlocking(false);
                                             // setKeepAlive(true);
                                         } catch (IOException e) {
-                                            logger.error("An exception occurred while configuring a channel: {}",
+                                            logger.warn("An exception occurred while configuring a channel: {}",
                                                     e.getMessage());
                                         }
 
@@ -1354,7 +1360,7 @@ public abstract class AbstractDatagramChannelBinding<P extends ChannelBindingPro
                                             try {
                                                 newDatagramChannel.register(selector, newDatagramChannel.validOps());
                                             } catch (ClosedChannelException e1) {
-                                                logger.error("An exception occurred while registering a selector: {}",
+                                                logger.warn("An exception occurred while registering a selector: {}",
                                                         e1.getMessage());
                                             }
                                         }
@@ -1366,7 +1372,7 @@ public abstract class AbstractDatagramChannelBinding<P extends ChannelBindingPro
                                             logger.info("'Connecting' the channel {} ", newChannel);
                                             newDatagramChannel.connect(remoteAddress);
                                         } catch (IOException e) {
-                                            logger.error("An exception occurred while connecting a channel: {}",
+                                            logger.warn("An exception occurred while connecting a channel: {}",
                                                     e.getMessage());
                                         }
                                     } else {
@@ -1387,7 +1393,7 @@ public abstract class AbstractDatagramChannelBinding<P extends ChannelBindingPro
                 // Wait for an event
                 selector.selectNow();
             } catch (IOException e) {
-                logger.error("An exception occurred while Selecting ({})", e.getMessage());
+                logger.warn("An exception occurred while Selecting ({})", e.getMessage());
             }
         }
 
@@ -1436,7 +1442,7 @@ public abstract class AbstractDatagramChannelBinding<P extends ChannelBindingPro
                                 logger.warn("The channel for {} has no connection pending ({})",
                                         theDatagramChannel.getRemoteAddress(), e.getMessage());
                             } catch (IOException e1) {
-                                logger.error(
+                                logger.warn(
                                         "An exception occurred while getting the remote address of channel {} ({})",
                                         theDatagramChannel, e1.getMessage());
                             }
@@ -1447,7 +1453,7 @@ public abstract class AbstractDatagramChannelBinding<P extends ChannelBindingPro
                                 logger.warn("The channel for {} has encountered an unknown IO Exception: {}",
                                         theDatagramChannel.getRemoteAddress(), e.getMessage());
                             } catch (IOException e1) {
-                                logger.error(
+                                logger.warn(
                                         "An exception occurred while getting the remote address of channel {} ({})",
                                         theDatagramChannel, e1.getMessage());
                             }
@@ -1465,7 +1471,7 @@ public abstract class AbstractDatagramChannelBinding<P extends ChannelBindingPro
                                 logger.warn("The channel for {} is closed ({})", theDatagramChannel.getRemoteAddress(),
                                         e.getMessage());
                             } catch (IOException e1) {
-                                logger.error(
+                                logger.warn(
                                         "An exception occurred while getting the remote address of channel {} ({})",
                                         theDatagramChannel, e1.getMessage());
                             }
@@ -1480,7 +1486,7 @@ public abstract class AbstractDatagramChannelBinding<P extends ChannelBindingPro
                             try {
                                 scheduler = StdSchedulerFactory.getDefaultScheduler();
                             } catch (SchedulerException e1) {
-                                logger.error("An exception occurred while getting the Quartz scheduler: {}",
+                                logger.warn("An exception occurred while getting the Quartz scheduler: {}",
                                         e1.getMessage());
                             }
 
@@ -1509,7 +1515,7 @@ public abstract class AbstractDatagramChannelBinding<P extends ChannelBindingPro
                                     }
                                 }
                             } catch (SchedulerException e) {
-                                logger.error(
+                                logger.warn(
                                         "An exception occurred while scheduling a job with the Quartz Scheduler {}",
                                         e.getMessage());
                             }
@@ -1563,7 +1569,7 @@ public abstract class AbstractDatagramChannelBinding<P extends ChannelBindingPro
                                             theDatagramChannel.getRemoteAddress());
                                 }
                             } catch (IOException e) {
-                                logger.error(
+                                logger.warn(
                                         "An exception occurred while getting the remote address of channel {} ({})",
                                         theDatagramChannel, e.getMessage());
                             }
@@ -1639,11 +1645,11 @@ public abstract class AbstractDatagramChannelBinding<P extends ChannelBindingPro
                                     }
                                 } catch (IOException e) {
                                     if (theElement.channel.lastRemote != null) {
-                                        logger.error(
+                                        logger.warn(
                                                 "An exception occurred while sending data to the remote end {} ({})",
                                                 theElement.channel.lastRemote, e.getMessage());
                                     } else {
-                                        logger.error(
+                                        logger.warn(
                                                 "An exception occurred while sending data to the remote end {} ({})",
                                                 theElement.channel.remote, e.getMessage());
                                     }
@@ -1681,7 +1687,7 @@ public abstract class AbstractDatagramChannelBinding<P extends ChannelBindingPro
                                     try {
                                         scheduler = StdSchedulerFactory.getDefaultScheduler();
                                     } catch (SchedulerException e1) {
-                                        logger.error("An exception occurred while getting the Quartz scheduler: {}",
+                                        logger.warn("An exception occurred while getting the Quartz scheduler: {}",
                                                 e1.getMessage());
                                     }
 
@@ -1714,7 +1720,7 @@ public abstract class AbstractDatagramChannelBinding<P extends ChannelBindingPro
                                             }
                                         }
                                     } catch (SchedulerException e) {
-                                        logger.error(
+                                        logger.warn(
                                                 "An exception occurred while scheduling a job with the Quartz Scheduler {}",
                                                 e.getMessage());
                                     }

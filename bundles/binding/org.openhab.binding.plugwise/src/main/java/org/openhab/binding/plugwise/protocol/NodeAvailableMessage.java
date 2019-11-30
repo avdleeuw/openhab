@@ -1,10 +1,14 @@
 /**
- * Copyright (c) 2010-2016, openHAB.org and others.
+ * Copyright (c) 2010-2019 Contributors to the openHAB project
  *
- * All rights reserved. This program and the accompanying materials
- * are made available under the terms of the Eclipse Public License v1.0
- * which accompanies this distribution, and is available at
- * http://www.eclipse.org/legal/epl-v10.html
+ * See the NOTICE file(s) distributed with this work for additional
+ * information.
+ *
+ * This program and the accompanying materials are made available under the
+ * terms of the Eclipse Public License 2.0 which is available at
+ * http://www.eclipse.org/legal/epl-2.0
+ *
+ * SPDX-License-Identifier: EPL-2.0
  */
 package org.openhab.binding.plugwise.protocol;
 
@@ -21,6 +25,8 @@ import java.util.regex.Pattern;
  */
 public class NodeAvailableMessage extends Message {
 
+    private static final Pattern RESPONSE_PATTERN = Pattern.compile("(\\w{16})");
+
     public NodeAvailableMessage(int sequenceNumber, String payLoad) {
         super(sequenceNumber, payLoad);
         type = MessageType.NODE_AVAILABLE;
@@ -33,8 +39,6 @@ public class NodeAvailableMessage extends Message {
 
     @Override
     protected void parsePayLoad() {
-        Pattern RESPONSE_PATTERN = Pattern.compile("(\\w{16})");
-
         Matcher matcher = RESPONSE_PATTERN.matcher(payLoad);
         if (matcher.matches()) {
             MAC = matcher.group(1);

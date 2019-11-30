@@ -1,0 +1,46 @@
+/**
+ * Copyright (c) 2010-2019 Contributors to the openHAB project
+ *
+ * See the NOTICE file(s) distributed with this work for additional
+ * information.
+ *
+ * This program and the accompanying materials are made available under the
+ * terms of the Eclipse Public License 2.0 which is available at
+ * http://www.eclipse.org/legal/epl-2.0
+ *
+ * SPDX-License-Identifier: EPL-2.0
+ */
+package org.openhab.binding.horizon.internal.control;
+
+/**
+ * This class holds the information for the device. It used to make a connection and send key commands to
+ *
+ * @author Jurgen Kuijpers
+ * @since 1.9.0
+ */
+public class HorizonBox {
+
+    private String host;
+    private int port;
+
+    public HorizonBox(String host, int port) {
+        this.host = host;
+        this.port = port;
+    }
+
+    /**
+     * Sends the key commands to the horizonbox. The Integer representing the key is defined in {@link Keys}
+     *
+     */
+    public void sendKey(final Integer key) throws Exception {
+        HorizonConnection con = null;
+        try {
+            con = new HorizonConnection(host, port);
+            con.sendKey(key);
+        } finally {
+            if (con != null) {
+                con.close();
+            }
+        }
+    }
+}

@@ -1,14 +1,16 @@
 /**
- * Copyright (c) 2010-2016, openHAB.org and others.
+ * Copyright (c) 2010-2019 Contributors to the openHAB project
  *
- * All rights reserved. This program and the accompanying materials
- * are made available under the terms of the Eclipse Public License v1.0
- * which accompanies this distribution, and is available at
- * http://www.eclipse.org/legal/epl-v10.html
+ * See the NOTICE file(s) distributed with this work for additional
+ * information.
+ *
+ * This program and the accompanying materials are made available under the
+ * terms of the Eclipse Public License 2.0 which is available at
+ * http://www.eclipse.org/legal/epl-2.0
+ *
+ * SPDX-License-Identifier: EPL-2.0
  */
 package org.openhab.binding.weather.internal.parser;
-
-import java.io.InputStream;
 
 import org.openhab.binding.weather.internal.model.Weather;
 import org.openhab.binding.weather.internal.utils.PropertyResolver;
@@ -23,24 +25,22 @@ import com.fasterxml.jackson.core.JsonToken;
  * Weather parser with JSON data in the InputStream.
  *
  * @author Gerhard Riegler
+ * @author Christoph Weitkamp - Replaced org.apache.commons.httpclient with HttpUtil
  * @since 1.6.0
  */
 public class JsonWeatherParser extends AbstractWeatherParser {
     private static final Logger logger = LoggerFactory.getLogger(JsonWeatherParser.class);
 
-    /**
-     * {@inheritDoc}
-     */
     @Override
-    public void parseInto(InputStream is, Weather weather) throws Exception {
+    public void parseInto(String r, Weather weather) throws Exception {
         JsonFactory jsonFactory = new JsonFactory();
-        JsonParser jp = jsonFactory.createParser(is);
+        JsonParser jp = jsonFactory.createParser(r);
 
         jp.nextValue();
         handleToken(jp, null, weather);
         jp.close();
 
-        super.parseInto(is, weather);
+        super.parseInto(r, weather);
     }
 
     /**
@@ -60,7 +60,7 @@ public class JsonWeatherParser extends AbstractWeatherParser {
             if (isObject) {
                 endIfForecast(weather, forecast, prop);
             }
-        } else if (token != null) {
+        } else {
             try {
                 setValue(weather, prop, jp.getValueAsString());
             } catch (Exception ex) {

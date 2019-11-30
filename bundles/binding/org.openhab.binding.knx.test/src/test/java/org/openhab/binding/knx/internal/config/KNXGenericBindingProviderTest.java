@@ -1,10 +1,14 @@
 /**
- * Copyright (c) 2010-2016, openHAB.org and others.
+ * Copyright (c) 2010-2019 Contributors to the openHAB project
  *
- * All rights reserved. This program and the accompanying materials
- * are made available under the terms of the Eclipse Public License v1.0
- * which accompanies this distribution, and is available at
- * http://www.eclipse.org/legal/epl-v10.html
+ * See the NOTICE file(s) distributed with this work for additional
+ * information.
+ *
+ * This program and the accompanying materials are made available under the
+ * terms of the Eclipse Public License 2.0 which is available at
+ * http://www.eclipse.org/legal/epl-2.0
+ *
+ * SPDX-License-Identifier: EPL-2.0
  */
 package org.openhab.binding.knx.internal.config;
 
@@ -20,6 +24,7 @@ import org.openhab.binding.knx.internal.config.KNXGenericBindingProvider.KNXBind
 import org.openhab.binding.knx.internal.config.KNXGenericBindingProvider.KNXBindingConfigItem;
 import org.openhab.core.items.GenericItem;
 import org.openhab.core.items.Item;
+import org.openhab.core.library.items.DateTimeItem;
 import org.openhab.core.library.types.PercentType;
 import org.openhab.core.library.types.StopMoveType;
 import org.openhab.core.library.types.StringType;
@@ -54,8 +59,13 @@ public class KNXGenericBindingProviderTest {
     }
 
     @Test(expected = BindingConfigParseException.class)
-    public void testParseBindingConfig_toManyArguments() throws BindingConfigParseException {
+    public void testParseBindingConfig_tooManyArguments() throws BindingConfigParseException {
         provider.parseBindingConfigString(new TestItem(), "0/0/0, 0/0/0, 0/0/0, 0/0/0, 0/0/0");
+    }
+
+    @Test
+    public void testParseBindingConfig_DateTimeAcceptsTwoGAs() throws BindingConfigParseException {
+        provider.parseBindingConfigString(new DateTimeItem("DateTest"), "11.001:15/7/11, 10.001:15/7/10");
     }
 
     @Test
@@ -159,6 +169,48 @@ public class KNXGenericBindingProviderTest {
         assertEquals(true, provider.providesBindingFor(item1.getName()));
         assertEquals(true, provider.providesBindingFor(item1.getName()));
         assertEquals(false, provider.providesBindingFor("someotheritem"));
+    }
+
+    @Test
+    public void testIsStartStopGA() throws BindingConfigParseException, KNXFormatException {
+        provider.processBindingConfiguration("text", item1, "<4/2/10+0/2/10, 5.005:4/2/11+0/2/11, +4/2/12ss, 4/2/13ss");
+
+        // method under Test
+        assertFalse(provider.isStartStopGA(new GroupAddress("4/2/10")));
+        assertFalse(provider.isStartStopGA(new GroupAddress("0/2/10")));
+
+        assertFalse(provider.isStartStopGA(new GroupAddress("4/2/11")));
+        assertFalse(provider.isStartStopGA(new GroupAddress("0/2/11")));
+
+        assertTrue(provider.isStartStopGA(new GroupAddress("4/2/12")));
+
+        assertTrue(provider.isStartStopGA(new GroupAddress("4/2/13")));
+
+        provider.processBindingConfiguration("text", item1, "<4/2/10ss+0/2/10, 5.005:4/2/11+0/2/11ss, +4/2/12, 4/2/13");
+
+        // method under Test
+        assertTrue(provider.isStartStopGA(new GroupAddress("4/2/10")));
+        assertFalse(provider.isStartStopGA(new GroupAddress("0/2/10")));
+
+        assertFalse(provider.isStartStopGA(new GroupAddress("4/2/11")));
+        assertTrue(provider.isStartStopGA(new GroupAddress("0/2/11")));
+
+        assertFalse(provider.isStartStopGA(new GroupAddress("4/2/12")));
+
+        assertFalse(provider.isStartStopGA(new GroupAddress("4/2/13")));
+
+        provider.processBindingConfiguration("text", item1, "<4/2/10+0/2/10ss, 5.005:4/2/11ss+0/2/11, +4/2/12, 4/2/13");
+
+        // method under Test
+        assertFalse(provider.isStartStopGA(new GroupAddress("4/2/10")));
+        assertTrue(provider.isStartStopGA(new GroupAddress("0/2/10")));
+
+        assertTrue(provider.isStartStopGA(new GroupAddress("4/2/11")));
+        assertFalse(provider.isStartStopGA(new GroupAddress("0/2/11")));
+
+        assertFalse(provider.isStartStopGA(new GroupAddress("4/2/12")));
+
+        assertFalse(provider.isStartStopGA(new GroupAddress("4/2/13")));
     }
 
     private class TestItem extends GenericItem {

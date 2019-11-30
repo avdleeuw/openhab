@@ -1,10 +1,14 @@
 /**
- * Copyright (c) 2010-2016, openHAB.org and others.
+ * Copyright (c) 2010-2019 Contributors to the openHAB project
  *
- * All rights reserved. This program and the accompanying materials
- * are made available under the terms of the Eclipse Public License v1.0
- * which accompanies this distribution, and is available at
- * http://www.eclipse.org/legal/epl-v10.html
+ * See the NOTICE file(s) distributed with this work for additional
+ * information.
+ *
+ * This program and the accompanying materials are made available under the
+ * terms of the Eclipse Public License 2.0 which is available at
+ * http://www.eclipse.org/legal/epl-2.0
+ *
+ * SPDX-License-Identifier: EPL-2.0
  */
 package org.openhab.binding.tinkerforge.internal.model.impl;
 
@@ -23,6 +27,7 @@ import org.openhab.binding.tinkerforge.internal.model.RemoteSwitchBConfiguration
  *        <!-- end-user-doc -->
  *        <p>
  *        The following features are implemented:
+ *        </p>
  *        <ul>
  *        <li>{@link org.openhab.binding.tinkerforge.internal.model.impl.RemoteSwitchBConfigurationImpl#getAddress
  *        <em>Address</em>}</li>
@@ -31,7 +36,6 @@ import org.openhab.binding.tinkerforge.internal.model.RemoteSwitchBConfiguration
  *        <li>{@link org.openhab.binding.tinkerforge.internal.model.impl.RemoteSwitchBConfigurationImpl#getRepeats
  *        <em>Repeats</em>}</li>
  *        </ul>
- *        </p>
  *
  * @generated
  */
@@ -140,10 +144,9 @@ public class RemoteSwitchBConfigurationImpl extends DimmableConfigurationImpl im
     public void setAddress(Long newAddress) {
         Long oldAddress = address;
         address = newAddress;
-        if (eNotificationRequired()) {
+        if (eNotificationRequired())
             eNotify(new ENotificationImpl(this, Notification.SET, ModelPackage.REMOTE_SWITCH_BCONFIGURATION__ADDRESS,
                     oldAddress, address));
-        }
     }
 
     /**
@@ -167,10 +170,9 @@ public class RemoteSwitchBConfigurationImpl extends DimmableConfigurationImpl im
     public void setUnit(Short newUnit) {
         Short oldUnit = unit;
         unit = newUnit;
-        if (eNotificationRequired()) {
+        if (eNotificationRequired())
             eNotify(new ENotificationImpl(this, Notification.SET, ModelPackage.REMOTE_SWITCH_BCONFIGURATION__UNIT,
                     oldUnit, unit));
-        }
     }
 
     /**
@@ -194,10 +196,9 @@ public class RemoteSwitchBConfigurationImpl extends DimmableConfigurationImpl im
     public void setRepeats(Short newRepeats) {
         Short oldRepeats = repeats;
         repeats = newRepeats;
-        if (eNotificationRequired()) {
+        if (eNotificationRequired())
             eNotify(new ENotificationImpl(this, Notification.SET, ModelPackage.REMOTE_SWITCH_BCONFIGURATION__REPEATS,
                     oldRepeats, repeats));
-        }
     }
 
     /**
@@ -290,9 +291,8 @@ public class RemoteSwitchBConfigurationImpl extends DimmableConfigurationImpl im
      */
     @Override
     public String toString() {
-        if (eIsProxy()) {
+        if (eIsProxy())
             return super.toString();
-        }
 
         StringBuffer result = new StringBuffer(super.toString());
         result.append(" (address: ");

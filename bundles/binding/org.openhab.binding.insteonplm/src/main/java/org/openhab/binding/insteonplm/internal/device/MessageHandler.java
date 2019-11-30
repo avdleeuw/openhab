@@ -1,10 +1,14 @@
 /**
- * Copyright (c) 2010-2016, openHAB.org and others.
+ * Copyright (c) 2010-2019 Contributors to the openHAB project
  *
- * All rights reserved. This program and the accompanying materials
- * are made available under the terms of the Eclipse Public License v1.0
- * which accompanies this distribution, and is available at
- * http://www.eclipse.org/legal/epl-v10.html
+ * See the NOTICE file(s) distributed with this work for additional
+ * information.
+ *
+ * This program and the accompanying materials are made available under the
+ * terms of the Eclipse Public License 2.0 which is available at
+ * http://www.eclipse.org/legal/epl-2.0
+ *
+ * SPDX-License-Identifier: EPL-2.0
  */
 package org.openhab.binding.insteonplm.internal.device;
 
@@ -335,7 +339,7 @@ public abstract class MessageHandler {
 
         @Override
         public void handleMessage(int group, byte cmd1, Msg msg, DeviceFeature f, String fromPort) {
-            logger.debug("{} drop unimpl message {}: {}", nm(), Utils.getHexByte(cmd1), msg);
+            logger.debug("{} ignoring unimpl message with cmd1:{}", nm(), Utils.getHexByte(cmd1));
         }
     }
 
@@ -600,6 +604,12 @@ public abstract class MessageHandler {
         }
 
         @Override
+        public boolean isDuplicate(Msg msg) {
+            // Disable duplicate elimination because
+            // there are no cleanup or success messages for start/stop.
+            return (false);
+        }
+        @Override
         public void handleMessage(int group, byte cmd1, Msg msg, DeviceFeature f, String fromPort) {
             Msg m = f.makePollMsg();
             if (m != null) {
@@ -613,6 +623,12 @@ public abstract class MessageHandler {
             super(p);
         }
 
+        @Override
+        public boolean isDuplicate(Msg msg) {
+            // Disable duplicate elimination because
+            // there are no cleanup or success messages for start/stop.
+            return (false);
+        }
         @Override
         public void handleMessage(int group, byte cmd1, Msg msg, DeviceFeature f, String fromPort) {
             try {
@@ -630,6 +646,12 @@ public abstract class MessageHandler {
     public static class StopManualChangeHandler extends MessageHandler {
         StopManualChangeHandler(DeviceFeature p) {
             super(p);
+        }
+        @Override
+        public boolean isDuplicate(Msg msg) {
+            // Disable duplicate elimination because
+            // there are no cleanup or success messages for start/stop.
+            return (false);
         }
 
         @Override
@@ -955,7 +977,7 @@ public abstract class MessageHandler {
             try {
                 // first do the bit manipulations to focus on the right area
                 int mask = getIntParameter("mask", 0xFFFF);
-                int rawValue = extractValue(msg);
+                int rawValue = extractValue(msg, group);
                 int cooked = (rawValue & mask) >> getIntParameter("rshift", 0);
                 // now do an arbitrary transform on the data
                 double value = transform(cooked);
@@ -971,16 +993,20 @@ public abstract class MessageHandler {
             return (raw);
         }
 
-        private int extractValue(Msg msg) throws FieldException {
+        private int extractValue(Msg msg, int group) throws FieldException {
             String lowByte = getStringParameter("low_byte", "");
-            if (lowByte == "") {
+            if (lowByte.equals("")) {
                 logger.error("{} handler misconfigured, missing low_byte!", nm());
                 return 0;
             }
-
-            int value = msg.getByte(lowByte) & 0xFF;
+			int value = 0;
+			if (lowByte.equals("group")) {
+				value = group; 
+			} else {
+				value = msg.getByte(lowByte) & 0xFF;
+			}
             String highByte = getStringParameter("high_byte", "");
-            if (highByte != "") {
+            if (!highByte.equals("")) {
                 value |= (msg.getByte(highByte) & 0xFF) << 8;
             }
             return (value);

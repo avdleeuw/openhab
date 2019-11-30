@@ -1,20 +1,23 @@
 /**
- * Copyright (c) 2010-2016, openHAB.org and others.
+ * Copyright (c) 2010-2019 Contributors to the openHAB project
  *
- * All rights reserved. This program and the accompanying materials
- * are made available under the terms of the Eclipse Public License v1.0
- * which accompanies this distribution, and is available at
- * http://www.eclipse.org/legal/epl-v10.html
+ * See the NOTICE file(s) distributed with this work for additional
+ * information.
+ *
+ * This program and the accompanying materials are made available under the
+ * terms of the Eclipse Public License 2.0 which is available at
+ * http://www.eclipse.org/legal/epl-2.0
+ *
+ * SPDX-License-Identifier: EPL-2.0
  */
 package org.openhab.binding.modbus.internal;
 
-import java.net.InetAddress;
-import java.net.UnknownHostException;
-
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
+import org.apache.commons.pool2.KeyedObjectPool;
+import org.openhab.binding.modbus.internal.pooling.ModbusSlaveEndpoint;
+import org.openhab.binding.modbus.internal.pooling.ModbusTCPSlaveEndpoint;
 
 import net.wimpi.modbus.io.ModbusTCPTransaction;
+import net.wimpi.modbus.net.ModbusSlaveConnection;
 import net.wimpi.modbus.net.TCPMasterConnection;
 
 /**
@@ -27,65 +30,37 @@ import net.wimpi.modbus.net.TCPMasterConnection;
  */
 public class ModbusTcpSlave extends ModbusIPSlave {
 
-    private static final Logger logger = LoggerFactory.getLogger(ModbusTcpSlave.class);
-
-    private TCPMasterConnection connection = null;
-
-    public ModbusTcpSlave(String slave) {
-        super(slave);
+    public ModbusTcpSlave(String slave, KeyedObjectPool<ModbusSlaveEndpoint, ModbusSlaveConnection> connectionPool) {
+        super(slave, connectionPool);
         transaction = new ModbusTCPTransaction();
+        ((ModbusTCPTransaction) transaction).setReconnecting(false);
     }
 
     /**
      * Performs physical write to device when slave type is "holding" using Modbus FC06 function
-     * 
+     *
      * @param command command received from OpenHAB
      * @param readRegister reference to the register that stores current value
      * @param writeRegister register reference to write data to
      */
 
     @Override
-    public boolean isConnected() {
-        return connection != null;
-    }
-
-    /**
-     * Establishes connection to the device
-     */
-    @Override
-    public boolean connect() {
-        try {
-            if (connection == null) {
-                connection = new TCPMasterConnection(InetAddress.getByName(getHost()));
-            }
-        } catch (UnknownHostException e) {
-            logger.debug("ModbusSlave: Error connecting to master: {}", e.getMessage());
-            resetConnection();
-            return false;
+    protected ModbusSlaveConnection getConnection(ModbusSlaveEndpoint endpoint) {
+        ModbusSlaveConnection connection = super.getConnection(endpoint);
+        if (connection == null) {
+            return null;
         }
-        if (!connection.isConnected()) {
-            try {
-                connection.setPort(getPort());
-                connection.connect();
-                ((ModbusTCPTransaction) transaction).setConnection(connection);
-                // We want to close connection after every transaction since some modbus tcp servers
-                // can accept only single connection at a time. If we would keep the connection open,
-                // the server would be blocked for other users.
-                ((ModbusTCPTransaction) transaction).setReconnecting(true);
-            } catch (Exception e) {
-                logger.debug("ModbusSlave: Error connecting to master: {}", e.getMessage());
-                return false;
-            }
+        if (!(connection instanceof TCPMasterConnection)) {
+            // should not happen
+            throw new IllegalStateException("Should not happen: wrong connection type for slave " + name);
         }
-        return true;
+        ((ModbusTCPTransaction) transaction).setConnection((TCPMasterConnection) connection);
+        return connection;
     }
 
     @Override
-    public void resetConnection() {
-        if (connection != null) {
-            connection.close();
-        }
-        connection = null;
+    protected void updateEndpoint() {
+        endpoint = new ModbusTCPSlaveEndpoint(getHost(), getPort());
     }
 
 }

@@ -1,10 +1,14 @@
 /**
- * Copyright (c) 2010-2016, openHAB.org and others.
+ * Copyright (c) 2010-2019 Contributors to the openHAB project
  *
- * All rights reserved. This program and the accompanying materials
- * are made available under the terms of the Eclipse Public License v1.0
- * which accompanies this distribution, and is available at
- * http://www.eclipse.org/legal/epl-v10.html
+ * See the NOTICE file(s) distributed with this work for additional
+ * information.
+ *
+ * This program and the accompanying materials are made available under the
+ * terms of the Eclipse Public License 2.0 which is available at
+ * http://www.eclipse.org/legal/epl-2.0
+ *
+ * SPDX-License-Identifier: EPL-2.0
  */
 package org.openhab.binding.knx.internal.connection;
 
@@ -117,6 +121,13 @@ public class KNXConnection implements ManagedService {
      * <code>10000</code>
      */
     private static int sMaxRefreshQueueEntries = 10000;
+
+    /**
+     * Determines whether Network Address Translation (NAT) will be used for IP connections.
+     *
+     * Default value is <code>false</code>.
+     */
+    private static boolean sUseNAT = false;
 
     /** listeners for connection/re-connection events */
     private static Set<KNXConnectionListener> sConnectionListeners = new HashSet<KNXConnectionListener>();
@@ -282,7 +293,7 @@ public class KNXConnection implements ManagedService {
             }
         }
 
-        return new KNXNetworkLinkIP(ipConnectionType, localEndPoint, new InetSocketAddress(ip, port), false,
+        return new KNXNetworkLinkIP(ipConnectionType, localEndPoint, new InetSocketAddress(ip, port), sUseNAT,
                 new TPSettings(new IndividualAddress(sLocalSourceAddr), true));
     }
 
@@ -432,6 +443,9 @@ public class KNXConnection implements ManagedService {
                             scheduledExecutorServiceShutdownTimeoutString);
                 }
             }
+
+            String shouldUseNAT = (String) config.get("useNAT");
+            sUseNAT = StringUtils.isNotBlank(shouldUseNAT) && shouldUseNAT.equalsIgnoreCase("true");
 
             if (sPC == null) {
                 sLogger.debug("Not connected yet. Trying to connect.");

@@ -1,10 +1,14 @@
 /**
- * Copyright (c) 2010-2016, openHAB.org and others.
+ * Copyright (c) 2010-2019 Contributors to the openHAB project
  *
- * All rights reserved. This program and the accompanying materials
- * are made available under the terms of the Eclipse Public License v1.0
- * which accompanies this distribution, and is available at
- * http://www.eclipse.org/legal/epl-v10.html
+ * See the NOTICE file(s) distributed with this work for additional
+ * information.
+ *
+ * This program and the accompanying materials are made available under the
+ * terms of the Eclipse Public License 2.0 which is available at
+ * http://www.eclipse.org/legal/epl-2.0
+ *
+ * SPDX-License-Identifier: EPL-2.0
  */
 package org.openhab.binding.vdr;
 
@@ -53,7 +57,7 @@ public interface VDRBindingProvider extends BindingProvider {
      * @param vdrCommand the vdr command for which items should be returned
      * 
      * @return the name of the item which is associated to <code>vdrId</code>
-     *         and <code>vdrComannd</code>
+     *         and <code>vdrCommand</code>
      */
     public String getBindingItemName(String vdrId, VDRCommandType vdrCommand);
 

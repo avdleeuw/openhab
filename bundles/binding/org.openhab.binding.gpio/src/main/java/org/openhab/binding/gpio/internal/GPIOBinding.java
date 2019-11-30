@@ -1,10 +1,14 @@
 /**
- * Copyright (c) 2010-2016, openHAB.org and others.
+ * Copyright (c) 2010-2019 Contributors to the openHAB project
  *
- * All rights reserved. This program and the accompanying materials
- * are made available under the terms of the Eclipse Public License v1.0
- * which accompanies this distribution, and is available at
- * http://www.eclipse.org/legal/epl-v10.html
+ * See the NOTICE file(s) distributed with this work for additional
+ * information.
+ *
+ * This program and the accompanying materials are made available under the
+ * terms of the Eclipse Public License 2.0 which is available at
+ * http://www.eclipse.org/legal/epl-2.0
+ *
+ * SPDX-License-Identifier: EPL-2.0
  */
 package org.openhab.binding.gpio.internal;
 
@@ -101,7 +105,7 @@ public class GPIOBinding extends AbstractBinding<GPIOBindingProvider>implements 
                             }
                         }
                     } catch (IOException e) {
-                        logger.error("Error occured while changing pin state for item " + itemName + ", exception: "
+                        logger.error("Error occurred while changing pin state for item " + itemName + ", exception: "
                                 + e.getMessage());
                         return;
                     } finally {
@@ -176,7 +180,7 @@ public class GPIOBinding extends AbstractBinding<GPIOBindingProvider>implements 
                         }
                     }
                 } catch (IOException e) {
-                    logger.error("Error occured while receiving pin state for item " + itemName + ", exception: "
+                    logger.error("Error occurred while receiving pin state for item " + itemName + ", exception: "
                             + e.getMessage());
                     return;
                 } finally {
@@ -194,7 +198,7 @@ public class GPIOBinding extends AbstractBinding<GPIOBindingProvider>implements 
 
         String itemName = null;
 
-        logger.error("Error occured in pin event processing, exception: " + exception.getMessage());
+        logger.error("Error occurred in pin event processing, exception: " + exception.getMessage());
 
         try {
             if (registryLock.readLock().tryLock(REGISTRYLOCK_TIMEOUT, REGISTRYLOCK_TIMEOUT_UNITS)) {
@@ -287,7 +291,7 @@ public class GPIOBinding extends AbstractBinding<GPIOBindingProvider>implements 
                             newItem(provider, itemName);
                         }
                     } catch (Exception e) {
-                        logger.error("Error occured while changing backend object for item " + itemName
+                        logger.error("Error occurred while changing backend object for item " + itemName
                                 + ", exception: " + e.getMessage());
                     } finally {
                         registryLock.writeLock().unlock();
@@ -380,7 +384,7 @@ public class GPIOBinding extends AbstractBinding<GPIOBindingProvider>implements 
                 gpioPin.addEventHandler(this);
             }
         } catch (Exception e) {
-            logger.error("Error occured while creating backend object for item " + itemName + ", exception: "
+            logger.error("Error occurred while creating backend object for item " + itemName + ", exception: "
                     + e.getMessage());
         }
     }
@@ -404,7 +408,7 @@ public class GPIOBinding extends AbstractBinding<GPIOBindingProvider>implements 
                         try {
                             gpio.releasePin(gpioPin);
                         } catch (Exception e) {
-                            logger.error("Error occured while deleting backend object for item " + itemName
+                            logger.error("Error occurred while deleting backend object for item " + itemName
                                     + ", exception: " + e.getMessage());
                         }
                     }

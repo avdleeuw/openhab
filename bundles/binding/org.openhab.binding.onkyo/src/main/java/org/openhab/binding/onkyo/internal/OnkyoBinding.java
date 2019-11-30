@@ -1,10 +1,14 @@
 /**
- * Copyright (c) 2010-2016, openHAB.org and others.
+ * Copyright (c) 2010-2019 Contributors to the openHAB project
  *
- * All rights reserved. This program and the accompanying materials
- * are made available under the terms of the Eclipse Public License v1.0
- * which accompanies this distribution, and is available at
- * http://www.eclipse.org/legal/epl-v10.html
+ * See the NOTICE file(s) distributed with this work for additional
+ * information.
+ *
+ * This program and the accompanying materials are made available under the
+ * terms of the Eclipse Public License 2.0 which is available at
+ * http://www.eclipse.org/legal/epl-2.0
+ *
+ * SPDX-License-Identifier: EPL-2.0
  */
 package org.openhab.binding.onkyo.internal;
 
@@ -41,8 +45,8 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 /**
- * Binding listening to openHAB event bus and send commands to Onkyo devices when certain
- * commands are received.
+ * Binding listening to openHAB event bus and send commands to Onkyo devices
+ * when certain commands are received.
  *
  * @author Pauli Anttila
  * @since 1.3.0
@@ -55,9 +59,11 @@ public class OnkyoBinding extends AbstractBinding<OnkyoBindingProvider>
     protected static final String ADVANCED_COMMAND_KEY = "#";
     protected static final String WILDCARD_COMMAND_KEY = "*";
 
-    /** RegEx to validate a config <code>'^(.*?)\\.(host|port)$'</code> */
-    private static final Pattern EXTRACT_CONFIG_PATTERN = Pattern.compile("^(.*?)\\.(host|port)$");
-
+    /**
+     * RegEx to validate a config
+     * <code>'^(.*?)\\.(host|port|serialPortName)$'</code>
+     */
+    private static final Pattern EXTRACT_CONFIG_PATTERN = Pattern.compile("^(.*?)\\.(host|port|serialPortName)$");
     /** Onkyo receiver default tcp port */
     private final static int DEFAULT_PORT = Eiscp.DEFAULT_EISCP_PORT;
 
@@ -127,7 +133,8 @@ public class OnkyoBinding extends AbstractBinding<OnkyoBindingProvider>
 
                     if (deviceCmd.contains("%")) {
 
-                        // eISCP command is a template where value should be updated
+                        // eISCP command is a template where value should be
+                        // updated
                         deviceCmd = convertOpenHabCommandToDeviceCommand(command, deviceCmd);
                     }
 
@@ -140,7 +147,8 @@ public class OnkyoBinding extends AbstractBinding<OnkyoBindingProvider>
 
                     if (deviceCmd.contains("%")) {
 
-                        // eISCP command is a template where value should be updated
+                        // eISCP command is a template where value should be
+                        // updated
                         deviceCmd = convertOpenHabCommandToDeviceCommand(command, deviceCmd);
                     }
                 }
@@ -177,8 +185,6 @@ public class OnkyoBinding extends AbstractBinding<OnkyoBindingProvider>
         } else if (command instanceof DecimalType) {
             deviceCmd = String.format(cmdTemplate, ((DecimalType) command).intValue());
 
-        } else if (command instanceof PercentType) {
-            deviceCmd = String.format(cmdTemplate, ((DecimalType) command).intValue());
         }
 
         return deviceCmd;
@@ -254,7 +260,8 @@ public class OnkyoBinding extends AbstractBinding<OnkyoBindingProvider>
 
                 if (!matcher.matches()) {
                     logger.debug(
-                            "given config key '" + key + "' does not follow the expected pattern '<id>.<host|port>'");
+                            "given config key '{}' does not follow the expected pattern '<id>.<host|port|serialPortName>'",
+                            key);
                     continue;
                 }
 
@@ -272,8 +279,9 @@ public class OnkyoBinding extends AbstractBinding<OnkyoBindingProvider>
 
                 String configKey = matcher.group(2);
                 String value = (String) config.get(key);
-
-                if ("host".equals(configKey)) {
+                if ("serialPortName".equals(configKey)) {
+                    deviceConfig.serialPortName = value;
+                } else if ("host".equals(configKey)) {
                     deviceConfig.host = value;
                 } else if ("port".equals(configKey)) {
                     deviceConfig.port = Integer.valueOf(value);
@@ -314,16 +322,17 @@ public class OnkyoBinding extends AbstractBinding<OnkyoBindingProvider>
     }
 
     /**
-     * Find receiver from device caache by ip address.
+     * Find receiver from device caache by ip address or serial Port.
      *
      * @param ip
      * @return
      */
-    private DeviceConfig findDevice(String ip) {
+    private DeviceConfig findDevice(String ipOrSerial) {
         for (String device : deviceConfigCache.keySet()) {
             DeviceConfig deviceConfig = deviceConfigCache.get(device);
             if (deviceConfig != null) {
-                if (deviceConfig.getHost().equals(ip)) {
+                if ((deviceConfig.getSerialPortName() != null && deviceConfig.getSerialPortName().equals(ipOrSerial))
+                        || (deviceConfig.getHost() != null && deviceConfig.getHost().equals(ipOrSerial))) {
                     return deviceConfig;
                 }
             }
@@ -333,13 +342,13 @@ public class OnkyoBinding extends AbstractBinding<OnkyoBindingProvider>
     }
 
     @Override
-    public void statusUpdateReceived(EventObject event, String ip, String data) {
+    public void statusUpdateReceived(EventObject event, String iporSerialPort, String data) {
         // find correct device from device cache
-        DeviceConfig deviceConfig = findDevice(ip);
+        DeviceConfig deviceConfig = findDevice(iporSerialPort);
 
         if (deviceConfig != null) {
-            logger.debug("Received status update '{}' from device {}", data, deviceConfig.host);
-
+            logger.debug("Received status update '{}' from device {}", data,
+                    (deviceConfig.serialPortName != null) ? deviceConfig.serialPortName : deviceConfig.host);
             for (OnkyoBindingProvider provider : providers) {
                 for (String itemName : provider.getItemNames()) {
                     // Update all items which refer to command
@@ -347,12 +356,19 @@ public class OnkyoBinding extends AbstractBinding<OnkyoBindingProvider>
 
                     for (String cmd : values.keySet()) {
                         String[] commandParts = values.get(cmd).split(":");
+                        String deviceId = commandParts[0];
                         String deviceCmd = commandParts[1];
 
+                        if (!deviceConfig.deviceId.equals(deviceId)) {
+                            continue;
+                        }
+
                         boolean match = false;
+
                         if (deviceCmd.startsWith(ADVANCED_COMMAND_KEY)) {
-                            // skip advanced command key and compare 3 first character
-                            if (data.startsWith(deviceCmd.substring(1, 4))) {
+                            // skip advanced command key and compare remaining
+                            // characters
+                            if (data.startsWith(deviceCmd.substring(1))) {
                                 match = true;
                             }
                         } else {
@@ -363,9 +379,8 @@ public class OnkyoBinding extends AbstractBinding<OnkyoBindingProvider>
                                 if (data.startsWith(eiscpCmd.substring(0, 3))) {
                                     match = true;
                                 }
-
                             } catch (Exception e) {
-                                logger.error("Unrecognized command '" + deviceCmd + "'", e);
+                                logger.error("Unrecognized command ", e);
                             }
                         }
 
@@ -424,7 +439,8 @@ public class OnkyoBinding extends AbstractBinding<OnkyoBindingProvider>
     }
 
     /**
-     * Initialize item value. Method send query to receiver if init query is configured to binding item configuration
+     * Initialize item value. Method send query to receiver if init query is
+     * configured to binding item configuration
      *
      * @param itemType
      *
@@ -465,6 +481,7 @@ public class OnkyoBinding extends AbstractBinding<OnkyoBindingProvider>
     static class DeviceConfig {
 
         String host;
+        String serialPortName;
         int port = DEFAULT_PORT;
 
         OnkyoConnection connection = null;
@@ -478,18 +495,30 @@ public class OnkyoBinding extends AbstractBinding<OnkyoBindingProvider>
             return host;
         }
 
+        public String getSerialPortName() {
+            return serialPortName;
+        }
+
         public int getPort() {
             return port;
         }
 
         @Override
         public String toString() {
-            return "Device [id=" + deviceId + ", host=" + host + ", port=" + port + "]";
+            if (serialPortName != null) {
+                return "Device [id=" + deviceId + ", serialPort=" + serialPortName + "]";
+            } else {
+                return "Device [id=" + deviceId + ", host=" + host + ", port=" + port + "]";
+            }
         }
 
         OnkyoConnection getConnection() {
             if (connection == null) {
-                connection = new OnkyoConnection(host, port);
+                if (serialPortName != null) {
+                    connection = new OnkyoConnection(serialPortName);
+                } else {
+                    connection = new OnkyoConnection(host, port);
+                }
             }
             return connection;
         }

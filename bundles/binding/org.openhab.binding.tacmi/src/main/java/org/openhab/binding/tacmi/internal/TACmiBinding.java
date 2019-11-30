@@ -1,10 +1,14 @@
 /**
- * Copyright (c) 2010-2016, openHAB.org and others.
+ * Copyright (c) 2010-2019 Contributors to the openHAB project
  *
- * All rights reserved. This program and the accompanying materials
- * are made available under the terms of the Eclipse Public License v1.0
- * which accompanies this distribution, and is available at
- * http://www.eclipse.org/legal/epl-v10.html
+ * See the NOTICE file(s) distributed with this work for additional
+ * information.
+ *
+ * This program and the accompanying materials are made available under the
+ * terms of the Eclipse Public License 2.0 which is available at
+ * http://www.eclipse.org/legal/epl-2.0
+ *
+ * SPDX-License-Identifier: EPL-2.0
  */
 package org.openhab.binding.tacmi.internal;
 
@@ -52,9 +56,9 @@ public class TACmiBinding extends AbstractActiveBinding<TACmiBindingProvider> {
 
     /**
      * the refresh interval which is used to poll values from the TACmi server
-     * (optional, defaults to 60000ms)
+     * (optional, defaults to 120000ms)
      */
-    private long refreshInterval = 1000;
+    private long refreshInterval = 120000;
 
     /**
      * IP or hostname of the CMI This is set in the activate method
@@ -108,8 +112,8 @@ public class TACmiBinding extends AbstractActiveBinding<TACmiBindingProvider> {
         try {
             clientSocket = new DatagramSocket(cmiPort);
         } catch (SocketException e) {
-            logger.error("Failed to create Socket for receiving UDP packets from CMI");
-            setProperlyConfigured(true);
+            logger.error("Failed to create Socket for receiving UDP packets from CMI. Reason: " + e.getMessage());
+            setProperlyConfigured(false);
             return;
         }
 
@@ -161,6 +165,11 @@ public class TACmiBinding extends AbstractActiveBinding<TACmiBindingProvider> {
     protected void execute() {
         logger.trace("execute() method is called!");
         try {
+            if (clientSocket == null) {
+                logger.error("No client socket present");
+                setProperlyConfigured(false);
+                return;
+            }
             clientSocket.setBroadcast(true);
             clientSocket.setSoTimeout(120000);
             byte[] receiveData = new byte[14];

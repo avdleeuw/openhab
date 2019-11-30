@@ -1,10 +1,14 @@
 /**
- * Copyright (c) 2010-2016, openHAB.org and others.
+ * Copyright (c) 2010-2019 Contributors to the openHAB project
  *
- * All rights reserved. This program and the accompanying materials
- * are made available under the terms of the Eclipse Public License v1.0
- * which accompanies this distribution, and is available at
- * http://www.eclipse.org/legal/epl-v10.html
+ * See the NOTICE file(s) distributed with this work for additional
+ * information.
+ *
+ * This program and the accompanying materials are made available under the
+ * terms of the Eclipse Public License 2.0 which is available at
+ * http://www.eclipse.org/legal/epl-2.0
+ *
+ * SPDX-License-Identifier: EPL-2.0
  */
 package org.openhab.persistence.jdbc.internal;
 
@@ -120,18 +124,18 @@ public class JdbcPersistenceService extends JdbcMapper implements QueryablePersi
     public void store(Item item, String alias) {
         // Don not store undefined/uninitialised data
         if (item.getState() instanceof UnDefType) {
-            logger.warn("JDBC::store: ignore Item '{}' because it is UnDefType", item.getName());
+            logger.debug("JDBC::store: ignore Item '{}' because it is UnDefType", item.getName());
             return;
         }
         if (!checkDBAccessability()) {
             logger.warn(
-                    "JDBC::store:  No connection to database. Can not persist item '{}'! Will retry connecting to database when error count:{} equals errReconnectThreshold:{}",
+                    "JDBC::store:  No connection to database. Cannot persist item '{}'! Will retry connecting to database when error count:{} equals errReconnectThreshold:{}",
                     item, errCnt, conf.getErrReconnectThreshold());
             return;
         }
         long timerStart = System.currentTimeMillis();
         storeItemValue(item);
-        logger.debug("JDBC: Stored item '{}' as '{}' in SQL database at {} in {}ms.", item.getName(),
+        logger.debug("JDBC: Stored item '{}' as '{}' in SQL database at {} in {} ms.", item.getName(),
                 item.getState().toString(), (new java.util.Date()).toString(), System.currentTimeMillis() - timerStart);
     }
 
@@ -147,11 +151,11 @@ public class JdbcPersistenceService extends JdbcMapper implements QueryablePersi
     public Iterable<HistoricItem> query(FilterCriteria filter) {
 
         if (!checkDBAccessability()) {
-            logger.warn("JDBC::query: db not connected, query aborted for item '{}'", filter.getItemName());
+            logger.warn("JDBC::query: database not connected, query aborted for item '{}'", filter.getItemName());
             return Collections.emptyList();
         }
         if (itemRegistry == null) {
-            logger.error("JDBC::query: itemRegistry == null Ignore and Give up!");
+            logger.error("JDBC::query: itemRegistry == null. Ignore and give up!");
             return Collections.emptyList();
         }
 
@@ -163,7 +167,7 @@ public class JdbcPersistenceService extends JdbcMapper implements QueryablePersi
         try {
             item = itemRegistry.getItem(itemName);
         } catch (ItemNotFoundException e1) {
-            logger.error("JDBC::query: unable to get item for itemName: '{}'. Ignore and Give up!", itemName);
+            logger.error("JDBC::query: unable to get item for itemName: '{}'. Ignore and give up!", itemName);
             return Collections.emptyList();
         }
 
@@ -172,11 +176,11 @@ public class JdbcPersistenceService extends JdbcMapper implements QueryablePersi
             item = GroupItem.class.cast(item).getBaseItem();
             logger.debug("JDBC::query: item is instanceof GroupItem '{}'", itemName);
             if (item == null) {
-                logger.debug("JDBC::query: BaseItem of GroupItem is null. Ignore and Give up!");
+                logger.debug("JDBC::query: BaseItem of GroupItem is null. Ignore and give up!");
                 return Collections.emptyList();
             }
             if (item instanceof GroupItem) {
-                logger.debug("JDBC::query: BaseItem of GroupItem is a GroupItem too. Ignore and Give up!");
+                logger.debug("JDBC::query: BaseItem of GroupItem is a GroupItem too. Ignore and give up!");
                 return Collections.emptyList();
             }
         }
@@ -184,7 +188,7 @@ public class JdbcPersistenceService extends JdbcMapper implements QueryablePersi
         String table = sqlTables.get(itemName);
         if (table == null) {
             logger.warn(
-                    "JDBC::query: unable to find table for query, no Data in Database for Item '{}'. Current number of tables in the database: {}",
+                    "JDBC::query: unable to find table for query, no data in database for item '{}'. Current number of tables in the database: {}",
                     itemName, sqlTables.size());
             // if enabled, table will be created immediately
             if (item != null) {
@@ -200,7 +204,7 @@ public class JdbcPersistenceService extends JdbcMapper implements QueryablePersi
         List<HistoricItem> items = new ArrayList<HistoricItem>();
         items = getHistItemFilterQuery(filter, conf.getNumberDecimalcount(), table, item);
 
-        logger.debug("JDBC::query: query for {} returned {} rows in {}ms", item.getName(), items.size(),
+        logger.debug("JDBC::query: query for {} returned {} rows in {} ms", item.getName(), items.size(),
                 System.currentTimeMillis() - timerStart);
 
         // Success

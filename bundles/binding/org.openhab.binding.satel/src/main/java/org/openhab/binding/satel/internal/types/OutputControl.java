@@ -1,12 +1,18 @@
 /**
- * Copyright (c) 2010-2016, openHAB.org and others.
+ * Copyright (c) 2010-2019 Contributors to the openHAB project
  *
- * All rights reserved. This program and the accompanying materials
- * are made available under the terms of the Eclipse Public License v1.0
- * which accompanies this distribution, and is available at
- * http://www.eclipse.org/legal/epl-v10.html
+ * See the NOTICE file(s) distributed with this work for additional
+ * information.
+ *
+ * This program and the accompanying materials are made available under the
+ * terms of the Eclipse Public License 2.0 which is available at
+ * http://www.eclipse.org/legal/epl-2.0
+ *
+ * SPDX-License-Identifier: EPL-2.0
  */
 package org.openhab.binding.satel.internal.types;
+
+import java.util.BitSet;
 
 /**
  * Available output control types:
@@ -23,6 +29,13 @@ public enum OutputControl implements ControlType {
     ON(0x88),
     OFF(0x89),
     TOGGLE(0x91);
+
+    private static final BitSet stateBits;
+
+    static {
+        stateBits = new BitSet();
+        stateBits.set(OutputState.OUTPUT.getRefreshCommand());
+    }
 
     private byte controlCommand;
 
@@ -45,4 +58,13 @@ public enum OutputControl implements ControlType {
     public ObjectType getObjectType() {
         return ObjectType.OUTPUT;
     }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public BitSet getControlledStates() {
+        return stateBits;
+    }
+
 }

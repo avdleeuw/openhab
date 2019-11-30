@@ -1,10 +1,14 @@
 /**
- * Copyright (c) 2010-2016, openHAB.org and others.
+ * Copyright (c) 2010-2019 Contributors to the openHAB project
  *
- * All rights reserved. This program and the accompanying materials
- * are made available under the terms of the Eclipse Public License v1.0
- * which accompanies this distribution, and is available at
- * http://www.eclipse.org/legal/epl-v10.html
+ * See the NOTICE file(s) distributed with this work for additional
+ * information.
+ *
+ * This program and the accompanying materials are made available under the
+ * terms of the Eclipse Public License 2.0 which is available at
+ * http://www.eclipse.org/legal/epl-2.0
+ *
+ * SPDX-License-Identifier: EPL-2.0
  */
 package org.openhab.binding.iec6205621meter.internal;
 
@@ -28,9 +32,9 @@ import org.slf4j.LoggerFactory;
  * Here are some examples for valid binding configuration strings:
  *
  * <ul>
- * <li><code>{ iec6205621meter="meter1:1.8.1" }</code> - shows the tarif 1 counter value of 'meter1'</li>
- * <li><code>{ iec6205621meter="meter1:1.8.2" }</code> - shows the tarif 1 counter value of 'meter1'</li>
- * <li><code>{  iec6205621meter="meter2:16.7" }</code> - shows the current power usage value of 'meter2'</li>
+ * <li><code>{ iec6205621meter="meter1;1.8.1" }</code> - shows the tarif 1 counter value of 'meter1'</li>
+ * <li><code>{ iec6205621meter="meter1;1.8.2" }</code> - shows the tarif 1 counter value of 'meter1'</li>
+ * <li><code>{ iec6205621meter="meter2;16.7" }</code> - shows the current power usage value of 'meter2'</li>
  * </ul>
  * 
  * @author Peter Kreutzer
@@ -72,7 +76,7 @@ public class Iec6205621MeterGenericBindingProvider extends AbstractGenericBindin
             throws BindingConfigParseException {
         super.processBindingConfiguration(context, item, bindingConfig);
         Iec6205621MeterBindingConfig config = new Iec6205621MeterBindingConfig();
-        StringTokenizer tokenizer = new StringTokenizer(bindingConfig.trim(), ":");
+        StringTokenizer tokenizer = new StringTokenizer(bindingConfig.trim(), ";");
         String[] tokens = new String[tokenizer.countTokens()];
         for (int i = 0; i < tokens.length; i++) {
             tokens[i] = tokenizer.nextToken();
@@ -109,5 +113,4 @@ public class Iec6205621MeterGenericBindingProvider extends AbstractGenericBindin
         public String meterName;
         public Class<? extends Item> itemType;
     }
-
 }

@@ -1,10 +1,14 @@
 /**
- * Copyright (c) 2010-2016, openHAB.org and others.
+ * Copyright (c) 2010-2019 Contributors to the openHAB project
  *
- * All rights reserved. This program and the accompanying materials
- * are made available under the terms of the Eclipse Public License v1.0
- * which accompanies this distribution, and is available at
- * http://www.eclipse.org/legal/epl-v10.html
+ * See the NOTICE file(s) distributed with this work for additional
+ * information.
+ *
+ * This program and the accompanying materials are made available under the
+ * terms of the Eclipse Public License 2.0 which is available at
+ * http://www.eclipse.org/legal/epl-2.0
+ *
+ * SPDX-License-Identifier: EPL-2.0
  */
 package org.openhab.binding.xbmc.rpc.calls;
 
@@ -21,7 +25,7 @@ import com.ning.http.client.AsyncHttpClient;
 /**
  * Player.GetItem RPC
  *
- * @author tlan, Ben Jones, Marcel Erkel
+ * @author tlan, Ben Jones, Marcel Erkel, Plebs
  * @since 1.5.0
  */
 public class PlayerGetItem extends RpcCall {
@@ -58,8 +62,11 @@ public class PlayerGetItem extends RpcCall {
             if (property.equals("Player.Label")) {
                 continue;
             }
-            String paramProperty = getParamProperty(property);
-            paramProperties.add(paramProperty);
+            if (property.startsWith("Player.")) {
+                // properties entered as 'Player.Title' etc - so strip the first 7 chars
+                String paramProperty = getParamProperty(property);
+                paramProperties.add(paramProperty);
+            }
         }
 
         Map<String, Object> params = new HashMap<String, Object>();

@@ -1,10 +1,14 @@
 /**
- * Copyright (c) 2010-2016, openHAB.org and others.
+ * Copyright (c) 2010-2019 Contributors to the openHAB project
  *
- * All rights reserved. This program and the accompanying materials
- * are made available under the terms of the Eclipse Public License v1.0
- * which accompanies this distribution, and is available at
- * http://www.eclipse.org/legal/epl-v10.html
+ * See the NOTICE file(s) distributed with this work for additional
+ * information.
+ *
+ * This program and the accompanying materials are made available under the
+ * terms of the Eclipse Public License 2.0 which is available at
+ * http://www.eclipse.org/legal/epl-2.0
+ *
+ * SPDX-License-Identifier: EPL-2.0
  */
 package org.openhab.binding.rfxcom.internal.messages;
 
@@ -80,6 +84,16 @@ public abstract class RFXComBaseMessage implements RFXComMessageInterface {
             return (byte) packetType;
         }
 
+        public static PacketType fromByte(int input) {
+            for (PacketType packetType : PacketType.values()) {
+                if (packetType.packetType == input) {
+                    return packetType;
+                }
+            }
+
+            return PacketType.UNKNOWN;
+        }
+
     }
 
     public byte[] rawMessage;
@@ -103,16 +117,8 @@ public abstract class RFXComBaseMessage implements RFXComMessageInterface {
 
         rawMessage = data;
 
-        packetType = PacketType.UNKNOWN;
         packetId = data[1];
-
-        for (PacketType pt : PacketType.values()) {
-            if (pt.toByte() == data[1]) {
-                packetType = pt;
-                break;
-            }
-        }
-
+        packetType = PacketType.fromByte(data[1]);
         subType = data[2];
         seqNbr = data[3];
         id1 = data[4];
@@ -120,7 +126,6 @@ public abstract class RFXComBaseMessage implements RFXComMessageInterface {
         if (data.length > 5) {
             id2 = data[5];
         }
-
     }
 
     @Override

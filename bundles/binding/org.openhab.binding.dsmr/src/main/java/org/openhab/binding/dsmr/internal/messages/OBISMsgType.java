@@ -1,10 +1,14 @@
 /**
- * Copyright (c) 2010-2016, openHAB.org and others.
+ * Copyright (c) 2010-2019 Contributors to the openHAB project
  *
- * All rights reserved. This program and the accompanying materials
- * are made available under the terms of the Eclipse Public License v1.0
- * which accompanies this distribution, and is available at
- * http://www.eclipse.org/legal/epl-v10.html
+ * See the NOTICE file(s) distributed with this work for additional
+ * information.
+ *
+ * This program and the accompanying materials are made available under the
+ * terms of the Eclipse Public License 2.0 which is available at
+ * http://www.eclipse.org/legal/epl-2.0
+ *
+ * SPDX-License-Identifier: EPL-2.0
  */
 package org.openhab.binding.dsmr.internal.messages;
 
@@ -155,6 +159,12 @@ public enum OBISMsgType {
     EMETER_INSTANT_POWER_PRODUCTION_L3(new OBISIdentifier(1, 0, 62, 7, 0, null), DSMRMeterType.ELECTRICITY,
             new CosemValueDescriptor(CosemFloat.class, "kW", "eInstantPowerProductionL3"),
             "Instantenous active power production L3"),
+    EMETER_INSTANT_VOLTAGE_L1(new OBISIdentifier(1, 0, 32, 7, 0, null), DSMRMeterType.ELECTRICITY,
+            new CosemValueDescriptor(CosemFloat.class, "V", "eInstantVoltageL1"), "Instantenous voltage on L1"),
+    EMETER_INSTANT_VOLTAGE_L2(new OBISIdentifier(1, 0, 52, 7, 0, null), DSMRMeterType.ELECTRICITY,
+            new CosemValueDescriptor(CosemFloat.class, "V", "eInstantVoltageL2"), "Instantenous voltage on L2"),
+    EMETER_INSTANT_VOLTAGE_L3(new OBISIdentifier(1, 0, 72, 7, 0, null), DSMRMeterType.ELECTRICITY,
+            new CosemValueDescriptor(CosemFloat.class, "V", "eInstantVoltageL3"), "Instantenous voltage on L3"),
 
     /* Gas Meter */
     GMETER_DEVICE_TYPE(new OBISIdentifier(0, null, 24, 1, 0, null), DSMRMeterType.GAS,
@@ -294,7 +304,7 @@ public enum OBISMsgType {
 
     /**
      * Constructor
-     * 
+     *
      * @param obisId
      *            OBIS Identifier for the OBIS message
      * @param meterType
@@ -312,7 +322,7 @@ public enum OBISMsgType {
 
     /**
      * Constructor
-     * 
+     *
      * @param obisId
      *            OBIS Identifier for the OBIS message
      * @param meterType

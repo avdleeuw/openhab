@@ -1,10 +1,14 @@
 /**
- * Copyright (c) 2010-2016, openHAB.org and others.
+ * Copyright (c) 2010-2019 Contributors to the openHAB project
  *
- * All rights reserved. This program and the accompanying materials
- * are made available under the terms of the Eclipse Public License v1.0
- * which accompanies this distribution, and is available at
- * http://www.eclipse.org/legal/epl-v10.html
+ * See the NOTICE file(s) distributed with this work for additional
+ * information.
+ *
+ * This program and the accompanying materials are made available under the
+ * terms of the Eclipse Public License 2.0 which is available at
+ * http://www.eclipse.org/legal/epl-2.0
+ *
+ * SPDX-License-Identifier: EPL-2.0
  */
 package org.openhab.binding.fs20.internal;
 
@@ -40,7 +44,7 @@ public enum FS20Command {
     DIM_DOWN("14"),
     DIM_UP_DOWN("15"),
     RESET("1B"),
-    UNKOWN(null),
+    UNKNOWN(null),
     ON_OLD_DIM_VALUE("11"),
     TOGGLE("12");
     // TODO add the other values with extension bit set
@@ -66,9 +70,9 @@ public enum FS20Command {
 
     public static FS20Command getFromHexValue(String hexValue) {
         if (hexValue == null) {
-            return UNKOWN;
+            return UNKNOWN;
         }
         FS20Command command = hexValueToCommand.get(hexValue.toUpperCase());
-        return command != null ? command : UNKOWN;
+        return command != null ? command : UNKNOWN;
     }
 }

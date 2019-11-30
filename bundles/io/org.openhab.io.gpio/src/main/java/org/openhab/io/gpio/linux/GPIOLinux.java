@@ -1,10 +1,14 @@
 /**
- * Copyright (c) 2010-2016, openHAB.org and others.
+ * Copyright (c) 2010-2019 Contributors to the openHAB project
  *
- * All rights reserved. This program and the accompanying materials
- * are made available under the terms of the Eclipse Public License v1.0
- * which accompanies this distribution, and is available at
- * http://www.eclipse.org/legal/epl-v10.html
+ * See the NOTICE file(s) distributed with this work for additional
+ * information.
+ *
+ * This program and the accompanying materials are made available under the
+ * terms of the Eclipse Public License 2.0 which is available at
+ * http://www.eclipse.org/legal/epl-2.0
+ *
+ * SPDX-License-Identifier: EPL-2.0
  */
 package org.openhab.io.gpio.linux;
 
@@ -16,6 +20,7 @@ import java.nio.file.Paths;
 import java.util.Dictionary;
 import java.util.HashMap;
 import java.util.List;
+import java.util.Objects;
 import java.util.concurrent.TimeUnit;
 import java.util.concurrent.locks.ReentrantReadWriteLock;
 
@@ -85,7 +90,7 @@ public class GPIOLinux implements GPIO, ManagedService {
 
         if (properties != null) {
 
-            String propSysFS = (String) properties.get(SYSFS_VFSTYPE);
+            String propSysFS = Objects.toString(properties.get(SYSFS_VFSTYPE), null);
             if (propSysFS != null) {
                 try {
                     if (isFSMounted(SYSFS_VFSTYPE, propSysFS)) {
@@ -104,7 +109,7 @@ public class GPIOLinux implements GPIO, ManagedService {
                 }
             }
 
-            String propDebounceInterval = (String) properties.get(PROP_DEBOUNCE_INTERVAL);
+            String propDebounceInterval = Objects.toString(properties.get(PROP_DEBOUNCE_INTERVAL), null);
             if (propDebounceInterval != null) {
                 try {
                     long debounceInterval = Long.parseLong(propDebounceInterval);
@@ -123,7 +128,7 @@ public class GPIOLinux implements GPIO, ManagedService {
                 }
             }
 
-            String propForce = (String) properties.get(PROP_FORCE);
+            String propForce = Objects.toString(properties.get(PROP_FORCE), null);
             if (propForce != null) {
                 defaultForce = Boolean.parseBoolean(propForce);
             }
@@ -133,7 +138,7 @@ public class GPIOLinux implements GPIO, ManagedService {
 
     /**
      * Determines mount point for given file system type.
-     * 
+     *
      * @param vfsType the type of file system to search for
      * @return the first found mount point if the file system is mounted,
      *         <code>null</code> otherwise
@@ -157,7 +162,7 @@ public class GPIOLinux implements GPIO, ManagedService {
     /**
      * Checks whether file system from given type is mounted or not
      * at specific location.
-     * 
+     *
      * @param vfsType the type of file system to check
      * @param mountPoint directory at which file system should be
      *            mounted

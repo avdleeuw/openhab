@@ -1,10 +1,14 @@
 /**
- * Copyright (c) 2010-2016, openHAB.org and others.
+ * Copyright (c) 2010-2019 Contributors to the openHAB project
  *
- * All rights reserved. This program and the accompanying materials
- * are made available under the terms of the Eclipse Public License v1.0
- * which accompanies this distribution, and is available at
- * http://www.eclipse.org/legal/epl-v10.html
+ * See the NOTICE file(s) distributed with this work for additional
+ * information.
+ *
+ * This program and the accompanying materials are made available under the
+ * terms of the Eclipse Public License 2.0 which is available at
+ * http://www.eclipse.org/legal/epl-2.0
+ *
+ * SPDX-License-Identifier: EPL-2.0
  */
 package org.openhab.binding.networkhealth.internal;
 
@@ -90,10 +94,15 @@ public class NetworkHealthBinding extends AbstractActiveBinding<NetworkHealthBin
                 try {
                     success = Ping.checkVitality(hostname, port, timeout);
 
-                    logger.debug("established connection [host '{}' port '{}' timeout '{}']",
+                    if(success) {
+                        logger.debug("established connection [host '{}' port '{}' timeout '{}']",
                             new Object[] { hostname, port, timeout });
+                    } else {
+                        logger.debug("couldn't establish connection [host '{}' port '{}' timeout '{}']",
+                            new Object[] { hostname, port, timeout });
+                    }
                 } catch (SocketTimeoutException se) {
-                    logger.debug("timed out while connecting to host '{}' port '{}' timeout '{}'",
+                    logger.debug("timed out while connecting [host '{}' port '{}' timeout '{}']",
                             new Object[] { hostname, port, timeout });
                 } catch (IOException ioe) {
                     logger.debug("couldn't establish network connection [host '{}' port '{}' timeout '{}']",

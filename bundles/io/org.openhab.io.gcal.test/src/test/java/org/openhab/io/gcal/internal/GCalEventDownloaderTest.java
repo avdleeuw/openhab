@@ -1,10 +1,14 @@
 /**
- * Copyright (c) 2010-2016, openHAB.org and others.
+ * Copyright (c) 2010-2019 Contributors to the openHAB project
  *
- * All rights reserved. This program and the accompanying materials
- * are made available under the terms of the Eclipse Public License v1.0
- * which accompanies this distribution, and is available at
- * http://www.eclipse.org/legal/epl-v10.html
+ * See the NOTICE file(s) distributed with this work for additional
+ * information.
+ *
+ * This program and the accompanying materials are made available under the
+ * terms of the Eclipse Public License 2.0 which is available at
+ * http://www.eclipse.org/legal/epl-2.0
+ *
+ * SPDX-License-Identifier: EPL-2.0
  */
 package org.openhab.io.gcal.internal;
 
@@ -30,26 +34,32 @@ public class GCalEventDownloaderTest {
     public void testParseCommand() {
         CalendarEventContent content;
 
-        content = downloader.parseEventContent("normalContent");
+        content = downloader.parseEventContent("normalContent", false);
         Assert.assertEquals("normalContent", content.startCommands);
         Assert.assertEquals("", content.endCommands);
         Assert.assertEquals("", content.modifiedByEvent);
 
-        content = downloader.parseEventContent("normalContent\nmodified by {\n\nholidays\n}");
+        content = downloader.parseEventContent("normalContent\nmodified by {\n\nholidays\n}", false);
         Assert.assertEquals("normalContent", content.startCommands);
         Assert.assertEquals("", content.endCommands);
         Assert.assertEquals("holidays", content.modifiedByEvent);
 
-        content = downloader.parseEventContent("start{startCommand  }\nend\n{  endCommand\n}");
+        content = downloader.parseEventContent("start{startCommand  }\nend\n{  endCommand\n}", false);
         Assert.assertEquals("startCommand", content.startCommands);
         Assert.assertEquals("endCommand", content.endCommands);
         Assert.assertEquals("", content.modifiedByEvent);
 
         content = downloader
-                .parseEventContent("start{startCommand  }\nend\n{  endCommand\n}\nmodified by {\n\nholidays\n}");
+                .parseEventContent("start{startCommand  }\nend\n{  endCommand\n}\nmodified by {\n\nholidays\n}", false);
         Assert.assertEquals("startCommand", content.startCommands);
         Assert.assertEquals("endCommand", content.endCommands);
         Assert.assertEquals("holidays", content.modifiedByEvent);
+
+        content = downloader.parseEventContent("normalContent", true);
+        Assert.assertEquals("[PresenceSimulation]" + "\n" + "normalContent", content.startCommands);
+        Assert.assertEquals("", content.endCommands);
+        Assert.assertEquals("", content.modifiedByEvent);
+
     }
 
 }

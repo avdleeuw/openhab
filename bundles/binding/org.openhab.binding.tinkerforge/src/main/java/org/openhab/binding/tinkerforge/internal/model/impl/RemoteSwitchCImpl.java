@@ -1,10 +1,14 @@
 /**
- * Copyright (c) 2010-2016, openHAB.org and others.
+ * Copyright (c) 2010-2019 Contributors to the openHAB project
  *
- * All rights reserved. This program and the accompanying materials
- * are made available under the terms of the Eclipse Public License v1.0
- * which accompanies this distribution, and is available at
- * http://www.eclipse.org/legal/epl-v10.html
+ * See the NOTICE file(s) distributed with this work for additional
+ * information.
+ *
+ * This program and the accompanying materials are made available under the
+ * terms of the Eclipse Public License 2.0 which is available at
+ * http://www.eclipse.org/legal/epl-2.0
+ *
+ * SPDX-License-Identifier: EPL-2.0
  */
 package org.openhab.binding.tinkerforge.internal.model.impl;
 
@@ -46,31 +50,31 @@ import com.tinkerforge.TimeoutException;
  *        <!-- end-user-doc -->
  *        <p>
  *        The following features are implemented:
+ *        </p>
  *        <ul>
- *        <li>{@link org.openhab.binding.tinkerforge.internal.model.impl.RemoteSwitchCImpl#getSwitchState
- *        <em>Switch State</em>}</li>
- *        <li>{@link org.openhab.binding.tinkerforge.internal.model.impl.RemoteSwitchCImpl#getLogger <em>Logger</em>}
- *        </li>
+ *        <li>{@link org.openhab.binding.tinkerforge.internal.model.impl.RemoteSwitchCImpl#getSwitchState <em>Switch
+ *        State</em>}</li>
+ *        <li>{@link org.openhab.binding.tinkerforge.internal.model.impl.RemoteSwitchCImpl#getLogger
+ *        <em>Logger</em>}</li>
  *        <li>{@link org.openhab.binding.tinkerforge.internal.model.impl.RemoteSwitchCImpl#getUid <em>Uid</em>}</li>
  *        <li>{@link org.openhab.binding.tinkerforge.internal.model.impl.RemoteSwitchCImpl#isPoll <em>Poll</em>}</li>
- *        <li>{@link org.openhab.binding.tinkerforge.internal.model.impl.RemoteSwitchCImpl#getEnabledA
- *        <em>Enabled A</em>}</li>
- *        <li>{@link org.openhab.binding.tinkerforge.internal.model.impl.RemoteSwitchCImpl#getSubId <em>Sub Id</em>}
- *        </li>
- *        <li>{@link org.openhab.binding.tinkerforge.internal.model.impl.RemoteSwitchCImpl#getMbrick <em>Mbrick</em>}
- *        </li>
- *        <li>{@link org.openhab.binding.tinkerforge.internal.model.impl.RemoteSwitchCImpl#getTfConfig
- *        <em>Tf Config</em>}</li>
- *        <li>{@link org.openhab.binding.tinkerforge.internal.model.impl.RemoteSwitchCImpl#getDeviceType
- *        <em>Device Type</em>}</li>
- *        <li>{@link org.openhab.binding.tinkerforge.internal.model.impl.RemoteSwitchCImpl#getSystemCode
- *        <em>System Code</em>}</li>
- *        <li>{@link org.openhab.binding.tinkerforge.internal.model.impl.RemoteSwitchCImpl#getDeviceCode
- *        <em>Device Code</em>}</li>
- *        <li>{@link org.openhab.binding.tinkerforge.internal.model.impl.RemoteSwitchCImpl#getRepeats <em>Repeats</em>}
- *        </li>
+ *        <li>{@link org.openhab.binding.tinkerforge.internal.model.impl.RemoteSwitchCImpl#getEnabledA <em>Enabled
+ *        A</em>}</li>
+ *        <li>{@link org.openhab.binding.tinkerforge.internal.model.impl.RemoteSwitchCImpl#getSubId <em>Sub
+ *        Id</em>}</li>
+ *        <li>{@link org.openhab.binding.tinkerforge.internal.model.impl.RemoteSwitchCImpl#getMbrick
+ *        <em>Mbrick</em>}</li>
+ *        <li>{@link org.openhab.binding.tinkerforge.internal.model.impl.RemoteSwitchCImpl#getTfConfig <em>Tf
+ *        Config</em>}</li>
+ *        <li>{@link org.openhab.binding.tinkerforge.internal.model.impl.RemoteSwitchCImpl#getDeviceType <em>Device
+ *        Type</em>}</li>
+ *        <li>{@link org.openhab.binding.tinkerforge.internal.model.impl.RemoteSwitchCImpl#getSystemCode <em>System
+ *        Code</em>}</li>
+ *        <li>{@link org.openhab.binding.tinkerforge.internal.model.impl.RemoteSwitchCImpl#getDeviceCode <em>Device
+ *        Code</em>}</li>
+ *        <li>{@link org.openhab.binding.tinkerforge.internal.model.impl.RemoteSwitchCImpl#getRepeats
+ *        <em>Repeats</em>}</li>
  *        </ul>
- *        </p>
  *
  * @generated
  */
@@ -350,10 +354,9 @@ public class RemoteSwitchCImpl extends MinimalEObjectImpl.Container implements R
     public void setSwitchState(OnOffValue newSwitchState) {
         OnOffValue oldSwitchState = switchState;
         switchState = newSwitchState;
-        if (eNotificationRequired()) {
+        if (eNotificationRequired())
             eNotify(new ENotificationImpl(this, Notification.SET, ModelPackage.REMOTE_SWITCH_C__SWITCH_STATE,
                     oldSwitchState, switchState));
-        }
     }
 
     /**
@@ -377,10 +380,9 @@ public class RemoteSwitchCImpl extends MinimalEObjectImpl.Container implements R
     public void setLogger(Logger newLogger) {
         Logger oldLogger = logger;
         logger = newLogger;
-        if (eNotificationRequired()) {
+        if (eNotificationRequired())
             eNotify(new ENotificationImpl(this, Notification.SET, ModelPackage.REMOTE_SWITCH_C__LOGGER, oldLogger,
                     logger));
-        }
     }
 
     /**
@@ -404,9 +406,8 @@ public class RemoteSwitchCImpl extends MinimalEObjectImpl.Container implements R
     public void setUid(String newUid) {
         String oldUid = uid;
         uid = newUid;
-        if (eNotificationRequired()) {
+        if (eNotificationRequired())
             eNotify(new ENotificationImpl(this, Notification.SET, ModelPackage.REMOTE_SWITCH_C__UID, oldUid, uid));
-        }
     }
 
     /**
@@ -430,9 +431,8 @@ public class RemoteSwitchCImpl extends MinimalEObjectImpl.Container implements R
     public void setPoll(boolean newPoll) {
         boolean oldPoll = poll;
         poll = newPoll;
-        if (eNotificationRequired()) {
+        if (eNotificationRequired())
             eNotify(new ENotificationImpl(this, Notification.SET, ModelPackage.REMOTE_SWITCH_C__POLL, oldPoll, poll));
-        }
     }
 
     /**
@@ -456,10 +456,9 @@ public class RemoteSwitchCImpl extends MinimalEObjectImpl.Container implements R
     public void setEnabledA(AtomicBoolean newEnabledA) {
         AtomicBoolean oldEnabledA = enabledA;
         enabledA = newEnabledA;
-        if (eNotificationRequired()) {
+        if (eNotificationRequired())
             eNotify(new ENotificationImpl(this, Notification.SET, ModelPackage.REMOTE_SWITCH_C__ENABLED_A, oldEnabledA,
                     enabledA));
-        }
     }
 
     /**
@@ -483,10 +482,9 @@ public class RemoteSwitchCImpl extends MinimalEObjectImpl.Container implements R
     public void setSubId(String newSubId) {
         String oldSubId = subId;
         subId = newSubId;
-        if (eNotificationRequired()) {
+        if (eNotificationRequired())
             eNotify(new ENotificationImpl(this, Notification.SET, ModelPackage.REMOTE_SWITCH_C__SUB_ID, oldSubId,
                     subId));
-        }
     }
 
     /**
@@ -497,10 +495,21 @@ public class RemoteSwitchCImpl extends MinimalEObjectImpl.Container implements R
      */
     @Override
     public MBrickletRemoteSwitch getMbrick() {
-        if (eContainerFeatureID() != ModelPackage.REMOTE_SWITCH_C__MBRICK) {
+        if (eContainerFeatureID() != ModelPackage.REMOTE_SWITCH_C__MBRICK)
             return null;
-        }
         return (MBrickletRemoteSwitch) eContainer();
+    }
+
+    /**
+     * <!-- begin-user-doc -->
+     * <!-- end-user-doc -->
+     * 
+     * @generated
+     */
+    public MBrickletRemoteSwitch basicGetMbrick() {
+        if (eContainerFeatureID() != ModelPackage.REMOTE_SWITCH_C__MBRICK)
+            return null;
+        return (MBrickletRemoteSwitch) eInternalContainer();
     }
 
     /**
@@ -524,25 +533,20 @@ public class RemoteSwitchCImpl extends MinimalEObjectImpl.Container implements R
     public void setMbrick(MBrickletRemoteSwitch newMbrick) {
         if (newMbrick != eInternalContainer()
                 || (eContainerFeatureID() != ModelPackage.REMOTE_SWITCH_C__MBRICK && newMbrick != null)) {
-            if (EcoreUtil.isAncestor(this, newMbrick)) {
+            if (EcoreUtil.isAncestor(this, newMbrick))
                 throw new IllegalArgumentException("Recursive containment not allowed for " + toString());
-            }
             NotificationChain msgs = null;
-            if (eInternalContainer() != null) {
+            if (eInternalContainer() != null)
                 msgs = eBasicRemoveFromContainer(msgs);
-            }
-            if (newMbrick != null) {
+            if (newMbrick != null)
                 msgs = ((InternalEObject) newMbrick).eInverseAdd(this, ModelPackage.MSUB_DEVICE_HOLDER__MSUBDEVICES,
                         MSubDeviceHolder.class, msgs);
-            }
             msgs = basicSetMbrick(newMbrick, msgs);
-            if (msgs != null) {
+            if (msgs != null)
                 msgs.dispatch();
-            }
-        } else if (eNotificationRequired()) {
+        } else if (eNotificationRequired())
             eNotify(new ENotificationImpl(this, Notification.SET, ModelPackage.REMOTE_SWITCH_C__MBRICK, newMbrick,
                     newMbrick));
-        }
     }
 
     /**
@@ -577,10 +581,9 @@ public class RemoteSwitchCImpl extends MinimalEObjectImpl.Container implements R
     public void setSystemCode(String newSystemCode) {
         String oldSystemCode = systemCode;
         systemCode = newSystemCode;
-        if (eNotificationRequired()) {
+        if (eNotificationRequired())
             eNotify(new ENotificationImpl(this, Notification.SET, ModelPackage.REMOTE_SWITCH_C__SYSTEM_CODE,
                     oldSystemCode, systemCode));
-        }
     }
 
     /**
@@ -604,10 +607,9 @@ public class RemoteSwitchCImpl extends MinimalEObjectImpl.Container implements R
     public void setDeviceCode(Short newDeviceCode) {
         Short oldDeviceCode = deviceCode;
         deviceCode = newDeviceCode;
-        if (eNotificationRequired()) {
+        if (eNotificationRequired())
             eNotify(new ENotificationImpl(this, Notification.SET, ModelPackage.REMOTE_SWITCH_C__DEVICE_CODE,
                     oldDeviceCode, deviceCode));
-        }
     }
 
     /**
@@ -631,10 +633,9 @@ public class RemoteSwitchCImpl extends MinimalEObjectImpl.Container implements R
     public void setRepeats(Short newRepeats) {
         Short oldRepeats = repeats;
         repeats = newRepeats;
-        if (eNotificationRequired()) {
+        if (eNotificationRequired())
             eNotify(new ENotificationImpl(this, Notification.SET, ModelPackage.REMOTE_SWITCH_C__REPEATS, oldRepeats,
                     repeats));
-        }
     }
 
     /**
@@ -660,11 +661,10 @@ public class RemoteSwitchCImpl extends MinimalEObjectImpl.Container implements R
         if (eNotificationRequired()) {
             ENotificationImpl notification = new ENotificationImpl(this, Notification.SET,
                     ModelPackage.REMOTE_SWITCH_C__TF_CONFIG, oldTfConfig, newTfConfig);
-            if (msgs == null) {
+            if (msgs == null)
                 msgs = notification;
-            } else {
+            else
                 msgs.add(notification);
-            }
         }
         return msgs;
     }
@@ -679,22 +679,18 @@ public class RemoteSwitchCImpl extends MinimalEObjectImpl.Container implements R
     public void setTfConfig(RemoteSwitchCConfiguration newTfConfig) {
         if (newTfConfig != tfConfig) {
             NotificationChain msgs = null;
-            if (tfConfig != null) {
+            if (tfConfig != null)
                 msgs = ((InternalEObject) tfConfig).eInverseRemove(this,
                         EOPPOSITE_FEATURE_BASE - ModelPackage.REMOTE_SWITCH_C__TF_CONFIG, null, msgs);
-            }
-            if (newTfConfig != null) {
+            if (newTfConfig != null)
                 msgs = ((InternalEObject) newTfConfig).eInverseAdd(this,
                         EOPPOSITE_FEATURE_BASE - ModelPackage.REMOTE_SWITCH_C__TF_CONFIG, null, msgs);
-            }
             msgs = basicSetTfConfig(newTfConfig, msgs);
-            if (msgs != null) {
+            if (msgs != null)
                 msgs.dispatch();
-            }
-        } else if (eNotificationRequired()) {
+        } else if (eNotificationRequired())
             eNotify(new ENotificationImpl(this, Notification.SET, ModelPackage.REMOTE_SWITCH_C__TF_CONFIG, newTfConfig,
                     newTfConfig));
-        }
     }
 
     /**
@@ -822,9 +818,8 @@ public class RemoteSwitchCImpl extends MinimalEObjectImpl.Container implements R
     public NotificationChain eInverseAdd(InternalEObject otherEnd, int featureID, NotificationChain msgs) {
         switch (featureID) {
             case ModelPackage.REMOTE_SWITCH_C__MBRICK:
-                if (eInternalContainer() != null) {
+                if (eInternalContainer() != null)
                     msgs = eBasicRemoveFromContainer(msgs);
-                }
                 return basicSetMbrick((MBrickletRemoteSwitch) otherEnd, msgs);
         }
         return super.eInverseAdd(otherEnd, featureID, msgs);
@@ -885,7 +880,9 @@ public class RemoteSwitchCImpl extends MinimalEObjectImpl.Container implements R
             case ModelPackage.REMOTE_SWITCH_C__SUB_ID:
                 return getSubId();
             case ModelPackage.REMOTE_SWITCH_C__MBRICK:
-                return getMbrick();
+                if (resolve)
+                    return getMbrick();
+                return basicGetMbrick();
             case ModelPackage.REMOTE_SWITCH_C__TF_CONFIG:
                 return getTfConfig();
             case ModelPackage.REMOTE_SWITCH_C__DEVICE_TYPE:
@@ -1014,7 +1011,7 @@ public class RemoteSwitchCImpl extends MinimalEObjectImpl.Container implements R
             case ModelPackage.REMOTE_SWITCH_C__SUB_ID:
                 return SUB_ID_EDEFAULT == null ? subId != null : !SUB_ID_EDEFAULT.equals(subId);
             case ModelPackage.REMOTE_SWITCH_C__MBRICK:
-                return getMbrick() != null;
+                return basicGetMbrick() != null;
             case ModelPackage.REMOTE_SWITCH_C__TF_CONFIG:
                 return tfConfig != null;
             case ModelPackage.REMOTE_SWITCH_C__DEVICE_TYPE:
@@ -1186,9 +1183,8 @@ public class RemoteSwitchCImpl extends MinimalEObjectImpl.Container implements R
      */
     @Override
     public String toString() {
-        if (eIsProxy()) {
+        if (eIsProxy())
             return super.toString();
-        }
 
         StringBuffer result = new StringBuffer(super.toString());
         result.append(" (switchState: ");

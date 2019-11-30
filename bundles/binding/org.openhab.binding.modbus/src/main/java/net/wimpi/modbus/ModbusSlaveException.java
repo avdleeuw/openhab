@@ -35,8 +35,8 @@ public class ModbusSlaveException extends ModbusException {
      * Types are defined according to the protocol
      * specification in <tt>net.wimpi.modbus.Modbus</tt>.
      * <p>
-     * 
-     * @param TYPE the type of exception that occured.
+     *
+     * @param TYPE the type of exception that occurred.
      *
      * @see net.wimpi.modbus.Modbus
      */
@@ -51,7 +51,7 @@ public class ModbusSlaveException extends ModbusException {
      * Types are defined according to the protocol
      * specification in <tt>net.wimpi.modbus.Modbus</tt>.
      * <p>
-     * 
+     *
      * @return the type of this <tt>ModbusSlaveException</tt>.
      *
      * @see net.wimpi.modbus.Modbus
@@ -67,7 +67,7 @@ public class ModbusSlaveException extends ModbusException {
      * Types are defined according to the protocol
      * specification in <tt>net.wimpi.modbus.Modbus</tt>.
      * <p>
-     * 
+     *
      * @param TYPE the type to test this
      *            <tt>ModbusSlaveException</tt> type against.
      *

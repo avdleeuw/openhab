@@ -1,10 +1,14 @@
 /**
- * Copyright (c) 2010-2016, openHAB.org and others.
+ * Copyright (c) 2010-2019 Contributors to the openHAB project
  *
- * All rights reserved. This program and the accompanying materials
- * are made available under the terms of the Eclipse Public License v1.0
- * which accompanies this distribution, and is available at
- * http://www.eclipse.org/legal/epl-v10.html
+ * See the NOTICE file(s) distributed with this work for additional
+ * information.
+ *
+ * This program and the accompanying materials are made available under the
+ * terms of the Eclipse Public License 2.0 which is available at
+ * http://www.eclipse.org/legal/epl-2.0
+ *
+ * SPDX-License-Identifier: EPL-2.0
  */
 package org.openhab.binding.epsonprojector.connector;
 
@@ -74,7 +78,7 @@ public class EpsonProjectorTcpConnector implements EpsonProjectorConnector {
             try {
                 socket.close();
             } catch (IOException e) {
-                logger.warn("Error occured when closing tcp socket", e);
+                logger.warn("Error occurred when closing tcp socket", e);
             }
         }
 
@@ -116,7 +120,7 @@ public class EpsonProjectorTcpConnector implements EpsonProjectorConnector {
 
         } catch (IOException e) {
 
-            logger.debug("IO error occured...reconnect and resend ones");
+            logger.debug("IO error occurred...reconnect and resend ones");
             disconnect();
             connect();
 

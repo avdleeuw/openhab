@@ -1,10 +1,14 @@
 /**
- * Copyright (c) 2010-2016, openHAB.org and others.
+ * Copyright (c) 2010-2019 Contributors to the openHAB project
  *
- * All rights reserved. This program and the accompanying materials
- * are made available under the terms of the Eclipse Public License v1.0
- * which accompanies this distribution, and is available at
- * http://www.eclipse.org/legal/epl-v10.html
+ * See the NOTICE file(s) distributed with this work for additional
+ * information.
+ *
+ * This program and the accompanying materials are made available under the
+ * terms of the Eclipse Public License 2.0 which is available at
+ * http://www.eclipse.org/legal/epl-2.0
+ *
+ * SPDX-License-Identifier: EPL-2.0
  */
 package org.openhab.binding.dmx.internal.config;
 
@@ -69,7 +73,7 @@ public abstract class DmxItem implements BindingConfig, DmxStatusUpdateListener 
 
     /**
      * Create new item based on the provided configuration string.
-     * 
+     *
      * @param itemName
      *            name for the item
      * @param configString
@@ -85,7 +89,7 @@ public abstract class DmxItem implements BindingConfig, DmxStatusUpdateListener 
         name = itemName;
         bindingProvider = dmxBindingProvider;
 
-        Matcher configMatcher = DMX_CONFIG_PATTERN.matcher(configString.trim());
+        Matcher configMatcher = DMX_CONFIG_PATTERN.matcher(configString.replaceAll("(\\s)+", ""));
         if (!configMatcher.matches()) {
             throw new BindingConfigParseException(
                     "DMX Configuration must match pattern: " + configMatcher.pattern().toString());
@@ -93,7 +97,7 @@ public abstract class DmxItem implements BindingConfig, DmxStatusUpdateListener 
 
         try {
 
-            Matcher cmdMatcher = DMX_CMD_PATTERN.matcher(configString.trim());
+            Matcher cmdMatcher = DMX_CMD_PATTERN.matcher(configString.replaceAll("(\\s)+", ""));
             while (cmdMatcher.find()) {
 
                 String cmdString = cmdMatcher.group();
@@ -133,7 +137,7 @@ public abstract class DmxItem implements BindingConfig, DmxStatusUpdateListener 
 
     /**
      * Extract channel id information from channel configuration string.
-     * 
+     *
      * @param channelString
      *            string to parse
      * @throws BindingConfigParseException
@@ -210,7 +214,7 @@ public abstract class DmxItem implements BindingConfig, DmxStatusUpdateListener 
 
     /**
      * Try to execute the provided openHAB command.
-     * 
+     *
      * @param service
      *            DMXservice.
      * @param command
@@ -220,14 +224,14 @@ public abstract class DmxItem implements BindingConfig, DmxStatusUpdateListener 
 
     /**
      * Check if the current item wants to be notified of state changes.
-     * 
+     *
      * @return true if status updates are needed.
      */
     public abstract boolean isStatusListener();
 
     /**
      * Check if an openHAB command has been overridden by a DMX command.
-     * 
+     *
      * @param cmd
      *            to check
      * @return true if there is a DMX command available instead.
@@ -239,7 +243,7 @@ public abstract class DmxItem implements BindingConfig, DmxStatusUpdateListener 
     /**
      * Publish the new state to the event bus, if it was changed since the last
      * known value.
-     * 
+     *
      * @param state
      *            new state.
      */
@@ -305,7 +309,7 @@ public abstract class DmxItem implements BindingConfig, DmxStatusUpdateListener 
 
     /**
      * Get the channel for the specified index.
-     * 
+     *
      * @param index
      * @return channel number
      */

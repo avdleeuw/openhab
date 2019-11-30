@@ -1,10 +1,14 @@
 /**
- * Copyright (c) 2010-2016, openHAB.org and others.
+ * Copyright (c) 2010-2019 Contributors to the openHAB project
  *
- * All rights reserved. This program and the accompanying materials
- * are made available under the terms of the Eclipse Public License v1.0
- * which accompanies this distribution, and is available at
- * http://www.eclipse.org/legal/epl-v10.html
+ * See the NOTICE file(s) distributed with this work for additional
+ * information.
+ *
+ * This program and the accompanying materials are made available under the
+ * terms of the Eclipse Public License 2.0 which is available at
+ * http://www.eclipse.org/legal/epl-2.0
+ *
+ * SPDX-License-Identifier: EPL-2.0
  */
 package org.openhab.binding.denon.internal;
 
@@ -13,7 +17,9 @@ import java.util.Enumeration;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.Map.Entry;
+import java.util.Objects;
 
+import org.apache.commons.lang.StringUtils;
 import org.openhab.binding.denon.DenonBindingProvider;
 import org.openhab.core.binding.AbstractActiveBinding;
 import org.openhab.core.binding.BindingProvider;
@@ -33,7 +39,7 @@ import org.slf4j.LoggerFactory;
  * @author Jeroen Idserda
  * @since 1.7.0
  */
-public class DenonBinding extends AbstractActiveBinding<DenonBindingProvider>implements ManagedService {
+public class DenonBinding extends AbstractActiveBinding<DenonBindingProvider> implements ManagedService {
 
     private static final String CONFIG_REFRESH = "refresh";
 
@@ -101,7 +107,14 @@ public class DenonBinding extends AbstractActiveBinding<DenonBindingProvider>imp
         if (provider instanceof DenonBindingProvider) {
             DenonBindingConfig config = ((DenonBindingProvider) provider).getConfig(itemName);
             if (config != null) {
-                getConnector(config).updateStateFromCache(config.getProperty());
+                DenonConnector connector = getConnector(config);
+                if (connector != null) {
+                    connector.updateStateFromCache(config.getProperty());
+                } else {
+                    logger.debug("No connector found for item {}", itemName);
+                }
+            } else {
+                logger.debug("No config found for item {}", itemName);
             }
         }
     }
@@ -121,7 +134,18 @@ public class DenonBinding extends AbstractActiveBinding<DenonBindingProvider>imp
     @Override
     protected void internalReceiveCommand(String itemName, Command command) {
         DenonBindingConfig config = getConfig(itemName);
-        getConnector(config).sendCommand(config, command);
+
+        if (config != null) {
+            DenonConnector connector = getConnector(config);
+
+            if (connector != null) {
+                connector.sendCommand(config, command);
+            } else {
+                logger.debug("Cannot send command, no connector found for item {}", itemName);
+            }
+        } else {
+            logger.debug("Cannot send command, no config found for item {}", itemName);
+        }
     }
 
     protected void addBindingProvider(DenonBindingProvider bindingProvider) {
@@ -137,56 +161,59 @@ public class DenonBinding extends AbstractActiveBinding<DenonBindingProvider>imp
      */
     @Override
     public void updated(Dictionary<String, ?> config) throws ConfigurationException {
-        if (config != null) {
-            logger.debug("Denon binding updated");
+        logger.debug("Denon binding updated");
 
-            Enumeration<String> keys = config.keys();
+        if (config == null) {
+            return;
+        }
 
-            while (keys.hasMoreElements()) {
+        Enumeration<String> keys = config.keys();
 
-                String key = keys.nextElement();
-                if (CONFIG_SERVICE_PID.equals(key)) {
-                    continue;
+        while (keys.hasMoreElements()) {
+            String key = keys.nextElement();
+            if (CONFIG_SERVICE_PID.equals(key)) {
+                continue;
+            }
+
+            String[] parts = key.split("\\.");
+            String value = Objects.toString(config.get(key), null);
+
+            if (parts.length == 1) {
+                String option = parts[0];
+                if (CONFIG_REFRESH.equals(option)) {
+                    refreshInterval = Integer.valueOf(value);
+                }
+            } else {
+                String instance = parts[0];
+
+                DenonConnectionProperties connection = connections.get(instance);
+                if (connection == null) {
+                    connection = new DenonConnectionProperties();
+                    connection.setInstance(instance);
+                    connections.put(instance, connection);
                 }
 
-                String[] parts = key.split("\\.");
-                String value = ((String) config.get(key)).trim();
+                String option = parts[1].trim();
 
-                if (parts.length == 1) {
-                    String option = parts[0];
-                    if (CONFIG_REFRESH.equals(option)) {
-                        refreshInterval = Integer.valueOf(value);
-                    }
-                } else {
-                    String instance = parts[0];
+                if (CONFIG_HOST.equals(option)) {
+                    connection.setHost(value);
+                } else if (CONFIG_UPDATE_TYPE.equals(option)) {
+                    connection.setTelnet(value.equals(CONFIG_UPDATE_TYPE_TELNET));
+                    connection.setHttp(value.equals(CONFIG_UPDATE_TYPE_HTTP));
 
-                    DenonConnectionProperties connection = connections.get(instance);
-                    if (connection == null) {
-                        connection = new DenonConnectionProperties();
-                        connection.setInstance(instance);
-                        connections.put(instance, connection);
-                    }
-
-                    String option = parts[1].trim();
-
-                    if (CONFIG_HOST.equals(option)) {
-                        connection.setHost(value);
-                    } else if (CONFIG_UPDATE_TYPE.equals(option)) {
-                        connection.setTelnet(value.equals(CONFIG_UPDATE_TYPE_TELNET));
-                        connection.setHttp(value.equals(CONFIG_UPDATE_TYPE_HTTP));
-
-                        if (!value.equals(CONFIG_UPDATE_TYPE_TELNET) && !value.equals(CONFIG_UPDATE_TYPE_HTTP)) {
-                            logger.warn("Invalid connection type {} for instance {}, using default", value, instance);
-                        }
+                    if (!value.equals(CONFIG_UPDATE_TYPE_TELNET) && !value.equals(CONFIG_UPDATE_TYPE_HTTP)) {
+                        logger.warn("Invalid connection type {} for instance {}, using default", value, instance);
                     }
                 }
             }
+        }
 
-            boolean isActiveBinding = false;
+        boolean isActiveBinding = false;
 
-            for (Entry<String, DenonConnectionProperties> entry : connections.entrySet()) {
-                DenonConnectionProperties connection = entry.getValue();
+        for (Entry<String, DenonConnectionProperties> entry : connections.entrySet()) {
+            DenonConnectionProperties connection = entry.getValue();
 
+            if (!StringUtils.isBlank(connection.getHost())) {
                 logger.debug("Denon receiver configured at {}", connection.getHost());
                 DenonConnector connector = new DenonConnector(connection, new DenonPropertyUpdatedCallback() {
                     @Override
@@ -200,10 +227,12 @@ public class DenonBinding extends AbstractActiveBinding<DenonBindingProvider>imp
                 if (connection.isHttp()) {
                     isActiveBinding = true;
                 }
+            } else {
+                logger.debug("No host configured for receiver {}", connection.getInstance());
             }
-
-            setProperlyConfigured(isActiveBinding);
         }
+
+        setProperlyConfigured(isActiveBinding);
     }
 
     private void updateInitialState() {
@@ -277,6 +306,11 @@ public class DenonBinding extends AbstractActiveBinding<DenonBindingProvider>imp
     }
 
     private DenonConnector getConnector(DenonBindingConfig config) {
-        return connections.get(config.getInstance()).getConnector();
+        DenonConnectionProperties connection = connections.get(config.getInstance());
+        if (connection != null) {
+            return connection.getConnector();
+        }
+
+        return null;
     }
 }

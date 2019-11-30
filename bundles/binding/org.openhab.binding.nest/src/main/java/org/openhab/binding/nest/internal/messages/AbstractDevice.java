@@ -1,10 +1,14 @@
 /**
- * Copyright (c) 2010-2016, openHAB.org and others.
+ * Copyright (c) 2010-2019 Contributors to the openHAB project
  *
- * All rights reserved. This program and the accompanying materials
- * are made available under the terms of the Eclipse Public License v1.0
- * which accompanies this distribution, and is available at
- * http://www.eclipse.org/legal/epl-v10.html
+ * See the NOTICE file(s) distributed with this work for additional
+ * information.
+ *
+ * This program and the accompanying materials are made available under the
+ * terms of the Eclipse Public License 2.0 which is available at
+ * http://www.eclipse.org/legal/epl-2.0
+ *
+ * SPDX-License-Identifier: EPL-2.0
  */
 package org.openhab.binding.nest.internal.messages;
 
@@ -33,13 +37,15 @@ public abstract class AbstractDevice extends AbstractMessagePart implements Data
     private String name_long;
     private Date last_connection;
     private Boolean is_online;
+    private String where_id;
+    private String where_name;
 
     public AbstractDevice(@JsonProperty("device_id") String device_id) {
         this.device_id = device_id;
     }
 
     /**
-     * @return the unique thermostat identifier.
+     * @return the unique device identifier.
      */
     @JsonProperty("device_id")
     public String getDevice_id() {
@@ -109,6 +115,23 @@ public abstract class AbstractDevice extends AbstractMessagePart implements Data
         return this.is_online;
     }
 
+    /**
+     * @return Where unique identifier.
+     */
+    @JsonProperty("where_id")
+    public String getWhere_id() {
+        return this.where_id;
+    }
+
+    /**
+     * @return The display name of the device. Associated with the where_id.
+     *         Can be any room name from a list we provide, or a custom name.
+     */
+    @JsonProperty("where_name")
+    public String getWhere_name() {
+        return this.where_name;
+    }
+
     @Override
     public void sync(DataModel dataModel) {
         // Link to structure
@@ -128,6 +151,8 @@ public abstract class AbstractDevice extends AbstractMessagePart implements Data
         builder.append("name_long", this.name_long);
         builder.append("last_connection", this.last_connection);
         builder.append("is_online", this.is_online);
+        builder.append("where_id", this.where_id);
+        builder.append("where_name", this.where_name);
 
         return builder.toString();
     }

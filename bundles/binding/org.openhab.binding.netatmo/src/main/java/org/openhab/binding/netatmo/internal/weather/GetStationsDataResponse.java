@@ -1,10 +1,14 @@
 /**
- * Copyright (c) 2010-2016, openHAB.org and others.
+ * Copyright (c) 2010-2019 Contributors to the openHAB project
  *
- * All rights reserved. This program and the accompanying materials
- * are made available under the terms of the Eclipse Public License v1.0
- * which accompanies this distribution, and is available at
- * http://www.eclipse.org/legal/epl-v10.html
+ * See the NOTICE file(s) distributed with this work for additional
+ * information.
+ *
+ * This program and the accompanying materials are made available under the
+ * terms of the Eclipse Public License 2.0 which is available at
+ * http://www.eclipse.org/legal/epl-2.0
+ *
+ * SPDX-License-Identifier: EPL-2.0
  */
 package org.openhab.binding.netatmo.internal.weather;
 
@@ -599,13 +603,13 @@ public class GetStationsDataResponse extends AbstractResponse {
             int level = this.rfStatus.intValue();
             int result;
 
-            if (level <= RF_STATUS_FULL_SIGNAL) {
+            if (level < RF_STATUS_FULL_SIGNAL) {
                 result = 5;
-            } else if (level <= RF_STATUS_HIGH_SIGNAL) {
+            } else if (level < RF_STATUS_HIGH_SIGNAL) {
                 result = 4;
-            } else if (level <= RF_STATUS_MEDIUM_SIGNAL) {
+            } else if (level < RF_STATUS_MEDIUM_SIGNAL) {
                 result = 3;
-            } else if (level <= RF_STATUS_LOW_SIGNAL) {
+            } else if (level < RF_STATUS_LOW_SIGNAL) {
                 result = 2;
             } else {
                 result = 1;
@@ -643,13 +647,13 @@ public class GetStationsDataResponse extends AbstractResponse {
 
             int batteryVp = this.batteryVp;
             int result;
-            if (batteryVp >= full) {
+            if (batteryVp > full) {
                 result = 5;
-            } else if (batteryVp >= high) {
+            } else if (batteryVp > high) {
                 result = 4;
-            } else if (batteryVp >= medium) {
+            } else if (batteryVp > medium) {
                 result = 3;
-            } else if (batteryVp >= low) {
+            } else if (batteryVp > low) {
                 result = 2;
             } else { /* very low */
                 result = 1;

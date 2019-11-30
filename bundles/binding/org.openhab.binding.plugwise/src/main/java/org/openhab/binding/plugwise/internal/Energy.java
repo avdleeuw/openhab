@@ -1,10 +1,14 @@
 /**
- * Copyright (c) 2010-2016, openHAB.org and others.
+ * Copyright (c) 2010-2019 Contributors to the openHAB project
  *
- * All rights reserved. This program and the accompanying materials
- * are made available under the terms of the Eclipse Public License v1.0
- * which accompanies this distribution, and is available at
- * http://www.eclipse.org/legal/epl-v10.html
+ * See the NOTICE file(s) distributed with this work for additional
+ * information.
+ *
+ * This program and the accompanying materials are made available under the
+ * terms of the Eclipse Public License 2.0 which is available at
+ * http://www.eclipse.org/legal/epl-2.0
+ *
+ * SPDX-License-Identifier: EPL-2.0
  */
 package org.openhab.binding.plugwise.internal;
 
@@ -22,9 +26,9 @@ public class Energy {
 
     private DateTime time;
     private long pulses;
-    private int interval;
+    private double interval;
 
-    public Energy(String logdate, long l, int interval) {
+    public Energy(String logdate, long l, double interval) {
 
         if (logdate.length() == 8) {
 
@@ -56,7 +60,7 @@ public class Energy {
 
     }
 
-    public Energy(DateTime logdate, long pulses, int interval) {
+    public Energy(DateTime logdate, long pulses, double interval) {
         time = logdate;
         this.interval = interval;
         this.pulses = pulses;
@@ -64,7 +68,7 @@ public class Energy {
 
     @Override
     public String toString() {
-        return time.toString() + "-" + Integer.toString(interval) + "-" + Long.toString(pulses);
+        return time.toString() + "-" + Double.toString(interval) + "-" + Long.toString(pulses);
     }
 
     public DateTime getTime() {
@@ -75,7 +79,7 @@ public class Energy {
         return pulses;
     }
 
-    public int getInterval() {
+    public double getInterval() {
         return interval;
     }
 

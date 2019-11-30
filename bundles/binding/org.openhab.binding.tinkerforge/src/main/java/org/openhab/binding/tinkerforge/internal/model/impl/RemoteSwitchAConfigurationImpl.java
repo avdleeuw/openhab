@@ -1,10 +1,14 @@
 /**
- * Copyright (c) 2010-2016, openHAB.org and others.
+ * Copyright (c) 2010-2019 Contributors to the openHAB project
  *
- * All rights reserved. This program and the accompanying materials
- * are made available under the terms of the Eclipse Public License v1.0
- * which accompanies this distribution, and is available at
- * http://www.eclipse.org/legal/epl-v10.html
+ * See the NOTICE file(s) distributed with this work for additional
+ * information.
+ *
+ * This program and the accompanying materials are made available under the
+ * terms of the Eclipse Public License 2.0 which is available at
+ * http://www.eclipse.org/legal/epl-2.0
+ *
+ * SPDX-License-Identifier: EPL-2.0
  */
 package org.openhab.binding.tinkerforge.internal.model.impl;
 
@@ -24,6 +28,7 @@ import org.openhab.binding.tinkerforge.internal.model.RemoteSwitchAConfiguration
  *        <!-- end-user-doc -->
  *        <p>
  *        The following features are implemented:
+ *        </p>
  *        <ul>
  *        <li>{@link org.openhab.binding.tinkerforge.internal.model.impl.RemoteSwitchAConfigurationImpl#getHouseCode
  *        <em>House Code</em>}</li>
@@ -32,7 +37,6 @@ import org.openhab.binding.tinkerforge.internal.model.RemoteSwitchAConfiguration
  *        <li>{@link org.openhab.binding.tinkerforge.internal.model.impl.RemoteSwitchAConfigurationImpl#getRepeats
  *        <em>Repeats</em>}</li>
  *        </ul>
- *        </p>
  *
  * @generated
  */
@@ -141,10 +145,9 @@ public class RemoteSwitchAConfigurationImpl extends MinimalEObjectImpl.Container
     public void setHouseCode(Short newHouseCode) {
         Short oldHouseCode = houseCode;
         houseCode = newHouseCode;
-        if (eNotificationRequired()) {
+        if (eNotificationRequired())
             eNotify(new ENotificationImpl(this, Notification.SET, ModelPackage.REMOTE_SWITCH_ACONFIGURATION__HOUSE_CODE,
                     oldHouseCode, houseCode));
-        }
     }
 
     /**
@@ -168,10 +171,9 @@ public class RemoteSwitchAConfigurationImpl extends MinimalEObjectImpl.Container
     public void setReceiverCode(Short newReceiverCode) {
         Short oldReceiverCode = receiverCode;
         receiverCode = newReceiverCode;
-        if (eNotificationRequired()) {
+        if (eNotificationRequired())
             eNotify(new ENotificationImpl(this, Notification.SET,
                     ModelPackage.REMOTE_SWITCH_ACONFIGURATION__RECEIVER_CODE, oldReceiverCode, receiverCode));
-        }
     }
 
     /**
@@ -195,10 +197,9 @@ public class RemoteSwitchAConfigurationImpl extends MinimalEObjectImpl.Container
     public void setRepeats(Short newRepeats) {
         Short oldRepeats = repeats;
         repeats = newRepeats;
-        if (eNotificationRequired()) {
+        if (eNotificationRequired())
             eNotify(new ENotificationImpl(this, Notification.SET, ModelPackage.REMOTE_SWITCH_ACONFIGURATION__REPEATS,
                     oldRepeats, repeats));
-        }
     }
 
     /**
@@ -292,9 +293,8 @@ public class RemoteSwitchAConfigurationImpl extends MinimalEObjectImpl.Container
      */
     @Override
     public String toString() {
-        if (eIsProxy()) {
+        if (eIsProxy())
             return super.toString();
-        }
 
         StringBuffer result = new StringBuffer(super.toString());
         result.append(" (houseCode: ");

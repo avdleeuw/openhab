@@ -1,19 +1,29 @@
 /**
- * Copyright (c) 2010-2016, openHAB.org and others.
+ * Copyright (c) 2010-2019 Contributors to the openHAB project
  *
- * All rights reserved. This program and the accompanying materials
- * are made available under the terms of the Eclipse Public License v1.0
- * which accompanies this distribution, and is available at
- * http://www.eclipse.org/legal/epl-v10.html
+ * See the NOTICE file(s) distributed with this work for additional
+ * information.
+ *
+ * This program and the accompanying materials are made available under the
+ * terms of the Eclipse Public License 2.0 which is available at
+ * http://www.eclipse.org/legal/epl-2.0
+ *
+ * SPDX-License-Identifier: EPL-2.0
  */
 package org.openhab.binding.fritzboxtr064.internal;
+
+import static java.util.Collections.singleton;
 
 import java.io.ByteArrayOutputStream;
 import java.io.IOException;
 import java.io.UnsupportedEncodingException;
 import java.net.URISyntaxException;
 import java.util.ArrayList;
-import java.util.Iterator;
+import java.util.Arrays;
+import java.util.Collection;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
 
 import javax.xml.namespace.QName;
 import javax.xml.parsers.DocumentBuilder;
@@ -35,6 +45,7 @@ import javax.xml.xpath.XPathConstants;
 import javax.xml.xpath.XPathExpressionException;
 import javax.xml.xpath.XPathFactory;
 
+import org.apache.commons.lang.WordUtils;
 import org.apache.http.HttpEntity;
 import org.apache.http.HttpHost;
 import org.apache.http.HttpResponse;
@@ -45,6 +56,7 @@ import org.apache.http.client.AuthCache;
 import org.apache.http.client.ClientProtocolException;
 import org.apache.http.client.CookieStore;
 import org.apache.http.client.CredentialsProvider;
+import org.apache.http.client.config.RequestConfig;
 import org.apache.http.client.methods.CloseableHttpResponse;
 import org.apache.http.client.methods.HttpGet;
 import org.apache.http.client.methods.HttpPost;
@@ -70,16 +82,14 @@ import org.w3c.dom.Document;
 import org.w3c.dom.Node;
 import org.w3c.dom.NodeList;
 
-/***
- * Controls communication and parsing for TR064 communication with
- * FritzBox
+/**
+ * Controls communication and parsing for TR064 communication with FritzBox.
  *
  * @author gitbock
  * @version 1.8.0
- *
  */
 public class Tr064Comm {
-    private static final Logger logger = LoggerFactory.getLogger(FritzboxTr064Binding.class);
+    private static final Logger logger = LoggerFactory.getLogger(Tr064Comm.class);
     private static final String DEFAULTUSER = "dslf-config"; // is used when no username is provided.
     private static final String TR064DOWNLOADFILE = "tr64desc.xml"; // filename of all available TR064 on fbox
 
@@ -88,13 +98,14 @@ public class Tr064Comm {
     private String _user = null;
     private String _pw = null;
 
-    // all services fbox offers
-    private ArrayList<Tr064Service> _alServices = null;
+    // all services fbox offers mapped by service id
+    private Map<String, Tr064Service> _allServices = null;
 
     // mappig table for mapping item command to tr064 parameters
-    private ArrayList<ItemMap> _alItemMap = null;
+    private Map<String, ItemMap> _allItemMap = null;
 
-    // http client object used to communicate with fbox (needed for reading/writing soap requests)
+    // http client object used to communicate with fbox (needed for reading/writing
+    // soap requests)
     private CloseableHttpClient _httpClient = null;
     private HttpClientContext _httpClientContext = null; // for reusing auth (?)
 
@@ -102,8 +113,8 @@ public class Tr064Comm {
         this._url = _url;
         this._user = user;
         this._pw = pass;
-        _alServices = new ArrayList<Tr064Service>();
-        _alItemMap = new ArrayList<ItemMap>();
+        _allServices = new HashMap<>();
+        _allItemMap = new HashMap<>();
         init();
     }
 
@@ -131,9 +142,8 @@ public class Tr064Comm {
         this._pw = _pw;
     }
 
-    /***
-     * makes sure all values are set properly
-     * before starting communications
+    /**
+     * Makes sure all values are set properly before starting communications.
      */
     private void init() {
         if (_user == null) {
@@ -142,128 +152,146 @@ public class Tr064Comm {
         if (_httpClient == null) {
             _httpClient = createTr064HttpClient(_url); // create http client used for communication
         }
-        if (_alServices.isEmpty()) { // no services are known yet?
+        if (_allServices.isEmpty()) { // no services are known yet?
             readAllServices(); // can be done w/out item mappings and w/out auth
         }
-        if (_alItemMap.isEmpty()) { // no mappings present yet?
+        if (_allItemMap.isEmpty()) { // no mappings present yet?
             generateItemMappings();
         }
     }
 
-    /***
-     * Fetches a specific value from FritzBox
-     * 
-     * 
-     * @param request string from config including the command and optional parameters
-     * @return parsed value
-     */
-    public String getTr064Value(String request) {
-        String value = null;
-
-        // extract itemCommand from request
-        String[] itemConfig = request.split(":");
-        String itemCommand = itemConfig[0]; // command is always first
-
-        // search for proper item Mapping
-        ItemMap itemMap = determineItemMappingByItemCommand(itemCommand);
-
-        if (itemMap == null) {
-            logger.warn("No item mapping found for {}. Function not implemented by your FritzBox (?)", request);
-            return "";
-        }
-
-        // determine which url etc. to connect to for accessing required value
-        Tr064Service tr064service = determineServiceByItemMapping(itemMap);
-
-        // construct soap Body which is added to soap msg later
-        SOAPBodyElement bodyData = null; // holds data to be sent to fbox
-        try {
-            MessageFactory mf = MessageFactory.newInstance();
-            SOAPMessage msg = mf.createMessage(); // empty message
-            SOAPBody body = msg.getSOAPBody(); // std. SAOP body
-            QName bodyName = new QName(tr064service.getServiceType(), itemMap.getReadServiceCommand(), "u"); // header
-                                                                                                             // for body
-                                                                                                             // element
-            bodyData = body.addBodyElement(bodyName);
-            // only if input parameter is present
-            if (itemConfig.length > 1) {
-                String dataInValue = itemConfig[1];
-                QName dataNode = new QName(itemMap.getReadDataInName()); // service specific node name
-                SOAPElement beDataNode = bodyData.addChildElement(dataNode);
-                // if input is mac address, replace "-" with ":" as fbox wants
-                if (itemMap.getItemCommand().equals("maconline")) {
-                    dataInValue = dataInValue.replaceAll("-", ":");
-                }
-                beDataNode.addTextNode(dataInValue); // add data which should be requested from fbox for this service
-            }
-            logger.debug("Raw SOAP Request to be sent to FritzBox: {}", soapToString(msg));
-
-        } catch (Exception e) {
-            logger.error("Error constructing request SOAP msg for getting parameter. {}", e.getMessage());
-            logger.debug("Request was: {}", request);
-        }
-
-        if (bodyData == null) {
-            logger.error("Could not determine data to be sent to FritzBox!");
-            return null;
-        }
-
-        SOAPMessage smTr064Request = constructTr064Msg(bodyData); // construct entire msg with body element
-        String soapActionHeader = tr064service.getServiceType() + "#" + itemMap.getReadServiceCommand(); // needed to be
-                                                                                                         // sent with
-                                                                                                         // request (not
-                                                                                                         // in body ->
-                                                                                                         // header)
-        SOAPMessage response = readSoapResponse(soapActionHeader, smTr064Request, _url + tr064service.getControlUrl());
-        logger.debug("Raw SOAP Response from FritzBox: {}", soapToString(response));
-        if (response == null) {
-            logger.error("Error retrieving SOAP response from FritzBox");
-            return null;
-        }
-
-        // check if special "soap value parser" handler for extracting SOAP value is defined. If yes, use svp
-        if (itemMap.getSoapValueParser() == null) { // extract dataOutName1 as default, no handler used
-            NodeList nlDataOutNodes = response.getSOAPPart().getElementsByTagName(itemMap.getReadDataOutName());
-            if (nlDataOutNodes != null && nlDataOutNodes.getLength() > 0) {
-                // extract value from soap response
-                value = nlDataOutNodes.item(0).getTextContent();
-            } else {
-                logger.error(
-                        "FritzBox returned unexpected response. Could not find expected datavalue {} in response {}",
-                        itemMap.getReadDataOutName(), soapToString(response));
-            }
-
-        } else {
-            logger.debug("Parsing response using SOAP value parser in Item map");
-            value = itemMap.getSoapValueParser().parseValueFromSoapMessage(response, itemMap, request); // itemMap is
-                                                                                                        // passed for
-                                                                                                        // accessing
-                                                                                                        // mapping in
-                                                                                                        // anonymous
-                                                                                                        // method
-                                                                                                        // (better way
-                                                                                                        // to do??)
-        }
-        return value;
+    public String getTr064Value(ItemConfiguration request) {
+        Map<ItemConfiguration, String> values = getTr064Values(singleton(request));
+        return values.get(request);
     }
 
-    /***
-     * Sets a parameter in fbox. Called from event bus
-     * 
-     * @param request config string from itemconfig
-     * @param cmd command to set
+    /**
+     * Fetches the values for the given item configurations from the FritzBox. Calls
+     * the FritzBox SOAP services delivering the values for the item configurations.
+     * The resulting map contains the values of all item configurations returned by
+     * the invoked services. This can be more items than were given as parameter.
+     *
+     * @param request
+     *            string from config including the command and optional parameters
+     * @return Parsed values for all item configurations returned by the invoked
+     *         services.
      */
+    public Map<ItemConfiguration, String> getTr064Values(Collection<ItemConfiguration> itemConfigurations) {
+        Map<ItemConfiguration, String> values = new HashMap<>();
 
-    public void setTr064Value(String request, Command cmd) {
-        // extract itemCommand from request
-        String[] itemConfig = request.split(":");
-        String itemCommand = itemConfig[0]; // command is always first
+        for (ItemConfiguration itemConfiguration : itemConfigurations) {
+
+            String itemCommand = itemConfiguration.getItemCommand();
+
+            if (values.containsKey(itemConfiguration)) {
+                // item value already read by earlier MultiItemMap
+                continue;
+            }
+
+            // search for proper item Mapping
+            ItemMap itemMap = determineItemMappingByItemCommand(itemCommand);
+
+            if (itemMap == null) {
+                logger.warn("No item mapping found for {}. Function not implemented by your FritzBox (?)",
+                        itemConfiguration);
+                continue;
+            }
+
+            if (itemMap.getReadServiceCommand() == null) {
+                logger.debug("skipping {}, read command is null", itemMap);
+                continue;
+            }
+            // determine which url etc. to connect to for accessing required value
+            Tr064Service tr064service = determineServiceByItemMapping(itemMap);
+
+            // construct soap Body which is added to soap msg later
+            SOAPBodyElement bodyData = null; // holds data to be sent to fbox
+            try {
+                MessageFactory mf = MessageFactory.newInstance();
+                SOAPMessage msg = mf.createMessage(); // empty message
+                SOAPBody body = msg.getSOAPBody(); // std. SAOP body
+                QName bodyName = new QName(tr064service.getServiceType(), itemMap.getReadServiceCommand(), "u"); // header
+                                                                                                                 // for
+                                                                                                                 // body
+                                                                                                                 // element
+                bodyData = body.addBodyElement(bodyName);
+                // only if input parameter is present
+                if (itemMap instanceof ParametrizedItemMap) {
+                    for (InputArgument inputArgument : ((ParametrizedItemMap) itemMap)
+                            .getConfigInputArguments(itemConfiguration)) {
+                        String dataInName = inputArgument.getName();
+                        String dataInValue = inputArgument.getValue();
+                        QName dataNode = new QName(dataInName);
+                        SOAPElement beDataNode = bodyData.addChildElement(dataNode);
+                        // if input is mac address, replace "-" with ":" as fbox wants
+                        if (itemConfiguration.getItemCommand().equals("maconline")) {
+                            dataInValue = dataInValue.replaceAll("-", ":");
+                        }
+                        beDataNode.addTextNode(dataInValue); // add data which should be requested from fbox for this
+                                                             // service
+                    }
+
+                }
+                logger.trace("Raw SOAP Request to be sent to FritzBox: {}", soapToString(msg));
+
+            } catch (Exception e) {
+                logger.warn("Error constructing request SOAP msg for getting parameter. {}", e.getMessage());
+                logger.debug("Request was: {}", itemConfiguration);
+            }
+
+            if (bodyData == null) {
+                logger.warn("Could not determine data to be sent to FritzBox!");
+                return null;
+            }
+
+            SOAPMessage smTr064Request = constructTr064Msg(bodyData); // construct entire msg with body element
+            String soapActionHeader = tr064service.getServiceType() + "#" + itemMap.getReadServiceCommand(); // needed
+                                                                                                             // to be
+                                                                                                             // sent
+                                                                                                             // with
+                                                                                                             // request
+                                                                                                             // (not
+                                                                                                             // in body
+                                                                                                             // ->
+                                                                                                             // header)
+            SOAPMessage response = readSoapResponse(soapActionHeader, smTr064Request,
+                    _url + tr064service.getControlUrl());
+            logger.trace("Raw SOAP Response from FritzBox: {}", soapToString(response));
+            if (response == null) {
+                logger.warn("Error retrieving SOAP response from FritzBox");
+                continue;
+            }
+
+            values.putAll(
+                    itemMap.getSoapValueParser().parseValuesFromSoapMessage(response, itemMap, itemConfiguration));
+        }
+
+        return values;
+    }
+
+    /**
+     * Sets a parameter in fbox. Called from event bus.
+     *
+     * @param request
+     *            config string from itemconfig
+     * @param cmd
+     *            command to set
+     */
+    public void setTr064Value(ItemConfiguration request, Command cmd) {
+        String itemCommand = request.getItemCommand();
 
         // search for proper item Mapping
-        ItemMap itemMap = determineItemMappingByItemCommand(itemCommand);
+        ItemMap itemMapForCommand = determineItemMappingByItemCommand(itemCommand);
+
+        if (!(itemMapForCommand instanceof WritableItemMap)) {
+            logger.warn("Item command {} does not support setting values", itemCommand);
+            return;
+        }
+        WritableItemMap itemMap = (WritableItemMap) itemMapForCommand;
+
+        Tr064Service tr064service = determineServiceByItemMapping(itemMap);
 
         // determine which url etc. to connect to for accessing required value
-        Tr064Service tr064service = determineServiceByItemMapping(itemMap);
         // construct soap Body which is added to soap msg later
         SOAPBodyElement bodyData = null; // holds data to be sent to fbox
         try {
@@ -275,19 +303,19 @@ public class Tr064Comm {
                                                                                                               // body
                                                                                                               // element
             bodyData = body.addBodyElement(bodyName);
-            // only if input parameter is present
-            if (itemConfig.length > 1) {
-                String dataInValueAdd = itemConfig[1]; // additional parameter to set e.g. id of TAM to set
-                QName dataNode = new QName(itemMap.getWriteDataInNameAdditional()); // name of additional para to set
-                SOAPElement beDataNode = bodyData.addChildElement(dataNode);
-                beDataNode.addTextNode(dataInValueAdd); // add value which should be set
+
+            List<InputArgument> writeInputArguments = new ArrayList<>();
+            writeInputArguments.add(itemMap.getWriteInputArgument(cmd));
+            if (itemMap instanceof ParametrizedItemMap) {
+                writeInputArguments.addAll(((ParametrizedItemMap) itemMap).getConfigInputArguments(request));
             }
 
-            // convert String command into numeric
-            String setDataInValue = cmd.toString().equalsIgnoreCase("on") ? "1" : "0";
-            QName dataNode = new QName(itemMap.getWriteDataInName()); // service specific node name
-            SOAPElement beDataNode = bodyData.addChildElement(dataNode);
-            beDataNode.addTextNode(setDataInValue); // add data which should be requested from fbox for this service
+            for (InputArgument inputArgument : writeInputArguments) {
+                QName dataNode = new QName(inputArgument.getName());
+                SOAPElement beDataNode = bodyData.addChildElement(dataNode);
+                beDataNode.addTextNode(inputArgument.getValue());
+            }
+
             logger.debug("SOAP Msg to send to FritzBox for setting data: {}", soapToString(msg));
 
         } catch (Exception e) {
@@ -328,14 +356,15 @@ public class Tr064Comm {
 
     }
 
-    /***
-     * Creates a apache HTTP Client object, ignoring SSL Exceptions like self signed certificates
-     * and sets Auth. Scheme to Digest Auth
-     * 
-     * @param fboxUrl the URL from config file of fbox to connect to
+    /**
+     * Creates an Apache HTTP Client object, ignoring SSL Exceptions like self signed
+     * certificates, and sets Auth. Scheme to Digest Auth.
+     *
+     * @param fboxUrl
+     *            the URL from config file of fbox to connect to
      * @return the ready-to-use httpclient for tr064 requests
      */
-    private CloseableHttpClient createTr064HttpClient(String fboxUrl) {
+    private synchronized CloseableHttpClient createTr064HttpClient(String fboxUrl) {
         CloseableHttpClient hc = null;
         // Convert URL String from config in easy explotable URI object
         URIBuilder uriFbox = null;
@@ -359,8 +388,8 @@ public class Tr064Comm {
                 new UsernamePasswordCredentials(_user, _pw));
         // Create AuthCache instance. Manages authentication based on server response
         AuthCache authCache = new BasicAuthCache();
-        // Generate DIGEST scheme object, initialize it and add it to the local auth cache. Digeste is standard for fbox
-        // auth SOAP
+        // Generate DIGEST scheme object, initialize it and add it to the local auth
+        // cache. Digeste is standard for fbox auth SOAP
         DigestScheme digestAuth = new DigestScheme();
         digestAuth.overrideParamter("realm", "HTTPS Access"); // known from fbox specification
         digestAuth.overrideParamter("nonce", ""); // never known at first request
@@ -373,49 +402,53 @@ public class Tr064Comm {
         SSLConnectionSocketFactory sslsf = null;
         try {
             sslContextBuilder.loadTrustMaterial(null, new TrustSelfSignedStrategy()); // accept self signed certs
-            sslsf = new SSLConnectionSocketFactory(sslContextBuilder.build(), null, null, new NoopHostnameVerifier()); // dont
-                                                                                                                       // verify
-                                                                                                                       // hostname
-                                                                                                                       // against
-                                                                                                                       // cert
-                                                                                                                       // CN
+            // dont verify hostname against cert CN
+            sslsf = new SSLConnectionSocketFactory(sslContextBuilder.build(), null, null, new NoopHostnameVerifier());
         } catch (Exception ex) {
             logger.error(ex.getMessage());
         }
+
+        // Set timeout values
+        RequestConfig rc = RequestConfig.copy(RequestConfig.DEFAULT).setSocketTimeout(4000).setConnectTimeout(4000)
+                .setConnectionRequestTimeout(4000).build();
 
         // BUILDER
         // setup builder with parameters defined before
         hc = HttpClientBuilder.create().setSSLSocketFactory(sslsf) // set the SSL options which trust every self signed
                                                                    // cert
                 .setDefaultCredentialsProvider(credp) // set auth options using digest
+                .setDefaultRequestConfig(rc) // set the request config specifying timeout
                 .build();
 
         return hc;
     }
 
-    /***
-     * converts SOAP msg into string
-     * 
+    /**
+     * Converts SOAP message into string.
+     *
      * @param sm
      * @return
      */
-    private String soapToString(SOAPMessage sm) {
+    public static String soapToString(SOAPMessage sm) {
         String strMsg = "";
         try {
             ByteArrayOutputStream xmlStream = new ByteArrayOutputStream();
             sm.writeTo(xmlStream);
             strMsg = new String(xmlStream.toByteArray());
         } catch (Exception e) {
-            e.printStackTrace();
+            logger.debug("Not able to parse SOAP message: {}", sm, e);
         }
         return strMsg;
     }
 
-    /***
-     * 
-     * @param soapActionHeader String in HTTP Header. specific for each TR064 service
-     * @param request the SOAPMEssage Object to send to fbox as request
-     * @param serviceUrl URL to sent the SOAP Message to (service specific)
+    /**
+     *
+     * @param soapActionHeader
+     *            String in HTTP Header. specific for each TR064 service
+     * @param request
+     *            the SOAPMEssage Object to send to fbox as request
+     * @param serviceUrl
+     *            URL to sent the SOAP Message to (service specific)
      * @return
      */
     private SOAPMessage readSoapResponse(String soapActionHeader, SOAPMessage request, String serviceUrl) {
@@ -426,10 +459,13 @@ public class Tr064Comm {
         postSoap.addHeader("SOAPAction", soapActionHeader); // add the Header specific for this request
         HttpEntity entBody = null;
         HttpResponse resp = null; // stores raw response from fbox
+        boolean exceptionOccurred = false;
         try {
             entBody = new StringEntity(soapToString(request), ContentType.create("text/xml", "UTF-8")); // add body
             postSoap.setEntity(entBody);
-            resp = _httpClient.execute(postSoap, _httpClientContext);
+            synchronized (_httpClient) {
+                resp = _httpClient.execute(postSoap, _httpClientContext);
+            }
 
             // Fetch content data
             StatusLine slResponse = resp.getStatusLine();
@@ -437,8 +473,13 @@ public class Tr064Comm {
 
             // Check for (auth-) error
             if (slResponse.getStatusCode() == 401) {
-                logger.error(
-                        "Could not read response from FritzBox. Unauthorized! Check User/PW in config. Create user for tr064 requests");
+                logger.warn(
+                        "Could not read response from FritzBox. Unauthorized! Check user and password in config. "
+                                + "Verify configured user for tr064 requests. Reason from Fritzbox was: {}",
+                        slResponse.getReasonPhrase());
+
+                postSoap.releaseConnection();
+                resetHttpClient();
                 return null;
             }
 
@@ -447,30 +488,59 @@ public class Tr064Comm {
 
         } catch (UnsupportedEncodingException e) {
             logger.error("Encoding not supported: {}", e.getMessage().toString());
-            return null;
+            exceptionOccurred = true;
         } catch (ClientProtocolException e) {
             logger.error("Client Protocol not supported: {}", e.getMessage().toString());
-            return null;
+            exceptionOccurred = true;
         } catch (IOException e) {
             logger.error("Cannot send/receive: {}", e.getMessage().toString());
-            return null;
+            exceptionOccurred = true;
         } catch (UnsupportedOperationException e) {
             logger.error("Operation unsupported: {}", e.getMessage().toString());
-            return null;
+            response = null;
+            exceptionOccurred = true;
         } catch (SOAPException e) {
             logger.error("SOAP Error: {}", e.getMessage().toString());
-            return null;
+            exceptionOccurred = true;
+        } finally {
+            // Make sure connection is released. If error occurred make sure to print in log
+            if (exceptionOccurred) {
+                logger.warn("Releasing connection to FritzBox because of error.");
+                resetHttpClient();
+            } else {
+                logger.debug("Releasing connection");
+            }
+            postSoap.releaseConnection();
         }
 
         return response;
 
     }
 
-    /***
-     * sets all required namespaces and prepares the SOAP message to send
-     * creates skeleton + body data
-     * 
-     * @param bodyData is attached to skeleton to form entire SOAP message
+    /**
+     * In case of failure, reset the authentication state, close connection and init
+     * again.
+     */
+    private void resetHttpClient() {
+        logger.trace("Drop client for fritzbox and setup connection again.");
+        if (_httpClientContext.getTargetAuthState() != null) {
+            _httpClientContext.getTargetAuthState().reset();
+        }
+        try {
+            _httpClient.close();
+        } catch (IOException e) {
+            logger.debug("Failed to close connection to fritzbox at {}. "
+                    + "This might result in still open, but dead connections waiting for a timeout.", _url, e);
+        }
+        _httpClient = createTr064HttpClient(_url);
+    }
+
+    /**
+     * Sets all required namespaces and prepares the SOAP message to send.
+     * Creates skeleton + body data.
+     *
+     * @param bodyData
+     *            is attached to skeleton to form entire SOAP message
      * @return ready to send SOAP message
      */
     private SOAPMessage constructTr064Msg(SOAPBodyElement bodyData) {
@@ -511,60 +581,43 @@ public class Tr064Comm {
         }
 
         return soapMsg;
-
     }
 
-    /***
-     * looks for the proper item mapping for the item command given from item file
-     * 
-     * @param itemCommand String item command
+    /**
+     * Looks for the proper item mapping for the item command given from item file.
+     *
+     * @param itemCommand
+     *            String item command
      * @return found itemMap object if found, or null
      */
     private ItemMap determineItemMappingByItemCommand(String itemCommand) {
-        ItemMap foundMapping = null;
+        ItemMap foundMapping = _allItemMap.get(itemCommand);
 
-        // iterate over all itemMappings to find proper mapping for requested item command
-        Iterator<ItemMap> itMap = _alItemMap.iterator();
-        while (itMap.hasNext()) {
-            ItemMap currentMap = itMap.next();
-            if (itemCommand.equals(currentMap.getItemCommand())) {
-                foundMapping = currentMap;
-                break;
-            }
-        }
         if (foundMapping == null) {
             logger.error("No mapping found for item command {}", itemCommand);
         }
         return foundMapping;
     }
 
-    /***
-     * determines Service including which URL to connect to for value request
-     * 
-     * @param the itemmap for which the service is searched
+    /**
+     * Determines Service including which URL to connect to for value request.
+     *
+     * @param the
+     *            itemmap for which the service is searched
      * @return the found service or null
      */
     private Tr064Service determineServiceByItemMapping(ItemMap mapping) {
-        Tr064Service foundService = null;
+        Tr064Service foundService = _allServices.get(mapping.getServiceId());
 
-        // search which service matches the item mapping
-        Iterator<Tr064Service> it = _alServices.iterator();
-        while (it.hasNext()) {
-            Tr064Service currentService = it.next();
-            if (currentService.getServiceId().contains(mapping.getServiceId())) {
-                foundService = currentService;
-                break;
-            }
-        }
         if (foundService == null) {
-            logger.error("No tr064 service found for service id {}", mapping.getServiceId());
+            logger.warn("No tr064 service found for service id {}", mapping.getServiceId());
         }
         return foundService;
     }
 
-    /***
-     * Connects to fbox service xml to get a list of all services
-     * which are offered by TR064. Saves it into local list
+    /**
+     * Connects to fbox service xml to get a list of all services which are offered
+     * by TR064. Saves it into local list.
      */
     private void readAllServices() {
         Document xml = getFboxXmlResponse(_url + "/" + TR064DOWNLOADFILE);
@@ -588,38 +641,33 @@ public class Tr064Comm {
                 logger.debug("Could not parse service {}", currentNode.getTextContent());
                 e.printStackTrace();
             }
-            _alServices.add(trS);
+            _allServices.put(trS.getServiceId(), trS);
         }
     }
 
-    /***
-     * populates local static mapping table
-     * todo: refactore to read from config file later?
-     * sets the parser based on the itemcommand -> soap value parser "svp" anonymous method
-     * for each mapping
-     * 
+    /**
+     * Populates local static mapping table.
+     * Sets the parser based on the itemcommand -> soap value parser "svp"
+     * anonymous method for each mapping.
      */
+    // TODO: refactor to read from config file later?
     private void generateItemMappings() {
         // services available from fbox. Needed for e.g. wifi select 5GHz/Guest Wifi
-        if (_alServices.isEmpty()) { // no services are known yet?
+        if (_allServices.isEmpty()) { // no services are known yet?
             readAllServices();
         }
 
         // Mac Online Checker
-        ItemMap imMacOnline = new ItemMap("maconline", "GetSpecificHostEntry", "LanDeviceHosts-com:serviceId:Hosts1",
-                "NewMACAddress", "NewActive");
-        imMacOnline.setSoapValueParser(new SoapValueParser() {
+        SingleItemMap imMacOnline = SingleItemMap.builder().itemCommand("maconline")
+                .serviceId("urn:LanDeviceHosts-com:serviceId:Hosts1").itemArgumentName("NewActive")
+                .configArgumentNames("NewMACAddress").readServiceCommand("GetSpecificHostEntry")
+                .soapValueParser(new SoapValueParser() {
 
-            @Override
-            public String parseValueFromSoapMessage(SOAPMessage sm, ItemMap mapping, String request) {
-                logger.debug("Parsing FritzBox response for maconline");
-                String value = "";
-                // maconline: if fault is present could also indicate not a fault but MAC is not known
-                try {
-                    SOAPBody sbResponse = sm.getSOAPBody();
-                    if (sbResponse.hasFault()) {
-                        SOAPFault sf = sbResponse.getFault();
-                        Detail detail = sf.getDetail();
+                    @Override
+                    protected String parseValueFromSoapFault(ItemConfiguration itemConfiguration, SOAPFault soapFault,
+                            ItemMap mapping) {
+                        String value = null;
+                        Detail detail = soapFault.getDetail();
                         if (detail != null) {
                             NodeList nlErrorCode = detail.getElementsByTagName("errorCode");
                             Node nErrorCode = nlErrorCode.item(0);
@@ -627,52 +675,65 @@ public class Tr064Comm {
                             if (errorCode.equals("714")) {
                                 value = "MAC not known to FritzBox!";
                                 logger.debug(value);
-                            } else {
-                                logger.error("Error received from FritzBox: {}. SOAP request was: {}", soapToString(sm),
-                                        request);
-                                value = "ERROR";
                             }
                         }
-                    } else {
-                        SOAPBody sb = sm.getSOAPBody();
-                        // parameter name to extract is taken from mapping
-                        NodeList nlActive = sb.getElementsByTagName(mapping.getReadDataOutName());
-                        if (nlActive.getLength() > 0) {
-                            Node nActive = nlActive.item(0);
-                            value = nActive.getTextContent();
-                            logger.debug("parsed as {}", value);
-                        }
-                    }
-                } catch (SOAPException e) {
-                    logger.error("Error parsing SOAP response from FritzBox: {}", e.getMessage());
-                }
-                return value;
-            }
-        });
-        _alItemMap.add(imMacOnline);
 
-        _alItemMap.add(new ItemMap("modelName", "GetInfo", "DeviceInfo-com:serviceId:DeviceInfo1", "", "NewModelName"));
-        _alItemMap.add(new ItemMap("wanip", "GetExternalIPAddress",
-                "urn:WANPPPConnection-com:serviceId:WANPPPConnection1", "", "NewExternalIPAddress"));
+                        if (value == null) {
+                            value = super.parseValueFromSoapFault(itemConfiguration, soapFault, mapping);
+                        }
+
+                        return value;
+                    }
+                }).build();
+        addItemMap(imMacOnline);
+
+        addItemMap(new MultiItemMap(Arrays.asList("modelName", "manufacturerName", "softwareVersion", "serialNumber"),
+                "GetInfo", "urn:DeviceInfo-com:serviceId:DeviceInfo1", name -> "New" + WordUtils.capitalize(name)));
+        addItemMap(SingleItemMap.builder().itemCommand("wanip")
+                .serviceId("urn:WANPPPConnection-com:serviceId:WANPPPConnection1")
+                .itemArgumentName("NewExternalIPAddress").readServiceCommand("GetExternalIPAddress").build());
+        addItemMap(SingleItemMap.builder().itemCommand("externalWanip")
+                .serviceId("urn:WANIPConnection-com:serviceId:WANIPConnection1")
+                .itemArgumentName("NewExternalIPAddress").readServiceCommand("GetExternalIPAddress").build());
+
+        // WAN Status
+        addItemMap(new MultiItemMap(
+                Arrays.asList("wanWANAccessType", "wanLayer1UpstreamMaxBitRate", "wanLayer1DownstreamMaxBitRate",
+                        "wanPhysicalLinkStatus"),
+                "GetCommonLinkProperties", "urn:WANCIfConfig-com:serviceId:WANCommonInterfaceConfig1",
+                name -> name.replace("wan", "New")));
+        addItemMap(SingleItemMap.builder().itemCommand("wanTotalBytesSent")
+                .serviceId("urn:WANCIfConfig-com:serviceId:WANCommonInterfaceConfig1")
+                .itemArgumentName("NewTotalBytesSent").readServiceCommand("GetTotalBytesSent").build());
+        addItemMap(SingleItemMap.builder().itemCommand("wanTotalBytesReceived")
+                .serviceId("urn:WANCIfConfig-com:serviceId:WANCommonInterfaceConfig1")
+                .itemArgumentName("NewTotalBytesReceived").readServiceCommand("GetTotalBytesReceived").build());
+
+        // DSL Status
+        addItemMap(new MultiItemMap(
+                Arrays.asList("dslEnable", "dslStatus", "dslUpstreamCurrRate", "dslDownstreamCurrRate",
+                        "dslUpstreamMaxRate", "dslDownstreamMaxRate", "dslUpstreamNoiseMargin",
+                        "dslDownstreamNoiseMargin", "dslUpstreamAttenuation", "dslDownstreamAttenuation"),
+                "GetInfo", "urn:WANDSLIfConfig-com:serviceId:WANDSLInterfaceConfig1",
+                name -> name.replace("dsl", "New")));
+        addItemMap(new MultiItemMap(Arrays.asList("dslFECErrors", "dslHECErrors", "dslCRCErrors"), "GetStatisticsTotal",
+                "urn:WANDSLIfConfig-com:serviceId:WANDSLInterfaceConfig1", name -> name.replace("dsl", "New")));
 
         // Wifi 2,4GHz
-        ItemMap imWifi24Switch = new ItemMap("wifi24Switch", "GetInfo",
-                "urn:WLANConfiguration-com:serviceId:WLANConfiguration1", "", "NewEnable");
-        imWifi24Switch.setWriteServiceCommand("SetEnable");
-        imWifi24Switch.setWriteDataInName("NewEnable");
-        _alItemMap.add(imWifi24Switch);
+        SingleItemMap imWifi24Switch = SingleItemMap.builder().itemCommand("wifi24Switch")
+                .serviceId("urn:WLANConfiguration-com:serviceId:WLANConfiguration1").itemArgumentName("NewEnable")
+                .readServiceCommand("GetInfo").writeServiceCommand("SetEnable").build();
+        addItemMap(imWifi24Switch);
 
         // wifi 5GHz
-        ItemMap imWifi50Switch = new ItemMap("wifi50Switch", "GetInfo",
-                "urn:WLANConfiguration-com:serviceId:WLANConfiguration2", "", "NewEnable");
-        imWifi50Switch.setWriteServiceCommand("SetEnable");
-        imWifi50Switch.setWriteDataInName("NewEnable");
+        SingleItemMap imWifi50Switch = SingleItemMap.builder().itemCommand("wifi50Switch")
+                .serviceId("urn:WLANConfiguration-com:serviceId:WLANConfiguration2").itemArgumentName("NewEnable")
+                .readServiceCommand("GetInfo").writeServiceCommand("SetEnable").build();
 
         // guest wifi
-        ItemMap imWifiGuestSwitch = new ItemMap("wifiGuestSwitch", "GetInfo",
-                "urn:WLANConfiguration-com:serviceId:WLANConfiguration3", "", "NewEnable");
-        imWifiGuestSwitch.setWriteServiceCommand("SetEnable");
-        imWifiGuestSwitch.setWriteDataInName("NewEnable");
+        SingleItemMap imWifiGuestSwitch = SingleItemMap.builder().itemCommand("wifiGuestSwitch")
+                .serviceId("urn:WLANConfiguration-com:serviceId:WLANConfiguration3").itemArgumentName("NewEnable")
+                .readServiceCommand("GetInfo").writeServiceCommand("SetEnable").build();
 
         // check if 5GHz wifi and/or guest wifi is available.
         Tr064Service svc5GHzWifi = determineServiceByItemMapping(imWifi50Switch);
@@ -680,8 +741,8 @@ public class Tr064Comm {
 
         if (svc5GHzWifi != null && svcGuestWifi != null) { // WLANConfiguration3+2 present -> guest wifi + 5Ghz present
             // prepared properly, only needs to be added
-            _alItemMap.add(imWifi50Switch);
-            _alItemMap.add(imWifiGuestSwitch);
+            addItemMap(imWifi50Switch);
+            addItemMap(imWifiGuestSwitch);
             logger.debug("Found 2,4 Ghz, 5Ghz and Guest Wifi");
         }
 
@@ -689,7 +750,7 @@ public class Tr064Comm {
                                                            // available but Guest Wifi
             // remap itemMap for Guest Wifi from 3 to 2
             imWifiGuestSwitch.setServiceId("urn:WLANConfiguration-com:serviceId:WLANConfiguration2");
-            _alItemMap.add(imWifiGuestSwitch);// only add guest wifi, no 5Ghz
+            addItemMap(imWifiGuestSwitch);// only add guest wifi, no 5Ghz
             logger.debug("Found 2,4 Ghz and Guest Wifi");
         }
         if (svc5GHzWifi == null && svcGuestWifi == null) { // WLANConfiguration3+2 not present > no 5Ghz Wifi or Guest
@@ -699,168 +760,174 @@ public class Tr064Comm {
 
         // Phonebook Download
         // itemcommand is dummy: not a real item
-        ItemMap imPhonebook = new ItemMap("phonebook", "GetPhonebook",
-                "urn:X_AVM-DE_OnTel-com:serviceId:X_AVM-DE_OnTel1", "NewPhonebookID", "NewPhonebookURL");
-        _alItemMap.add(imPhonebook);
+        ItemMap imPhonebook = SingleItemMap.builder().itemCommand("phonebook")
+                .serviceId("urn:X_AVM-DE_OnTel-com:serviceId:X_AVM-DE_OnTel1").configArgumentNames("NewPhonebookID")
+                .itemArgumentName("NewPhonebookURL").readServiceCommand("GetPhonebook").build();
+        addItemMap(imPhonebook);
 
         // TAM (telephone answering machine) Switch
-        ItemMap imTamSwitch = new ItemMap("tamSwitch", "GetInfo", "urn:X_AVM-DE_TAM-com:serviceId:X_AVM-DE_TAM1",
-                "NewIndex", "NewEnable");
-        imTamSwitch.setWriteServiceCommand("SetEnable");
-        imTamSwitch.setWriteDataInName("NewEnable");
-        imTamSwitch.setWriteDataInNameAdditional("NewIndex"); // additional Parameter to set
-        _alItemMap.add(imTamSwitch);
+        SingleItemMap imTamSwitch = SingleItemMap.builder().itemCommand("tamSwitch")
+                .serviceId("urn:X_AVM-DE_TAM-com:serviceId:X_AVM-DE_TAM1").configArgumentNames("NewIndex")
+                .itemArgumentName("NewEnable").readServiceCommand("GetInfo").writeServiceCommand("SetEnable").build();
+        addItemMap(imTamSwitch);
 
         // New Messages per TAM ID
-        // two requests needed: First gets URL to download tam info from, 2nd contains info of messages
-        ItemMap imTamNewMessages = new ItemMap("tamNewMessages", "GetMessageList",
-                "urn:X_AVM-DE_TAM-com:serviceId:X_AVM-DE_TAM1", "NewIndex", "NewURL");
-        // SVP fetches desired infos
-        imTamNewMessages.setSoapValueParser(new SoapValueParser() {
+        // two requests needed: First gets URL to download tam info from, 2nd contains
+        // info of messages
+        SingleItemMap imTamNewMessages = SingleItemMap.builder().itemCommand("tamNewMessages")
+                .serviceId("urn:X_AVM-DE_TAM-com:serviceId:X_AVM-DE_TAM1").configArgumentNames("NewIndex")
+                .itemArgumentName("NewURL").readServiceCommand("GetMessageList").soapValueParser(new SoapValueParser() {
 
-            @Override
-            public String parseValueFromSoapMessage(SOAPMessage sm, ItemMap mapping, String request) {
-                String value = "";
-                logger.debug("Parsing FritzBox response for TAM messages: {}", soapToString(sm));
-                try {
-                    SOAPBody sbResponse = sm.getSOAPBody();
-                    if (sbResponse.hasFault()) {
-                        SOAPFault sf = sbResponse.getFault();
-                        Detail detail = sf.getDetail();
-                        if (detail != null) {
-                            logger.error("Error received from fbox while parsing TAM message info: {}. ",
-                                    soapToString(sm));
-                            value = "ERROR";
-                        }
-                    } else {
-                        NodeList nlDataOutNodes = sm.getSOAPPart().getElementsByTagName(mapping.getReadDataOutName()); // URL
-                        if (nlDataOutNodes != null && nlDataOutNodes.getLength() > 0) {
-                            // extract URL from soap response
-                            String url = nlDataOutNodes.item(0).getTextContent();
+                    @Override
+                    protected String parseValueFromSoapBody(ItemConfiguration itemConfiguration, SOAPBody soapBody,
+                            ItemMap mapping) {
+                        String value = null;
+
+                        // extract URL from soap response
+                        String url = super.parseValueFromSoapBody(itemConfiguration, soapBody, mapping);
+
+                        if (url != null) {
                             Document xmlTamInfo = getFboxXmlResponse(url);
-                            logger.debug("Parsing xml message TAM info {}", Helper.documentToString(xmlTamInfo));
-                            NodeList nlNews = xmlTamInfo.getElementsByTagName("New"); // get all Nodes containing "new",
-                                                                                      // indicating message was not
-                                                                                      // listened to
+                            if (xmlTamInfo != null) {
+                                logger.debug("Parsing xml message TAM info {}", Helper.documentToString(xmlTamInfo));
+                                NodeList nlNews = xmlTamInfo.getElementsByTagName("New"); // get all Nodes containing
+                                                                                          // "new", indicating message
+                                                                                          // was not listened to
 
-                            // When <new> contains 1 -> message is new, when 0, message not new -> Counting 1s
-                            int newMessages = 0;
-                            for (int i = 0; i < nlNews.getLength(); i++) {
-                                if (nlNews.item(i).getTextContent().equals("1")) {
-                                    newMessages++;
+                                // When <new> contains 1 -> message is new, when 0, message not new -> Counting
+                                // 1s
+                                int newMessages = 0;
+                                for (int i = 0; i < nlNews.getLength(); i++) {
+                                    if (nlNews.item(i).getTextContent().equals("1")) {
+                                        newMessages++;
+                                    }
                                 }
+                                value = Integer.toString(newMessages);
+                                logger.debug("Parsed new messages as: {}", value);
+                            } else {
+                                logger.warn("Failed to read TAM info from URL {}", url);
+                                // cause was already logged earlier
                             }
-                            value = Integer.toString(newMessages);
-                            logger.debug("Parsed new messages as: {}", value);
-                        } else {
-                            logger.error(
-                                    "FritzBox returned unexpected response. Could not find expected datavalue {} in response {}",
-                                    mapping.getReadDataOutName(), soapToString(sm));
                         }
-                    }
-                } catch (SOAPException e) {
-                    logger.error("Error parsing SOAP response from FritzBox");
-                    e.printStackTrace();
-                }
 
-                return value;
-            }
-        });
-        _alItemMap.add(imTamNewMessages);
+                        return value;
+                    }
+                }).build();
+        addItemMap(imTamNewMessages);
 
         // Missed calls
-        // two requests: 1st fetches URL to download call list, 2nd fetches xml call list
-        ItemMap imMissedCalls = new ItemMap("missedCallsInDays", "GetCallList",
-                "urn:X_AVM-DE_OnTel-com:serviceId:X_AVM-DE_OnTel1", "NewDays", "NewCallListURL");
-        // svp for downloading call list from received URL
-        imMissedCalls.setSoapValueParser(new SoapValueParser() {
+        // two requests: 1st fetches URL to download call list, 2nd fetches xml call
+        // list
+        SingleItemMap imMissedCalls = SingleItemMap.builder().itemCommand("missedCallsInDays")
+                .serviceId("urn:X_AVM-DE_OnTel-com:serviceId:X_AVM-DE_OnTel1").itemArgumentName("NewCallListURL")
+                .readServiceCommand("GetCallList").configArgumentNames("NewDays")
+                .soapValueParser(new SoapValueParser() {
 
-            @Override
-            public String parseValueFromSoapMessage(SOAPMessage sm, ItemMap mapping, String request) {
-                String value = "";
-                logger.debug("Parsing FritzBox response for call list: {}", soapToString(sm));
+                    @Override
+                    protected String parseValueFromSoapBody(ItemConfiguration itemConfiguration, SOAPBody soapBody,
+                            ItemMap mapping) {
+                        String value = null;
 
-                // extract how many days of call list should be examined for missed calls
-                String days = "3"; // default
-                String[] itemConfig = request.split(":");
-                if (itemConfig.length == 2) {
-                    days = itemConfig[1]; // set the days as defined in item config. Otherwise default value of 3 is
-                                          // used
-                }
+                        // extract URL from soap response
+                        String url = super.parseValueFromSoapBody(itemConfiguration, soapBody, mapping);
 
-                try {
-                    SOAPBody sbResponse = sm.getSOAPBody();
-                    if (sbResponse.hasFault()) {
-                        SOAPFault sf = sbResponse.getFault();
-                        Detail detail = sf.getDetail();
-                        if (detail != null) {
-                            logger.error("Error received from FritzBox while parsing call list: {}", soapToString(sm));
-                            value = "ERROR";
+                        // extract how many days of call list should be examined for missed calls
+                        String days = "3"; // default
+                        if (!itemConfiguration.getArgumentValues().isEmpty()) {
+                            days = itemConfiguration.getArgumentValues().get(0); // set the days as defined in item
+                                                                                 // config.
+                            // Otherwise default value of 3 is used
                         }
-                    } else {
-                        NodeList nlDataOutNodes = sm.getSOAPPart().getElementsByTagName(mapping.getReadDataOutName()); // URL
-                        if (nlDataOutNodes != null && nlDataOutNodes.getLength() > 0) {
-                            // extract URL from soap response
-                            String url = nlDataOutNodes.item(0).getTextContent();
+
+                        if (url != null) {
                             // only get missed calls of the last x days
                             url = url + "&days=" + days;
                             logger.debug("Downloading call list using url {}", url);
-                            Document xmlTamInfo = getFboxXmlResponse(url); // download call list
-                            logger.debug("Parsing xml message call list info {}", Helper.documentToString(xmlTamInfo));
-                            NodeList nlTypes = xmlTamInfo.getElementsByTagName("Type"); // get all Nodes containing
-                                                                                        // "Type". Type 2 => missed
+                            Document callListInfo = getFboxXmlResponse(url); // download call list
+                            if (callListInfo != null) {
+                                logger.debug("Parsing xml message call list info {}",
+                                        Helper.documentToString(callListInfo));
+                                NodeList nlTypes = callListInfo.getElementsByTagName("Type"); // get all Nodes
+                                                                                              // containing "Type". Type
+                                                                                              // 2 => missed
 
-                            // When <type> contains 2 -> call was missed -> Counting only 2 entries
-                            int missedCalls = 0;
-                            for (int i = 0; i < nlTypes.getLength(); i++) {
-                                if (nlTypes.item(i).getTextContent().equals("2")) {
-                                    missedCalls++;
+                                // When <type> contains 2 -> call was missed -> Counting only 2 entries
+                                int missedCalls = 0;
+                                for (int i = 0; i < nlTypes.getLength(); i++) {
+                                    if (nlTypes.item(i).getTextContent().equals("2")) {
+                                        missedCalls++;
+                                    }
                                 }
+                                value = Integer.toString(missedCalls);
+                                logger.debug("Parsed new messages as: {}", value);
+                            } else {
+                                logger.warn("Failed to read call list info from URL {}", url);
+                                // cause was already logged earlier
                             }
-                            value = Integer.toString(missedCalls);
-                            logger.debug("Parsed new messages as: {}", value);
-                        } else {
-                            logger.error(
-                                    "FritzBox returned unexpected response. Could not find expected datavalue {} in response {}",
-                                    mapping.getReadDataOutName(), soapToString(sm));
                         }
+
+                        return value;
                     }
-                } catch (SOAPException e) {
-                    logger.error("Error parsing SOAP response from FritzBox: {}", e.getMessage());
-                }
+                }).build();
+        addItemMap(imMissedCalls);
 
-                return value;
-            }
-        });
-        _alItemMap.add(imMissedCalls);
+        // call deflection
+        SingleItemMap callDeflection = SingleItemMap.builder().itemCommand("callDeflectionSwitch")
+                .serviceId("urn:X_AVM-DE_OnTel-com:serviceId:X_AVM-DE_OnTel1").configArgumentNames("NewDeflectionId")
+                .itemArgumentName("NewEnable").readServiceCommand("GetDeflection")
+                .writeServiceCommand("SetDeflectionEnable").build();
+        addItemMap(callDeflection);
 
+        // reboot
+        SingleItemMap reboot = SingleItemMap.builder().itemCommand("reboot")
+                .serviceId("urn:DeviceConfig-com:serviceId:DeviceConfig1").writeServiceCommand("Reboot").build();
+        addItemMap(reboot);
     }
 
-    /***
-     * sets up a raw http(s) connection to Fbox and gets xml response
-     * as XML Document, ready for parsing
-     * 
+    private void addItemMap(ItemMap itemMap) {
+        for (String itemCommand : itemMap.getItemCommands()) {
+            if (_allItemMap.containsKey(itemCommand)) {
+                throw new IllegalStateException("ItemMap for itemCommand " + itemCommand + " already defined");
+            }
+            _allItemMap.put(itemCommand, itemMap);
+        }
+    }
+
+    /**
+     * Sets up a raw http(s) connection to Fbox and gets xml response as XML
+     * Document, ready for parsing.
+     *
      * @return
      */
     public Document getFboxXmlResponse(String url) {
         Document tr064response = null;
         HttpGet httpGet = new HttpGet(url);
+        boolean exceptionOccurred = false;
         try {
-            CloseableHttpResponse resp = _httpClient.execute(httpGet, _httpClientContext);
-            int responseCode = resp.getStatusLine().getStatusCode();
-            if (responseCode == 200) {
-                HttpEntity entity = resp.getEntity();
-                DocumentBuilderFactory dbf = DocumentBuilderFactory.newInstance();
-                DocumentBuilder db = dbf.newDocumentBuilder();
-                tr064response = db.parse(entity.getContent());
-                EntityUtils.consume(entity);
-            } else {
-                logger.error("Failed to receive valid response from httpGet");
+            synchronized (_httpClient) {
+                CloseableHttpResponse resp = _httpClient.execute(httpGet, _httpClientContext);
+                int responseCode = resp.getStatusLine().getStatusCode();
+                if (responseCode == 200) {
+                    HttpEntity entity = resp.getEntity();
+                    DocumentBuilderFactory dbf = DocumentBuilderFactory.newInstance();
+                    DocumentBuilder db = dbf.newDocumentBuilder();
+                    tr064response = db.parse(entity.getContent());
+                    EntityUtils.consume(entity);
+                } else {
+                    logger.error("Failed to receive valid response from httpGet");
+                }
             }
-
         } catch (Exception e) {
-            e.printStackTrace();
-            logger.error("Failed to receive valid response from httpGet");
+            exceptionOccurred = true;
+            logger.error("Failed to receive valid response from httpGet: {}", e.getMessage());
+        } finally {
+            // Make sure connection is released. If error occurred make sure to print in log
+            if (exceptionOccurred) {
+                logger.error("Releasing connection to FritzBox because of error!");
+            } else {
+                logger.debug("Releasing connection");
+            }
+            httpGet.releaseConnection();
         }
         return tr064response;
     }

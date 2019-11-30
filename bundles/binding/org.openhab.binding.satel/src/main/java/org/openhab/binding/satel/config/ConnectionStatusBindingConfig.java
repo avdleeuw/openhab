@@ -1,10 +1,14 @@
 /**
- * Copyright (c) 2010-2016, openHAB.org and others.
+ * Copyright (c) 2010-2019 Contributors to the openHAB project
  *
- * All rights reserved. This program and the accompanying materials
- * are made available under the terms of the Eclipse Public License v1.0
- * which accompanies this distribution, and is available at
- * http://www.eclipse.org/legal/epl-v10.html
+ * See the NOTICE file(s) distributed with this work for additional
+ * information.
+ *
+ * This program and the accompanying materials are made available under the
+ * terms of the Eclipse Public License 2.0 which is available at
+ * http://www.eclipse.org/legal/epl-2.0
+ *
+ * SPDX-License-Identifier: EPL-2.0
  */
 package org.openhab.binding.satel.config;
 
@@ -12,10 +16,10 @@ import java.util.Calendar;
 import java.util.Map;
 
 import org.openhab.binding.satel.SatelBindingConfig;
+import org.openhab.binding.satel.command.SatelCommand;
 import org.openhab.binding.satel.internal.event.ConnectionStatusEvent;
 import org.openhab.binding.satel.internal.event.NewStatesEvent;
 import org.openhab.binding.satel.internal.event.SatelEvent;
-import org.openhab.binding.satel.internal.protocol.SatelMessage;
 import org.openhab.binding.satel.internal.types.IntegraType;
 import org.openhab.core.items.Item;
 import org.openhab.core.library.types.DateTimeType;
@@ -59,7 +63,7 @@ public class ConnectionStatusBindingConfig extends SatelBindingConfig {
 
     /**
      * Parses given binding configuration and creates configuration object.
-     * 
+     *
      * @param bindingConfig
      *            config to parse
      * @return parsed config object or <code>null</code> if config does not
@@ -134,7 +138,7 @@ public class ConnectionStatusBindingConfig extends SatelBindingConfig {
      * {@inheritDoc}
      */
     @Override
-    public SatelMessage convertCommandToMessage(Command command, IntegraType integraType, String userCode) {
+    public SatelCommand convertCommand(Command command, IntegraType integraType, String userCode) {
         // this configuration does not accept commands
         return null;
     }
@@ -143,7 +147,7 @@ public class ConnectionStatusBindingConfig extends SatelBindingConfig {
      * {@inheritDoc}
      */
     @Override
-    public SatelMessage buildRefreshMessage(IntegraType integraType) {
+    public SatelCommand buildRefreshCommand(IntegraType integraType) {
         // this is configuration for internal state - does not need refresh
         // command
         return null;

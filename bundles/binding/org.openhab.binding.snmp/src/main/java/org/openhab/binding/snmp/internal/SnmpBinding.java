@@ -1,10 +1,14 @@
 /**
- * Copyright (c) 2010-2016, openHAB.org and others.
+ * Copyright (c) 2010-2019 Contributors to the openHAB project
  *
- * All rights reserved. This program and the accompanying materials
- * are made available under the terms of the Eclipse Public License v1.0
- * which accompanies this distribution, and is available at
- * http://www.eclipse.org/legal/epl-v10.html
+ * See the NOTICE file(s) distributed with this work for additional
+ * information.
+ *
+ * This program and the accompanying materials are made available under the
+ * terms of the Eclipse Public License 2.0 which is available at
+ * http://www.eclipse.org/legal/epl-2.0
+ *
+ * SPDX-License-Identifier: EPL-2.0
  */
 package org.openhab.binding.snmp.internal;
 
@@ -206,6 +210,12 @@ public class SnmpBinding extends AbstractActiveBinding<SnmpBindingProvider>
      */
     @Override
     public void onResponse(ResponseEvent event) {
+        // Always cancel async request when response has been received
+        // otherwise a memory leak is created! Not canceling a request
+        // immediately can be useful when sending a request to a broadcast
+        // address.
+        ((Snmp) event.getSource()).cancel(event.getRequest(), this);
+
         dispatchPdu(event.getPeerAddress(), event.getResponse());
     }
 

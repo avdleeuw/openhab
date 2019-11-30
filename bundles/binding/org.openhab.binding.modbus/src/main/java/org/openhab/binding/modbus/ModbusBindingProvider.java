@@ -1,14 +1,18 @@
 /**
- * Copyright (c) 2010-2016, openHAB.org and others.
+ * Copyright (c) 2010-2019 Contributors to the openHAB project
  *
- * All rights reserved. This program and the accompanying materials
- * are made available under the terms of the Eclipse Public License v1.0
- * which accompanies this distribution, and is available at
- * http://www.eclipse.org/legal/epl-v10.html
+ * See the NOTICE file(s) distributed with this work for additional
+ * information.
+ *
+ * This program and the accompanying materials are made available under the
+ * terms of the Eclipse Public License 2.0 which is available at
+ * http://www.eclipse.org/legal/epl-2.0
+ *
+ * SPDX-License-Identifier: EPL-2.0
  */
 package org.openhab.binding.modbus;
 
-import org.openhab.binding.modbus.internal.ModbusGenericBindingProvider.ModbusBindingConfig;
+import org.openhab.binding.modbus.internal.ModbusBindingConfig;
 import org.openhab.core.binding.BindingProvider;
 
 /**
@@ -47,13 +51,17 @@ public interface ModbusBindingProvider extends BindingProvider {
     static final public String VALUE_TYPE_INT32 = "int32";
     static final public String VALUE_TYPE_UINT32 = "uint32";
     static final public String VALUE_TYPE_FLOAT32 = "float32";
+    static final public String VALUE_TYPE_INT32_SWAP = "int32_swap";
+    static final public String VALUE_TYPE_UINT32_SWAP = "uint32_swap";
+    static final public String VALUE_TYPE_FLOAT32_SWAP = "float32_swap";
 
     static final String[] VALUE_TYPES = { VALUE_TYPE_BIT, VALUE_TYPE_INT8, VALUE_TYPE_UINT8, VALUE_TYPE_INT16,
-            VALUE_TYPE_UINT16, VALUE_TYPE_INT32, VALUE_TYPE_UINT32, VALUE_TYPE_FLOAT32 };
+            VALUE_TYPE_UINT16, VALUE_TYPE_INT32, VALUE_TYPE_UINT32, VALUE_TYPE_FLOAT32, VALUE_TYPE_INT32_SWAP,
+            VALUE_TYPE_UINT32_SWAP, VALUE_TYPE_FLOAT32_SWAP };
 
     /**
      * Returns Modbus item configuration
-     * 
+     *
      * @param itemName item name
      * @return Modbus item configuration
      */

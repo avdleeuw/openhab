@@ -1,10 +1,14 @@
 /**
- * Copyright (c) 2010-2016, openHAB.org and others.
+ * Copyright (c) 2010-2019 Contributors to the openHAB project
  *
- * All rights reserved. This program and the accompanying materials
- * are made available under the terms of the Eclipse Public License v1.0
- * which accompanies this distribution, and is available at
- * http://www.eclipse.org/legal/epl-v10.html
+ * See the NOTICE file(s) distributed with this work for additional
+ * information.
+ *
+ * This program and the accompanying materials are made available under the
+ * terms of the Eclipse Public License 2.0 which is available at
+ * http://www.eclipse.org/legal/epl-2.0
+ *
+ * SPDX-License-Identifier: EPL-2.0
  */
 package org.openhab.binding.satel.internal.protocol;
 
@@ -30,11 +34,11 @@ public class SatelMessage {
     private byte command;
     private byte[] payload;
 
-    private static final byte[] EMPTY_PAYLOAD = new byte[0];
+    protected static final byte[] EMPTY_PAYLOAD = new byte[0];
 
     /**
      * Creates new instance with specified command code and payload.
-     * 
+     *
      * @param command
      *            command code
      * @param payload
@@ -47,7 +51,7 @@ public class SatelMessage {
 
     /**
      * Creates new instance with specified command code and empty payload.
-     * 
+     *
      * @param command
      *            command code
      */
@@ -57,7 +61,7 @@ public class SatelMessage {
 
     /**
      * Deserializes new message instance from specified byte buffer.
-     * 
+     *
      * @param buffer
      *            bytes to deserialize a message from
      * @return deserialized message instance
@@ -86,7 +90,7 @@ public class SatelMessage {
 
     /**
      * Returns command byte.
-     * 
+     *
      * @return the command
      */
     public byte getCommand() {
@@ -95,7 +99,7 @@ public class SatelMessage {
 
     /**
      * Returns the payload bytes.
-     * 
+     *
      * @return payload as byte array
      */
     public byte[] getPayload() {
@@ -105,7 +109,7 @@ public class SatelMessage {
     /**
      * Returns the message serialized as array of bytes with checksum calculated
      * at last two bytes.
-     * 
+     *
      * @return the message as array of bytes
      */
     public byte[] getBytes() {
@@ -133,7 +137,7 @@ public class SatelMessage {
 
     /**
      * Calculates a checksum for the specified buffer.
-     * 
+     *
      * @param buffer
      *            the buffer to calculate.
      * @return the checksum value.
